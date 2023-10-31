@@ -7,9 +7,10 @@ from docxtpl  import DocxTemplate
 
 from Config.Config       import *
 
-from CustomerExist       import CustomerExistPage
-from ContractFillPrepare import prepare_contract_info, fill_contract_info
-from GetEmployeeName     import get_employee_name
+from Contract.CustomerExist       import CustomerExistPage
+
+from Contract.ContractFillPrepare import prepare_contract_info, fill_contract_info
+from GetData.GetEmployeeName     import get_employee_name
 
 global new_customer_flag
 

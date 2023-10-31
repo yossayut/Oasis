@@ -1,6 +1,6 @@
 import sqlite3
 
-from config  import *
+from Config.Config  import *
 from tkinter import messagebox
 
 ####################################################

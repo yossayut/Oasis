@@ -5,7 +5,8 @@ from tkinter              import messagebox, simpledialog
 from datetime             import datetime
 
 from Config.Config                import *
-from Contract.ShowAvailableRoom   import CheckRoomPage
+from Contract.ShowAvailableRoom   import CheckAvailableRoomPage
+
 # from Parking              import ParkingPage
 # from Requistition         import RequisitionPage
 # from Keycard              import KeycardPage
