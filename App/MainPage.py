@@ -4,7 +4,7 @@ import sqlite3
 from tkinter              import messagebox, simpledialog
 from datetime             import datetime
 
-from Config\Config        import *
+from Config.Config        import *
 from CheckAvailableRoom   import CheckRoomPage
 from Parking              import ParkingPage
 from Requistition         import RequisitionPage
