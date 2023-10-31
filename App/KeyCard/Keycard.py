@@ -1,9 +1,11 @@
 import tkinter as tk
-from tkinter import messagebox, ttk
-from GetData.GetStaffName           import get_staff_name
-from GetData.GetCurrentCustomerName import get_current_customer_name
-from Config.Config import *
 import sqlite3
+
+from tkinter                        import messagebox, ttk
+from GetData.GetEmployeeName        import get_employee_name
+from GetData.GetCurrentCustomerName import get_current_customer_name
+from Config.Config                  import *
+
 
 class KeycardPage(tk.Toplevel):
     def __init__(self, master):
@@ -12,7 +14,7 @@ class KeycardPage(tk.Toplevel):
         self.title("คีย์การ์ด")
 
         ##########################################################################################
-        #   Key Card                                                                             #
+        #   Key Card no.                                                                         #
         ##########################################################################################
         keycard_frame = ttk.LabelFrame(self, text="คีย์การ์ด", padding=10)
         keycard_frame.grid(row=0, column=1, columnspan=2, sticky="ew", padx=5, pady=10)
