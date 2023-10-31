@@ -9,7 +9,7 @@ from Contract.ShowAvailableRoom   import CheckAvailableRoomPage
 
 # from Parking              import ParkingPage
 # from Requistition         import RequisitionPage
-# from Keycard              import KeycardPage
+from KeyCard.Keycard                 import KeycardPage
 from Interested.InterestedPerson     import InterestedPersonPage
 # from Internet             import InternetPage
 # from LookupEdit           import LookUpEditPage
@@ -54,7 +54,7 @@ class MainPage(tk.Tk):
     # # 6 : Click open_requisition from main page   
     def open_keycard(self):
         self.withdraw()
-    #     KeycardPage(self)
+        KeycardPage(self)
 
     # 4 : Click open_parking from main page    
     def open_parking(self):
