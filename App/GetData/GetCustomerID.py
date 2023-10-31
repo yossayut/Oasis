@@ -12,7 +12,7 @@ def get_customer_id(first_name,last_name) :
         cursor = conn.cursor()
 
         cursor.execute("SELECT CustomerID FROM Customer_TBL WHERE FirstName = ? AND LastName = ?", (first_name, last_name,))
-        EmployeeID_Input = cursor.fetchone()[0]
+        CustomerID_Input = cursor.fetchone()[0]
         
         return CustomerID_Input
 

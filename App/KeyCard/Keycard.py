@@ -90,16 +90,10 @@ class KeycardPage(tk.Toplevel):
 
     def record_data(self):
 
-        card_number             = self.entry_text.get()  # Get the input text
-        customer_transaction    = self.selected_customer.get()
-        customer_name_parts     = customer_transaction.strip("()").replace("'", "").split(", ")
-        customer_transaction    = get_customer_id(customer_name_parts[0],customer_name_parts[1])
-
-        employee_transaction    = self.selected_employee.get()
-        employee_name_parts     = employee_transaction.strip("()").replace("'", "").split(", ")
-        employee_transaction    = get_employee_id(employee_name_parts[0],employee_name_parts[1])
-
-        employee_filler         = self.selected_filler.get()
+        card_number                 = self.entry_text.get()  # Get the input text
+        employee_filler             = self.selected_filler.get()
+        employee_filler_name_parts  = employee_filler.strip("()").replace("'", "").split(", ")
+        employee_filler_id          = get_employee_id(employee_filler_name_parts[0],employee_filler_name_parts[1])
 
         transaction_radio       = self.transaction_type.get()
         customer_employee_radio = self.customer_employee.get()
@@ -107,35 +101,60 @@ class KeycardPage(tk.Toplevel):
 
         if DEBUG == True :
             print(card_number)
-            print(customer_transaction)
-            print(employee_transaction)
             print(employee_filler)
 
             print(transaction_radio)
             print(customer_employee_radio)
 
-        conn = sqlite3.connect(Oasis_database_full_path)
+        conn   = sqlite3.connect(Oasis_database_full_path)
         cursor = conn.cursor()
 
         try:
+                    ##########################################################################################
+        #   employee Filler                                                                         #
+        ##########################################################################################
             if self.transaction_type.get() == "withdraw" and self.customer_employee.get() == "employee" :
-                print("พนักงานเบิก access card")
+                print("พนักงานเบิก access card")          
+                employee_transaction    = self.selected_employee.get()
+                employee_name_parts     = employee_transaction.strip("()").replace("'", "").split(", ")
+                employee_transaction_id = get_employee_id(employee_name_parts[0],employee_name_parts[1])
 
                 cursor.execute("""
                     UPDATE Access_Card_Manage_TBL
                     SET Status = "Used", StaffID = ?
                     WHERE KeycardID = ?
-                """, (employee_transaction, card_number))
+                """, (employee_transaction_id, card_number))
 
                 conn.commit()
                 conn.close()
 
+        ##########################################################################################
+        #   employee Filler                                                                         #
+        ##########################################################################################
             elif self.transaction_type.get() == "withdraw" and self.customer_employee.get() == "customer" :  
-                print("ลูกค้าเบิก access card")         
+                print("ลูกค้าเบิก access card")  
+                customer_transaction    = self.selected_customer.get()
+                customer_name_parts     = customer_transaction.strip("()").replace("'", "").split(", ")
+                customer_transaction_id = get_customer_id(customer_name_parts[0],customer_name_parts[1])
 
+                cursor.execute("""
+                    UPDATE Access_Card_Manage_TBL
+                    SET Status = "Used", CustomerID = ?, StaffID = ?
+                    WHERE KeycardID = ?
+                """, (customer_transaction_id, employee_filler_id, card_number))
+
+                conn.commit()
+                conn.close()
+
+        ##########################################################################################
+        #   employee Filler                                                                         #
+        ##########################################################################################
             elif self.transaction_type.get() == "deposite" and self.customer_employee.get() == "employee" :
                 print("พนักงานคืน access card")  
 
+        ##########################################################################################
+        #   employee Filler                                                                         #
+        ##########################################################################################
             elif self.transaction_type.get() == "deposite" and self.customer_employee.get() == "customer" : 
                 print("ลูกค้าคืน access card")  
 
