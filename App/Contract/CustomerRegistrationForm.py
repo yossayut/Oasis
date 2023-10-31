@@ -5,9 +5,9 @@ from tkinter  import messagebox, simpledialog
 from datetime import datetime, timedelta
 from docxtpl  import DocxTemplate
 
-from Config.Config   import *
+from Config.Config       import *
 
-from CustomerAssist      import CustomerAssistPage
+from CustomerExist       import CustomerExistPage
 from ContractFillPrepare import prepare_contract_info, fill_contract_info
 from GetStaffName        import get_staff_name
 
@@ -24,13 +24,13 @@ class RegistrationForm(tk.Toplevel):
         self.title("ลงทะเบียนลูกค้าใหม่")
         self.geometry("600x500")
         self.room = room
-        self.create_widgets_registration_form()
+        self.create_widgets()
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.bind('<Escape>', self.on_escape)
         self.new_customer_flag = True                      # Initialize new customer as True
 
     # 2
-    def create_widgets_registration_form(self):
+    def create_widgets(self):
         ##################################################
         # Create entry box variable
         ##################################################
@@ -61,7 +61,7 @@ class RegistrationForm(tk.Toplevel):
         ########################################################################################################
         # Old customer box : ต่ออายุสัญญาหลังจากครบครั้งแรกแล้ว เลยไม่ต้องกรอกข้อมูลผู้เช่าใหม่
         ########################################################################################################
-        tk.Button(self, text="ลูกค้าเก่า", command=self.open_assist_customer).grid(row=0, column=1, pady=10)
+        tk.Button(self, text="ลูกค้าเก่า", command=self.open_exist_customer).grid(row=0, column=1, pady=10)
 
         ########################################################################################################
         # Drop down staff name : Filler PIC
@@ -167,18 +167,18 @@ class RegistrationForm(tk.Toplevel):
         ########################################################################################################
 
     # 3 : Run
-    def open_assist_customer(self):
+    def open_exist_customer(self):
         self.clear_form()
         self.new_customer_flag = False                                  # Reset flag for existing customer
         if DEBUG == True :
             print("open_exist_customer : ",self.new_customer_flag)
 
         ####################################################
-        # Call : CustomerAssistPage CustomerAssistPage.py
+        # Call : CustomerexistPage CustomerexistPage.py
         ####################################################
-        assist_page = CustomerAssistPage(self)
-        assist_page.wait_window()
-        customer_info = assist_page.get_selected_customer_info()
+        exist_page = CustomerexistPage(self)
+        exist_page.wait_window()
+        customer_info = exist_page.get_selected_customer_info()
 
     # 4 : 
     def clear_form(self):
@@ -230,9 +230,9 @@ class RegistrationForm(tk.Toplevel):
         # 8           
 
     # 5
-    def fill_customer_assist_info(self, customer_info):
+    def fill_customer_exist_info(self, customer_info):
         if DEBUG == True :
-            print("fill_customer_assist_info : CustomerRegistrationForm.py")
+            print("fill_customer_exist_info : CustomerRegistrationForm.py")
 
         ################################################################
         # Fill the entry fields with the provided customer information
