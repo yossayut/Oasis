@@ -4,7 +4,7 @@ import sqlite3
 from tkinter  import messagebox, simpledialog
 from datetime import datetime
 
-from config   import *
+from Config.Config   import *
 
 #############################################################################################################
 # Create ParkingPage, It will show the available parking from Database and if select,
@@ -24,10 +24,10 @@ class InterestedPersonPage(tk.Toplevel):
         self.interested_listbox.pack(padx=20, pady=10, fill=tk.BOTH, expand=True)
 
         # Button to add a new interested person
-        tk.Button(self, text="Add Interested Person", command=self.add_interested_person).pack(pady=10)
+        tk.Button(self, text="เพิ่ม", command=self.add_interested_person).pack(pady=10)
 
         # Button to delete the selected interested person
-        tk.Button(self, text="Delete Selected", command=self.delete_selected).pack(pady=10)
+        tk.Button(self, text="ลบ", command=self.delete_selected).pack(pady=10)
 
     def display_interested_person(self):
         # Connect to the SQLite database
