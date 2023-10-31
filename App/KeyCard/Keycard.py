@@ -3,9 +3,10 @@ import sqlite3
 
 from tkinter                        import messagebox, ttk
 from GetData.GetEmployeeName        import get_employee_name
+from GetData.GetEmployeeID          import get_employee_id
+from GetData.GetCustomerID          import get_customer_id
 from GetData.GetCurrentCustomerName import get_current_customer_name
 from Config.Config                  import *
-
 
 class KeycardPage(tk.Toplevel):
     def __init__(self, master):
@@ -21,6 +22,7 @@ class KeycardPage(tk.Toplevel):
 
         label_instruction = tk.Label(keycard_frame, text="แสกนคีย์การ์ด")
         label_instruction.grid(row=0, column=0, pady=10)
+
         self.entry_text   = tk.Entry(keycard_frame)
         self.entry_text.focus()
         self.entry_text.grid(row=0, column=1, pady=10)
@@ -32,8 +34,10 @@ class KeycardPage(tk.Toplevel):
         transaction_frame.grid(row=1, column=1, columnspan=2, sticky="ew", padx=5, pady=10)
 
         self.transaction_type      = tk.StringVar(value="withdraw")
+
         transaction_radio_withdraw = ttk.Radiobutton(transaction_frame, text="เบิก", variable=self.transaction_type, value="withdraw")
         transaction_radio_withdraw.grid(row=0, column=0)
+
         transaction_radio_deposite = ttk.Radiobutton(transaction_frame, text="คืน", variable=self.transaction_type, value="deposite")
         transaction_radio_deposite.grid(row=0, column=1)
 
@@ -88,9 +92,13 @@ class KeycardPage(tk.Toplevel):
 
         card_number             = self.entry_text.get()  # Get the input text
         customer_transaction    = self.selected_customer.get()
-        employee_transaction    = self.selected_employee.get()
+        customer_name_parts     = customer_transaction.strip("()").replace("'", "").split(", ")
+        customer_transaction    = get_customer_id(customer_name_parts[0],customer_name_parts[1])
 
-        
+        employee_transaction    = self.selected_employee.get()
+        employee_name_parts     = employee_transaction.strip("()").replace("'", "").split(", ")
+        employee_transaction    = get_employee_id(employee_name_parts[0],employee_name_parts[1])
+
         employee_filler         = self.selected_filler.get()
 
         transaction_radio       = self.transaction_type.get()
