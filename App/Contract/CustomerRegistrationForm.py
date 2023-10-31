@@ -332,7 +332,7 @@ class RegistrationForm(tk.Toplevel):
         ####################################################
         # Get information from text box : Column2
         ####################################################       
-        employee                 = self.selected_employee.get()
+        employee              = self.selected_employee.get()
         room_fee              = self.room_fee_entry.get()  
         internet              = self.internet_fee_entry.get()
         maintenance           = self.maintenance_fee_entry.get()

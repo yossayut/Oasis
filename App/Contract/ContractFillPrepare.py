@@ -2,6 +2,7 @@ import sqlite3
 
 from Config.Config import *
 from tkinter import messagebox
+from GetData.GetEmployeeID import get_employee_id
 
 ####################################################
 # Get information from Database
@@ -29,25 +30,7 @@ def prepare_contract_info(selected_room, first_name, last_name, register_date, r
             print(name_parts[0])
             print(name_parts[1])
 
-        try:
-            conn   = sqlite3.connect(Oasis_database_full_path)
-            cursor = conn.cursor()
-
-            cursor.execute("SELECT EmployeeID FROM Employee_TBL WHERE FirstName = ? AND LastName = ?", (name_parts[0], name_parts[1],))
-            EmployeeID_Input = cursor.fetchone()[0]
-
-            if DEBUG == True :
-                if EmployeeID_Input:
-                    print("EmployeeID:", EmployeeID_Input)
-                else:
-                    print("Employee not found")
-
-        except sqlite3.Error as e:
-            messagebox.showerror("Database Error", f"An error occurred: {e}")
-
-        finally:
-            if conn:
-                conn.close()
+        EmployeeID_Input     = get_employee_id(name_parts[0],name_parts[1])
 
         RoomFee_Input        = room_fee  
         InternetFee_Input    = internet    
