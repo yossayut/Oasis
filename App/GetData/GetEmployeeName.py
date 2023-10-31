@@ -6,7 +6,7 @@ from tkinter import messagebox
 ####################################################
 # Get information from Database
 ####################################################
-def get_staff_name() :
+def get_employee_name() :
     try:
         conn = sqlite3.connect(Oasis_database_full_path)  
         cursor = conn.cursor()

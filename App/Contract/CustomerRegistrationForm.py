@@ -9,7 +9,7 @@ from Config.Config       import *
 
 from CustomerExist       import CustomerExistPage
 from ContractFillPrepare import prepare_contract_info, fill_contract_info
-from GetStaffName        import get_staff_name
+from GetEmployeeName     import get_employee_name
 
 global new_customer_flag
 
@@ -64,17 +64,17 @@ class RegistrationForm(tk.Toplevel):
         tk.Button(self, text="ลูกค้าเก่า", command=self.open_exist_customer).grid(row=0, column=1, pady=10)
 
         ########################################################################################################
-        # Drop down staff name : Filler PIC
+        # Drop down employee name : Filler PIC
         ########################################################################################################
-        self.employee_names = get_staff_name()                                                  # Staff name
+        self.employee_names = get_employee_name()                                                  # employee name
         if DEBUG == True :
             print(self.employee_names)
 
         tk.Label(self, text="พนักงาน   :").grid(row=0, column=3)     
-        self.selected_staff = tk.StringVar()
-        self.selected_staff.set("กรุณาเลือกพนักงาน") 
-        self.staff_dropdown = tk.OptionMenu(self, self.selected_staff, *self.employee_names)
-        self.staff_dropdown.grid(row=0, column=4)
+        self.selected_employee = tk.StringVar()
+        self.selected_employee.set("กรุณาเลือกพนักงาน") 
+        self.employee_dropdown = tk.OptionMenu(self, self.selected_employee, *self.employee_names)
+        self.employee_dropdown.grid(row=0, column=4)
 
         ########################################################################################################
         # Create entry box + button position
@@ -331,7 +331,7 @@ class RegistrationForm(tk.Toplevel):
         ####################################################
         # Get information from text box : Column2
         ####################################################       
-        staff                 = self.selected_staff.get()
+        employee                 = self.selected_employee.get()
         room_fee              = self.room_fee_entry.get()  
         internet              = self.internet_fee_entry.get()
         maintenance           = self.maintenance_fee_entry.get()
@@ -339,13 +339,13 @@ class RegistrationForm(tk.Toplevel):
         remark                = self.remark_entry.get()
 
         if DEBUG == True :
-            print("staff : " + staff)
-            name_parts = staff.strip("()").split(", ")
+            print("employee : " + employee)
+            name_parts = employee.strip("()").split(", ")
             # Extract the individual names
-            first_name_staff = name_parts[0]
-            last_name_staff = name_parts[1]
-            print("first name : " + first_name_staff)
-            print("last name : " + last_name_staff)
+            first_name_employee = name_parts[0]
+            last_name_employee = name_parts[1]
+            print("first name : " + first_name_employee)
+            print("last name : " + last_name_employee)
 
         # Store the data in the database
         conn = sqlite3.connect(Oasis_database_full_path)
@@ -354,9 +354,9 @@ class RegistrationForm(tk.Toplevel):
             print("submit_form (new customer ?) : ", self.new_customer_flag)
         
         #########################################################
-        # If staff not selected
+        # If employee not selected
         #########################################################       
-        if staff != "กรุณาเลือกพนักงาน" :
+        if employee != "กรุณาเลือกพนักงาน" :
 
             #########################################################
             # new customer, add customer information to database
@@ -403,7 +403,7 @@ class RegistrationForm(tk.Toplevel):
             #     customer information  from Customer_TBL
             #     employee name         from Employee_TBL
             ##################################################################################################################         
-            contract_info = prepare_contract_info(selected_room, first_name, last_name, register_date, register_end_date, staff,
+            contract_info = prepare_contract_info(selected_room, first_name, last_name, register_date, register_end_date, employee,
                                                   room_fee, internet, maintenance, parking, remark)
             #print(contract_info)
 
@@ -412,7 +412,7 @@ class RegistrationForm(tk.Toplevel):
             # Fill Contract information to Contract_TBL
             #########################################################   
             if contract_info :
-                RoomID_Input, RoomType_Input, CustomerID_Input, StartDate_Input, EndDate_Input, StaffID_Input, RoomFee_Input, \
+                RoomID_Input, RoomType_Input, CustomerID_Input, StartDate_Input, EndDate_Input, employeeID_Input, RoomFee_Input, \
                 InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input = contract_info                 # Unpack contract info
 
                 if RoomType_Input == 'SmallType':
@@ -427,7 +427,7 @@ class RegistrationForm(tk.Toplevel):
                 room_floor    = selected_room[1]
                 room_building = selected_room[0]
 
-                fill_contract_info(RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, StaffID_Input, RoomFee_Input,
+                fill_contract_info(RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, employeeID_Input, RoomFee_Input,
                                    InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input)
 
                 ###############################################################################
@@ -452,7 +452,7 @@ class RegistrationForm(tk.Toplevel):
                             'ค่าเช่า'          : room_fee,
                             'วันเริ่มสัญญา'     : register_date,
                             'วันสิ้นสุดสัญญา'  : register_end_date,
-                            'ผู้กรอกข้อมูล'    : staff
+                            'ผู้กรอกข้อมูล'    : employee
                         }
                 doc.render(context)
                 doc.save(output_contract_path)
@@ -460,7 +460,7 @@ class RegistrationForm(tk.Toplevel):
             self.clear_form()
             self.on_close()
 
-        else: # If staff not selected
+        else: # If employee not selected
             messagebox.showinfo("Warning", "กรุณาเลือกพนักงานก่อน")
 
     # 7
