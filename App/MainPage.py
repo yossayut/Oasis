@@ -4,14 +4,14 @@ import sqlite3
 from tkinter              import messagebox, simpledialog
 from datetime             import datetime
 
-from Config.Config        import *
-from CheckAvailableRoom   import CheckRoomPage
-from Parking              import ParkingPage
-from Requistition         import RequisitionPage
-from Keycard              import KeycardPage
-from InterestedPerson     import InterestedPersonPage
-from Internet             import InternetPage
-from LookupEdit           import LookUpEditPage
+from Config.Config                import *
+from Contract.ShowAvailableRoom   import CheckRoomPage
+# from Parking              import ParkingPage
+# from Requistition         import RequisitionPage
+# from Keycard              import KeycardPage
+# from InterestedPerson     import InterestedPersonPage
+# from Internet             import InternetPage
+# from LookupEdit           import LookUpEditPage
 
 #############################################################################################################
 # Main page contain button : ทำสัญญาเช่าห้องพัก, ที่จอดรถ, เบิกของ, ลงทะเบียนผู้สนใจ,ดูหรือแก้ไขข้อมูล
@@ -36,44 +36,46 @@ class MainPage(tk.Tk):
         keycard_txt     = "คีย์การ์ด"
         interest_txt    = "ลงทะเบียนผู้สนใจ"
         lookup_txt      = "ดูหรือแก้ไขข้อมูล"
-        tk.Button(self, text=contract_txt    , command=self.open_check_room).pack(pady=10)
+        tk.Button(self, text=contract_txt    , command=self.open_create_contract).pack(pady=10)
+        tk.Button(self, text=keycard_txt     , command=self.open_keycard).pack(pady=10)
         tk.Button(self, text=parking_txt     , command=self.open_parking).pack(pady=10)
         tk.Button(self, text=internet_txt    , command=self.open_internet).pack(pady=10)
-        tk.Button(self, text=keycard_txt     , command=self.open_keycard).pack(pady=10)
         tk.Button(self, text=interest_txt    , command=self.open_interested_person).pack(pady=10)
         tk.Button(self, text=lookup_txt      , command=self.open_lookup_edit).pack(pady=10)
     
     # 3 : Click open_check_room from main page  
-    def open_check_room(self):
+    def open_create_contract(self):
         self.withdraw()
         self.lift()
-        CheckRoomPage(self)
+        CheckAvailableRoomPage(self)
+
+    # # 6 : Click open_requisition from main page   
+    def open_keycard(self):
+        self.withdraw()
+    #     KeycardPage(self)
 
     # 4 : Click open_parking from main page    
     def open_parking(self):
         self.withdraw()
-        ParkingPage(self)
+    #     ParkingPage(self)
 
-    # 5 : Click open_parking from main page    
+    # # 5 : Click open_parking from main page    
     def open_internet(self):
         self.withdraw()
-        InternetPage(self)
+    #     InternetPage(self)
 
-    # 6 : Click open_requisition from main page   
-    def open_keycard(self):
-        self.withdraw()
-        KeycardPage(self)
 
-    # 7 : Click open_interested_person from main page   
+
+    # # 7 : Click open_interested_person from main page   
     def open_interested_person(self):
         self.withdraw()
-        InterestedPersonPage(self)
+    #     InterestedPersonPage(self)
 
-    # 8 : Click open_lookup_edit from main page   
+    # # 8 : Click open_lookup_edit from main page   
     def open_lookup_edit(self):
         print("MainPage : open_lookup_edit")
         self.withdraw()
-        LookUpEditPage(self)
+    #     LookUpEditPage(self)
 
     # 9
     def on_close(self):
