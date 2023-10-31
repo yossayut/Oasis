@@ -30,7 +30,7 @@ class CustomerExistPage(tk.Toplevel):
 
         self.customer_listbox = tk.Listbox(self)
         self.customer_listbox.pack(padx=20, pady=10, fill=tk.BOTH, expand=True)
-        tk.Button(self, text="เลือก", command=self.select_Exist_customer).pack(pady=10)
+        tk.Button(self, text="เลือก", command=self.select_exist_customer).pack(pady=10)
     
     # 4 : Run
     def get_selected_customer_info(self):

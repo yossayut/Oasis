@@ -177,7 +177,7 @@ class RegistrationForm(tk.Toplevel):
         ####################################################
         # Call : CustomerexistPage CustomerexistPage.py
         ####################################################
-        exist_page = CustomerexistPage(self)
+        exist_page = CustomerExistPage(self)
         exist_page.wait_window()
         customer_info = exist_page.get_selected_customer_info()
 

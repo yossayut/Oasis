@@ -37,8 +37,8 @@ def prepare_contract_info(selected_room, first_name, last_name, register_date, r
             EmployeeID_Input = cursor.fetchone()[0]
 
             if DEBUG == True :
-                if employeeID_Input:
-                    print("EmployeeID:", employeeID_Input)
+                if EmployeeID_Input:
+                    print("EmployeeID:", EmployeeID_Input)
                 else:
                     print("Employee not found")
 
@@ -91,7 +91,7 @@ def fill_contract_info(RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_
                                                      CustomerID,
                                                      StartDate,
                                                      EndDate,
-                                                     EmployeeID,
+                                                     StaffID,
                                                      RoomFee,
                                                      InternetFee,
                                                      MaintenanceFee,
@@ -99,7 +99,7 @@ def fill_contract_info(RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_
                                                      Remark,
                                                      Status) 
                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                       """, (RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, employeeID_Input, RoomFee_Input,
+                       """, (RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, EmployeeID_Input, RoomFee_Input,
                              InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input))
 
         conn.commit()
