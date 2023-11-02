@@ -70,7 +70,6 @@ class KeycardPage(tk.Toplevel):
         self.employee_dropdown = tk.OptionMenu(user_frame, self.selected_employee, *self.employee_names)
         self.employee_dropdown.grid(row=0, column=4, pady=10)
 
-
         ##########################################################################################
         #   employee Filler                                                                         #
         ##########################################################################################
@@ -97,9 +96,9 @@ class KeycardPage(tk.Toplevel):
         cursor = conn.cursor()
 
         try:
-                    ##########################################################################################
-        #   employee Filler                                                                         #
-        ##########################################################################################
+            ##########################################################################################
+            #   employee Withdraw                                                                    #
+            ##########################################################################################
             if self.transaction_type.get() == "withdraw" and self.customer_employee.get() == "employee" :
                 print("พนักงานเบิก access card")  
                 customer_employee_radio     = self.customer_employee.get()
@@ -120,9 +119,9 @@ class KeycardPage(tk.Toplevel):
                 conn.commit()
                 conn.close()
 
-        ##########################################################################################
-        #   employee Filler                                                                         #
-        ##########################################################################################
+            ##########################################################################################
+            #   customer Withdraw                                                                    #
+            ##########################################################################################
             elif self.transaction_type.get() == "withdraw" and self.customer_employee.get() == "customer" :  
                 print("ลูกค้าเบิก access card")  
                 customer_employee_radio     = self.customer_employee.get()
@@ -143,9 +142,9 @@ class KeycardPage(tk.Toplevel):
                 conn.commit()
                 conn.close()
 
-        ##########################################################################################
-        #   employee Filler                                                                         #
-        ##########################################################################################
+            ##########################################################################################
+            #   employee or customer deposite                                                        #
+            ##########################################################################################
             elif self.transaction_type.get() == "deposite" :
                 print("คืน access card")  
 
