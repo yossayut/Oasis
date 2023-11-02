@@ -90,21 +90,8 @@ class KeycardPage(tk.Toplevel):
 
     def record_data(self):
 
-        card_number                 = self.entry_text.get()  # Get the input text
-        employee_filler             = self.selected_filler.get()
-        employee_filler_name_parts  = employee_filler.strip("()").replace("'", "").split(", ")
-        employee_filler_id          = get_employee_id(employee_filler_name_parts[0],employee_filler_name_parts[1])
-
+        card_number             = self.entry_text.get()  # Get the input text
         transaction_radio       = self.transaction_type.get()
-        customer_employee_radio = self.customer_employee.get()
-
-
-        if DEBUG == True :
-            print(card_number)
-            print(employee_filler)
-
-            print(transaction_radio)
-            print(customer_employee_radio)
 
         conn   = sqlite3.connect(Oasis_database_full_path)
         cursor = conn.cursor()
@@ -114,16 +101,21 @@ class KeycardPage(tk.Toplevel):
         #   employee Filler                                                                         #
         ##########################################################################################
             if self.transaction_type.get() == "withdraw" and self.customer_employee.get() == "employee" :
-                print("พนักงานเบิก access card")          
-                employee_transaction    = self.selected_employee.get()
-                employee_name_parts     = employee_transaction.strip("()").replace("'", "").split(", ")
-                employee_transaction_id = get_employee_id(employee_name_parts[0],employee_name_parts[1])
+                print("พนักงานเบิก access card")  
+                customer_employee_radio     = self.customer_employee.get()
+                employee_name               = self.selected_employee.get()
+                employee_name_parts         = employee_name.strip("()").replace("'", "").split(", ")
+                employee_id                 = get_employee_id(employee_name_parts[0],employee_name_parts[1])
+
+                employee_filler             = self.selected_filler.get()
+                employee_filler_name_parts  = employee_filler.strip("()").replace("'", "").split(", ")
+                employee_filler_id          = get_employee_id(employee_filler_name_parts[0],employee_filler_name_parts[1])
 
                 cursor.execute("""
                     UPDATE Access_Card_Manage_TBL
                     SET Status = "Used", StaffID = ?
                     WHERE KeycardID = ?
-                """, (employee_transaction_id, card_number))
+                """, (employee_id, card_number))
 
                 conn.commit()
                 conn.close()
@@ -133,15 +125,20 @@ class KeycardPage(tk.Toplevel):
         ##########################################################################################
             elif self.transaction_type.get() == "withdraw" and self.customer_employee.get() == "customer" :  
                 print("ลูกค้าเบิก access card")  
-                customer_transaction    = self.selected_customer.get()
-                customer_name_parts     = customer_transaction.strip("()").replace("'", "").split(", ")
-                customer_transaction_id = get_customer_id(customer_name_parts[0],customer_name_parts[1])
+                customer_employee_radio     = self.customer_employee.get()
+                customer_name               = self.selected_customer.get()
+                customer_name_parts         = customer_name.strip("()").replace("'", "").split(", ")
+                customer_id                 = get_customer_id(customer_name_parts[0],customer_name_parts[1])
+
+                employee_filler_name        = self.selected_filler.get()
+                employee_filler_name_parts  = employee_filler_name.strip("()").replace("'", "").split(", ")
+                employee_filler_id          = get_employee_id(employee_filler_name_parts[0],employee_filler_name_parts[1])
 
                 cursor.execute("""
                     UPDATE Access_Card_Manage_TBL
                     SET Status = "Used", CustomerID = ?, StaffID = ?
                     WHERE KeycardID = ?
-                """, (customer_transaction_id, employee_filler_id, card_number))
+                """, (customer_id, employee_filler_id, card_number))
 
                 conn.commit()
                 conn.close()
@@ -149,14 +146,18 @@ class KeycardPage(tk.Toplevel):
         ##########################################################################################
         #   employee Filler                                                                         #
         ##########################################################################################
-            elif self.transaction_type.get() == "deposite" and self.customer_employee.get() == "employee" :
-                print("พนักงานคืน access card")  
+            elif self.transaction_type.get() == "deposite" :
+                print("คืน access card")  
 
-        ##########################################################################################
-        #   employee Filler                                                                         #
-        ##########################################################################################
-            elif self.transaction_type.get() == "deposite" and self.customer_employee.get() == "customer" : 
-                print("ลูกค้าคืน access card")  
+                cursor.execute("""
+                    UPDATE Access_Card_Manage_TBL
+                    SET Status = "Idle", CustomerID = NULL, StaffID = NULL
+                    WHERE KeycardID = ?
+                """, (card_number,))
+
+                conn.commit()
+                conn.close()
+           
 
             else :
                 print("no")
