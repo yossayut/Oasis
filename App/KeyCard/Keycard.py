@@ -88,7 +88,6 @@ class KeycardPage(tk.Toplevel):
         self.columnconfigure(1, weight=1)
 
     def record_data(self):
-
         card_number             = self.entry_text.get()  # Get the input text
         transaction_radio       = self.transaction_type.get()
 
