@@ -118,6 +118,8 @@ class KeycardPage(tk.Toplevel):
                 conn.commit()
                 conn.close()
 
+                self.after_transaction(card_number, employee_name, "พนักงานเบิกบัตร")
+
             ##########################################################################################
             #   customer Withdraw                                                                    #
             ##########################################################################################
@@ -141,6 +143,7 @@ class KeycardPage(tk.Toplevel):
                 conn.commit()
                 conn.close()
 
+                self.after_transaction(card_number, customer_name, "ลูกค้าเบิกบัตร")
             ##########################################################################################
             #   employee or customer deposite                                                        #
             ##########################################################################################
@@ -156,6 +159,7 @@ class KeycardPage(tk.Toplevel):
                 conn.commit()
                 conn.close()
            
+                self.after_transaction(card_number, "N/A", "คืนบัตร")
 
             else :
                 print("no")
@@ -167,3 +171,9 @@ class KeycardPage(tk.Toplevel):
         finally:
             if conn:
                 conn.close()
+
+    def after_transaction(self, card_number, staff_name, transaction_type):
+        message = f"Transaction Successful!\nCard Number: {card_number}\nStaff Name: {staff_name}\nTransaction Type: {transaction_type}"
+        messagebox.showinfo("Transaction Info", message)
+        self.destroy()  # Closes the current window
+        self.master.deiconify()  # Show the main page
