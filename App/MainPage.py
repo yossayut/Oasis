@@ -9,8 +9,8 @@ from Contract.ShowAvailableRoom   import CheckAvailableRoomPage
 
 # from Parking              import ParkingPage
 # from Requistition         import RequisitionPage
-# from Keycard              import KeycardPage
-# from InterestedPerson     import InterestedPersonPage
+from KeyCard.Keycard                 import KeycardPage
+from Interested.InterestedPerson     import InterestedPersonPage
 # from Internet             import InternetPage
 # from LookupEdit           import LookUpEditPage
 
@@ -37,7 +37,7 @@ class MainPage(tk.Tk):
         keycard_txt     = "คีย์การ์ด"
         interest_txt    = "ลงทะเบียนผู้สนใจ"
         lookup_txt      = "ดูหรือแก้ไขข้อมูล"
-        
+
         tk.Button(self, text=contract_txt    , command=self.open_create_contract).pack(pady=10)
         tk.Button(self, text=keycard_txt     , command=self.open_keycard).pack(pady=10)
         tk.Button(self, text=parking_txt     , command=self.open_parking).pack(pady=10)
@@ -54,7 +54,7 @@ class MainPage(tk.Tk):
     # # 6 : Click open_requisition from main page   
     def open_keycard(self):
         self.withdraw()
-    #     KeycardPage(self)
+        KeycardPage(self)
 
     # 4 : Click open_parking from main page    
     def open_parking(self):
@@ -71,7 +71,7 @@ class MainPage(tk.Tk):
     # # 7 : Click open_interested_person from main page   
     def open_interested_person(self):
         self.withdraw()
-    #     InterestedPersonPage(self)
+        InterestedPersonPage(self)
 
     # # 8 : Click open_lookup_edit from main page   
     def open_lookup_edit(self):
