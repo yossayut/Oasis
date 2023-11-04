@@ -12,7 +12,7 @@ from Contract.ShowAvailableRoom   import CheckAvailableRoomPage
 from KeyCard.Keycard                 import KeycardPage
 from Interested.InterestedPerson     import InterestedPersonPage
 # from Internet             import InternetPage
-# from LookupEdit           import LookUpEditPage
+from LookupAndEdit.LookupEdit        import LookUpAndEditPage
 
 #############################################################################################################
 # Main page contain button : ทำสัญญาเช่าห้องพัก, ที่จอดรถ, เบิกของ, ลงทะเบียนผู้สนใจ,ดูหรือแก้ไขข้อมูล
@@ -77,7 +77,7 @@ class MainPage(tk.Tk):
     def open_lookup_edit(self):
         print("MainPage : open_lookup_edit")
         self.withdraw()
-    #     LookUpEditPage(self)
+        LookUpAndEditPage(self)
 
     # 9
     def on_close(self):
