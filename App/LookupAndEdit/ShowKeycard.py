@@ -38,15 +38,15 @@ class Show_keycard_Page(tk.Toplevel):
 
         ttk.Radiobutton(filter_frame, 
             text="เฉพาะบัตรคีย์การ์ดที่ถูกใช้", 
-            value="Rent rooms", 
+            value="Used keycard", 
             variable=self.filter_var, 
-            command=lambda: self.change_filter("Rent rooms")).grid(row=0, column=2, padx=10)
+            command=lambda: self.change_filter("Used keycard")).grid(row=0, column=2, padx=10)
 
         ttk.Radiobutton(filter_frame, 
         	text="ทั้งหมดเรียงตามผู้เช่า", 
-        	value="Rent rooms order by customer", 
+        	value="Used keycard order by RoomNo", 
         	variable=self.filter_var, 
-        	command=lambda: self.change_filter("Rent rooms order by customer")).grid(row=0, column=3, padx=10)
+        	command=lambda: self.change_filter("Used keycard order by RoomNo")).grid(row=0, column=3, padx=10)
 
         self.tree = ttk.Treeview(paned_window, 
         	columns=("Keycard No.", "Keycard ID", "Customer First Name Last Name", "Customer Room", "Staff First Name Last Name", "Status"), 
@@ -76,47 +76,73 @@ class Show_keycard_Page(tk.Toplevel):
 
         try:
             if self.filter_var.get() == "Free keycard":
-                print("HI")
-                # Select only free rooms
-                # cursor.execute("""
-                #     SELECT Apartment_Info_TBL.RoomID, Apartment_Info_TBL.RoomNo, Apartment_Info_TBL.Building, Apartment_Info_TBL.Floor, Apartment_Info_TBL.RoomType,
-                #     '', '', '', ''
-                #     FROM Apartment_Info_TBL
-                #     WHERE Apartment_Info_TBL.RoomID NOT IN (SELECT RoomID FROM Contract_TBL WHERE Status = 'Active')
-                #     ORDER BY Apartment_Info_TBL.RoomID
-                # """)
+                cursor.execute("""
+                    SELECT 
+                        Access_Card_Manage_TBL.ID, 
+                        COALESCE(Access_Card_Manage_TBL.KeycardID, '-') AS KeycardID,
+                        COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName, '-') AS CustomerName,
+                        COALESCE(Apartment_Info_TBL.RoomNo, '-') AS RoomNo,
+                        COALESCE(Employee_TBL.FirstName || ' ' || Employee_TBL.LastName, '-') AS EmployeeName,
+                        CASE 
+                            WHEN Access_Card_Manage_TBL.Status = 'Idle' THEN 'ว่าง'
+                            WHEN Access_Card_Manage_TBL.Status = 'Used' THEN 'ใช้งานอยู่'
+                            ELSE '-'
+                        END AS Status  
+                    FROM Access_Card_Manage_TBL
+                    LEFT JOIN Customer_TBL ON Access_Card_Manage_TBL.CustomerID = Customer_TBL.CustomerID
+                    LEFT JOIN Contract_TBL ON Customer_TBL.CustomerID = Contract_TBL.CustomerID
+                    LEFT JOIN Apartment_Info_TBL ON Contract_TBL.RoomID = Apartment_Info_TBL.RoomID
+                    LEFT JOIN Employee_TBL ON Access_Card_Manage_TBL.StaffID = Employee_TBL.EmployeeID
+                    WHERE Access_Card_Manage_TBL.Status = 'Idle'
+                    ORDER BY Access_Card_Manage_TBL.ID;
+                """)
 
-            elif self.filter_var.get() == "Rent rooms":
-                print("HI")
-                # Select only rent rooms
-                # cursor.execute("""
-                #     SELECT Apartment_Info_TBL.RoomID, Apartment_Info_TBL.RoomNo, Apartment_Info_TBL.Building, Apartment_Info_TBL.Floor, Apartment_Info_TBL.RoomType,
-                #     CASE WHEN Contract_TBL.Status = 'Active' THEN Customer_TBL.FirstName || ' ' || Customer_TBL.LastName ELSE '' END AS Rent,
-                #     COALESCE(Contract_TBL.StartDate, ''), COALESCE(Contract_TBL.EndDate, '')
-                #     FROM Apartment_Info_TBL
-                #     LEFT JOIN Contract_TBL ON Apartment_Info_TBL.RoomID = Contract_TBL.RoomID
-                #     LEFT JOIN Customer_TBL ON Contract_TBL.CustomerID = Customer_TBL.CustomerID
-                #     WHERE Contract_TBL.Status = 'Active'
-                #     ORDER BY Apartment_Info_TBL.RoomID
-                # """)
+            elif self.filter_var.get() == "Used keycard":
+                cursor.execute("""
+                    SELECT 
+                        Access_Card_Manage_TBL.ID, 
+                        COALESCE(Access_Card_Manage_TBL.KeycardID, '-') AS KeycardID,
+                        COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName, '-') AS CustomerName,
+                        COALESCE(Apartment_Info_TBL.RoomNo, '-') AS RoomNo,
+                        COALESCE(Employee_TBL.FirstName || ' ' || Employee_TBL.LastName, '-') AS EmployeeName,
+                        CASE 
+                            WHEN Access_Card_Manage_TBL.Status = 'Idle' THEN 'ว่าง'
+                            WHEN Access_Card_Manage_TBL.Status = 'Used' THEN 'ใช้งานอยู่'
+                            ELSE '-'
+                        END AS Status  
+                    FROM Access_Card_Manage_TBL
+                    LEFT JOIN Customer_TBL ON Access_Card_Manage_TBL.CustomerID = Customer_TBL.CustomerID
+                    LEFT JOIN Contract_TBL ON Customer_TBL.CustomerID = Contract_TBL.CustomerID
+                    LEFT JOIN Apartment_Info_TBL ON Contract_TBL.RoomID = Apartment_Info_TBL.RoomID
+                    LEFT JOIN Employee_TBL ON Access_Card_Manage_TBL.StaffID = Employee_TBL.EmployeeID
+                    WHERE Access_Card_Manage_TBL.Status = 'Used'
+                    ORDER BY Access_Card_Manage_TBL.ID;
+                """)
 
-            elif self.filter_var.get() == "Rent rooms order by customer":
-                print("HI")
-                # Select only rent rooms order by customer name
-                # cursor.execute("""
-                #     SELECT Apartment_Info_TBL.RoomID, Apartment_Info_TBL.RoomNo, Apartment_Info_TBL.Building, Apartment_Info_TBL.Floor, Apartment_Info_TBL.RoomType,
-                #     CASE WHEN Contract_TBL.Status = 'Active' THEN Customer_TBL.FirstName || ' ' || Customer_TBL.LastName ELSE '' END AS Rent,
-                #     COALESCE(Contract_TBL.StartDate, ''), COALESCE(Contract_TBL.EndDate, '')
-                #     FROM Apartment_Info_TBL
-                #     LEFT JOIN Contract_TBL ON Apartment_Info_TBL.RoomID = Contract_TBL.RoomID
-                #     LEFT JOIN Customer_TBL ON Contract_TBL.CustomerID = Customer_TBL.CustomerID
-                #     WHERE Contract_TBL.Status = 'Active'
-                #     ORDER BY Customer_TBL.FirstName
-                # """)
+            elif self.filter_var.get() == "Used keycard order by RoomNo":
+                cursor.execute("""
+                    SELECT 
+                        Access_Card_Manage_TBL.ID, 
+                        COALESCE(Access_Card_Manage_TBL.KeycardID, '-') AS KeycardID,
+                        COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName, '-') AS CustomerName,
+                        COALESCE(Apartment_Info_TBL.RoomNo, '-') AS RoomNo,
+                        COALESCE(Employee_TBL.FirstName || ' ' || Employee_TBL.LastName, '-') AS EmployeeName,
+                        CASE 
+                            WHEN Access_Card_Manage_TBL.Status = 'Idle' THEN 'ว่าง'
+                            WHEN Access_Card_Manage_TBL.Status = 'Used' THEN 'ใช้งานอยู่'
+                            ELSE '-'
+                        END AS Status  
+                    FROM Access_Card_Manage_TBL
+                    LEFT JOIN Customer_TBL ON Access_Card_Manage_TBL.CustomerID = Customer_TBL.CustomerID
+                    LEFT JOIN Contract_TBL ON Customer_TBL.CustomerID = Contract_TBL.CustomerID
+                    LEFT JOIN Apartment_Info_TBL ON Contract_TBL.RoomID = Apartment_Info_TBL.RoomID
+                    LEFT JOIN Employee_TBL ON Access_Card_Manage_TBL.StaffID = Employee_TBL.EmployeeID
+                    WHERE Access_Card_Manage_TBL.Status = 'Used' AND Customer_TBL.FirstName IS NOT NULL AND Customer_TBL.LastName IS NOT NULL
+                    ORDER BY Apartment_Info_TBL.RoomNo;
+                """)
 
             else:
-                # Show all rooms
-                print("YES")
+                # Show all KeyCard
                 cursor.execute("""
                     SELECT 
                         Access_Card_Manage_TBL.ID, 
