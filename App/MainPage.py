@@ -31,7 +31,7 @@ class MainPage(tk.Tk):
     def create_main_widgets(self):
         tk.Label(self, text="Main Page", font=("Arial", 18)).pack(pady=20)
         
-        contract_txt    = "ทำสัญญาเช่าห้องพัก"
+        contract_txt    = "ทำสัญญาเช่า/จองห้องพัก"
         parking_txt     = "ที่จอดรถ"
         internet_txt    = "อินเตอร์เน็ต"
         keycard_txt     = "คีย์การ์ด"
@@ -76,7 +76,6 @@ class MainPage(tk.Tk):
     def open_lookup_edit(self):
         if DEBUG == True :
             print("MainPage : open_lookup_edit")
-            
         self.withdraw()
         LookUpAndEditPage(self)
 

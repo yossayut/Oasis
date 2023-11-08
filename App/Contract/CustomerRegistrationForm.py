@@ -163,11 +163,16 @@ class RegistrationForm(tk.Toplevel):
         self.register_end_date_entry.insert(0, default_date)
 
         ########################################################################################################
-        # Create button : submit button
+        # Create button : Contract submit button
         ########################################################################################################
         tk.Button(self, text="สร้างสัญญาเช่า", command=self.submit_form).grid(row=20, column=1, pady=10)
         ########################################################################################################
 
+        ########################################################################################################
+        # Create button : Booking submit button
+        ########################################################################################################
+        tk.Button(self, text="สร้างสัญญาเช่า", command=self.submit_form).grid(row=20, column=2, pady=10)
+        ########################################################################################################
     # 3 : Run
     def open_exist_customer(self):
         self.clear_form()
@@ -408,57 +413,57 @@ class RegistrationForm(tk.Toplevel):
             ##################################################################################################################         
             contract_info = prepare_contract_info(selected_room, first_name, last_name, register_date, register_end_date, employee,
                                                   room_fee, internet, maintenance, parking, remark)
-            print(contract_info)
+            if DEBUG == True :
+                print(contract_info)
 
             #########################################################
             # Fill contract to Database : ContractInformation.py
             # Fill Contract information to Contract_TBL
             #########################################################   
-            if contract_info :
-                RoomID_Input, RoomType_Input, CustomerID_Input, StartDate_Input, EndDate_Input, employeeID_Input, RoomFee_Input, \
-                InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input = contract_info                 # Unpack contract info
+            RoomID_Input, RoomType_Input, CustomerID_Input, StartDate_Input, EndDate_Input, employeeID_Input, RoomFee_Input, \
+            InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input = contract_info                 # Unpack contract info
 
-                if RoomType_Input == 'SmallType':
-                    room_fee = '3,500'
+            if RoomType_Input == 'SmallType':
+                room_fee = '3,500'
 
-                elif RoomType_Input == 'BigType':
-                    room_fee = '4,000'
+            elif RoomType_Input == 'BigType':
+                room_fee = '4,000'
 
-                else :
-                    print('error Room out of scope')
+            else :
+                print('error Room out of scope')
 
-                room_floor    = selected_room[1]
-                room_building = selected_room[0]
+            room_floor    = selected_room[1]
+            room_building = selected_room[0]
 
-                fill_contract_info(RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, employeeID_Input, RoomFee_Input,
-                                   InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input)
+            fill_contract_info(RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, employeeID_Input, RoomFee_Input,
+                               InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input)
 
-                ###############################################################################
-                # Fill contract to contract file (Word) C:\Database\สัญญาเช่าอะพาร์ตเมนต์.docx")
-                ###############################################################################   
-                doc = DocxTemplate(template_contract_path)
-                context = { 'วันที่'            : StartDate_Input ,
-                            'คำนำหน้า'        : prefix,
-                            'ชื่อ'             : first_name,
-                            'นามสกุล'         : last_name,
-                            'บ้านเลขที่'        : address_number,
-                            'บ้านเลขที่ต่อ'      : address_cont,
-                            'ถนน'            : address_road,
-                            'ตำบล'           : address_sub_province,
-                            'อำเภอ'           : address_province,
-                            'จังหวัด'           : address_city,
-                            'เบอร์โทร'         :  phone,
-                            'ติดต่อฉุกเฉิน'      : emergency,
-                            'ห้องพักเลขที่'      : selected_room,
-                            'ชั้นที่'           : room_floor,
-                            'อาคาร'          : room_building,
-                            'ค่าเช่า'          : room_fee,
-                            'วันเริ่มสัญญา'     : register_date,
-                            'วันสิ้นสุดสัญญา'  : register_end_date,
-                            'ผู้กรอกข้อมูล'    : employee
-                        }
-                doc.render(context)
-                doc.save(output_contract_path)
+            ###############################################################################
+            # Fill contract to contract file (Word) C:\Database\สัญญาเช่าอะพาร์ตเมนต์.docx")
+            ###############################################################################   
+            doc = DocxTemplate(template_contract_path)
+            context = { 'วันที่'            : StartDate_Input ,
+                        'คำนำหน้า'        : prefix,
+                        'ชื่อ'             : first_name,
+                        'นามสกุล'         : last_name,
+                        'บ้านเลขที่'        : address_number,
+                        'บ้านเลขที่ต่อ'      : address_cont,
+                        'ถนน'            : address_road,
+                        'ตำบล'           : address_sub_province,
+                        'อำเภอ'           : address_province,
+                        'จังหวัด'           : address_city,
+                        'เบอร์โทร'         :  phone,
+                        'ติดต่อฉุกเฉิน'      : emergency,
+                        'ห้องพักเลขที่'      : selected_room,
+                        'ชั้นที่'           : room_floor,
+                        'อาคาร'          : room_building,
+                        'ค่าเช่า'          : room_fee,
+                        'วันเริ่มสัญญา'     : register_date,
+                        'วันสิ้นสุดสัญญา'  : register_end_date,
+                        'ผู้กรอกข้อมูล'    : employee
+                    }
+            doc.render(context)
+            doc.save(output_contract_path)
 
             self.clear_form()
             self.on_close()
