@@ -6,6 +6,7 @@ from datetime             import datetime
 
 from Config.Config                import *
 from Contract.ShowAvailableRoom   import CheckAvailableRoomPage
+
 # from Parking              import ParkingPage
 # from Requistition         import RequisitionPage
 from KeyCard.Keycard                 import KeycardPage
@@ -18,7 +19,7 @@ from LookupAndEdit.LookupEdit        import LookUpAndEditPage
 # if click each button it will navigate to list of selected window
 #############################################################################################################
 class MainPage(tk.Tk):
-	# 1 : Initial Window
+    # 1 : Initial Window
     def __init__(self):
         super().__init__()
         self.title("Main Page")
@@ -66,7 +67,6 @@ class MainPage(tk.Tk):
     #     InternetPage(self)
 
 
-
     # # 7 : Click open_interested_person from main page   
     def open_interested_person(self):
         self.withdraw()
@@ -74,7 +74,9 @@ class MainPage(tk.Tk):
 
     # # 8 : Click open_lookup_edit from main page   
     def open_lookup_edit(self):
-        print("MainPage : open_lookup_edit")
+        if DEBUG == True :
+            print("MainPage : open_lookup_edit")
+            
         self.withdraw()
         LookUpAndEditPage(self)
 
