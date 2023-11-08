@@ -10,7 +10,7 @@ from Config.Config       import *
 from Contract.CustomerExist       import CustomerExistPage
 
 from Contract.ContractFillPrepare import prepare_contract_info, fill_contract_info
-from GetData.GetEmployeeName     import get_employee_name
+from GetData.GetEmployeeName      import get_employee_name
 
 global new_customer_flag
 
@@ -29,6 +29,7 @@ class RegistrationForm(tk.Toplevel):
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.bind('<Escape>', self.on_escape)
         self.new_customer_flag = True                      # Initialize new customer as True
+        # Establish the database connection
 
     # 2
     def create_widgets(self):
@@ -349,8 +350,8 @@ class RegistrationForm(tk.Toplevel):
             print("last name : " + last_name_employee)
 
         # Store the data in the database
-        conn = sqlite3.connect(Oasis_database_full_path)
-        cursor = conn.cursor()
+        # conn = sqlite3.connect(Oasis_database_full_path)
+        # cursor = conn.cursor()
         if DEBUG == True :
             print("submit_form (new customer ?) : ", self.new_customer_flag)
         
@@ -366,6 +367,9 @@ class RegistrationForm(tk.Toplevel):
                 #print("New customer add to Database")
                 try:
                     # Insert data into the table
+                    conn   = sqlite3.connect(Oasis_database_full_path)
+                    cursor = conn.cursor()
+
                     sql = """
                         INSERT INTO Customer_TBL 
                         (Prefix, FirstName, LastName, NickName, ThaiNationalID, BirthDay, AddressNumber, AddressCont,
@@ -379,11 +383,9 @@ class RegistrationForm(tk.Toplevel):
                         address_sub_province, address_province, address_city, 
                         phone, line_id, job, emergency, register_date)
 
-                    conn.execute(sql, params)
+                    cursor.execute(sql, params)
                     conn.commit()
-                    clear_form()
-                    database.show_all(Oasis_database_full_path,'Customer_TBL')
-                    messagebox.showinfo("Success", "Customer information added successfully.")
+                    self.clear_form()
 
                 except sqlite3.Error as e:
                     messagebox.showerror("Error", f"An error occurred: {e}")
@@ -406,7 +408,7 @@ class RegistrationForm(tk.Toplevel):
             ##################################################################################################################         
             contract_info = prepare_contract_info(selected_room, first_name, last_name, register_date, register_end_date, employee,
                                                   room_fee, internet, maintenance, parking, remark)
-            #print(contract_info)
+            print(contract_info)
 
             #########################################################
             # Fill contract to Database : ContractInformation.py
@@ -466,6 +468,7 @@ class RegistrationForm(tk.Toplevel):
 
     # 7
     def on_close(self):
+
         if DEBUG == True :
             print("onclose", self.new_customer_flag)
 
