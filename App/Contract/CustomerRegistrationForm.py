@@ -165,13 +165,13 @@ class RegistrationForm(tk.Toplevel):
         ########################################################################################################
         # Create button : Contract submit button
         ########################################################################################################
-        tk.Button(self, text="สร้างสัญญาเช่า", command=self.submit_form).grid(row=20, column=1, pady=10)
+        tk.Button(self, text="จองห้อง", command=self.booking_submit_form).grid(row=20, column=1, pady=10)
         ########################################################################################################
 
         ########################################################################################################
         # Create button : Booking submit button
         ########################################################################################################
-        tk.Button(self, text="สร้างสัญญาเช่า", command=self.submit_form).grid(row=20, column=2, pady=10)
+        tk.Button(self, text="สร้างสัญญาเช่า", command=self.contract_submit_form).grid(row=20, column=2, pady=10)
         ########################################################################################################
     # 3 : Run
     def open_exist_customer(self):
@@ -309,7 +309,7 @@ class RegistrationForm(tk.Toplevel):
         self.emergency_entry.config(state=tk.DISABLED)
 
     # 6
-    def submit_form(self):
+    def contract_submit_form(self):
 
         #print("submit_form")
         ####################################################
@@ -471,7 +471,168 @@ class RegistrationForm(tk.Toplevel):
         else: # If employee not selected
             messagebox.showinfo("Warning", "กรุณาเลือกพนักงานก่อน")
 
-    # 7
+    def booking_submit_form(self):
+
+        #print("submit_form")
+        ####################################################
+        # Get information from text box
+        ####################################################
+        selected_room         = self.room
+        prefix                = self.prefix_entry.get()
+        first_name            = self.first_name_entry.get()
+        last_name             = self.last_name_entry.get()
+        nick_name             = self.nick_name_entry.get()
+        thai_national_id      = self.national_ID_entry.get()
+        birth_day             = self.birthday_entry.get()
+        address_number        = self.address_entry.get()
+        address_cont          = self.address_cont_entry.get()
+        address_road          = self.address_road_entry.get()
+        address_sub_province  = self.address_sub_province_entry.get()
+        address_province      = self.address_province_entry.get()
+        address_city          = self.address_city_entry.get()
+        phone                 = self.phone_entry.get()
+        line_id               = self.lineID_entry.get()
+        job                   = self.job_entry.get()
+        emergency             = self.emergency_entry.get()
+        register_date         = self.register_date_entry.get()
+        register_end_date     = self.register_end_date_entry.get()
+
+        ####################################################
+        # Get information from text box : Column2
+        ####################################################       
+        employee              = self.selected_employee.get()
+        room_fee              = self.room_fee_entry.get()  
+        internet              = self.internet_fee_entry.get()
+        maintenance           = self.maintenance_fee_entry.get()
+        parking               = self.parking_fee_entry.get()
+        remark                = self.remark_entry.get()
+
+        if DEBUG == True :
+            print("employee : " + employee)
+            name_parts = employee.strip("()").split(", ")
+            # Extract the individual names
+            first_name_employee = name_parts[0]
+            last_name_employee = name_parts[1]
+            print("first name : " + first_name_employee)
+            print("last name : " + last_name_employee)
+
+        # Store the data in the database
+        # conn = sqlite3.connect(Oasis_database_full_path)
+        # cursor = conn.cursor()
+        if DEBUG == True :
+            print("submit_form (new customer ?) : ", self.new_customer_flag)
+        
+        #########################################################
+        # If employee not selected
+        #########################################################       
+        if employee != "กรุณาเลือกพนักงาน" :
+
+            #########################################################
+            # new customer, add customer information to database
+            #########################################################
+            if self.new_customer_flag:
+                #print("New customer add to Database")
+                try:
+                    # Insert data into the table
+                    conn   = sqlite3.connect(Oasis_database_full_path)
+                    cursor = conn.cursor()
+
+                    sql = """
+                        INSERT INTO Customer_TBL 
+                        (Prefix, FirstName, LastName, NickName, ThaiNationalID, BirthDay, AddressNumber, AddressCont,
+                        AddressRoad, AddressSubProvince, AddressProvince, AddressCity, Phone, LineID, Job, ReferencePerson, RegisterDate)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """
+                    
+                    # Parameters for the query
+                    params = (prefix, first_name, last_name, nick_name, thai_national_id, 
+                        birth_day, address_number, address_cont, address_road, 
+                        address_sub_province, address_province, address_city, 
+                        phone, line_id, job, emergency, register_date)
+
+                    cursor.execute(sql, params)
+                    conn.commit()
+                    self.clear_form()
+
+                except sqlite3.Error as e:
+                    messagebox.showerror("Error", f"An error occurred: {e}")
+
+                finally:
+                    # Close the database connection
+                    if conn:
+                        conn.close()
+
+            else:  # Old customer
+                messagebox.showinfo("ลูกค้าเก่า", "ลูกค้าเก่า")
+
+            ##################################################################################################################
+            # Get contract information : ContractInformation.py
+            # Prepare all information before fill contract database 
+            # ex. 
+            #     room information      from Apartment_Info_TBL
+            #     customer information  from Customer_TBL
+            #     employee name         from Employee_TBL
+            ##################################################################################################################         
+            contract_info = prepare_contract_info(selected_room, first_name, last_name, register_date, register_end_date, employee,
+                                                  room_fee, internet, maintenance, parking, remark)
+            if DEBUG == True :
+                print(contract_info)
+
+            #########################################################
+            # Fill contract to Database : ContractInformation.py
+            # Fill Contract information to Contract_TBL
+            #########################################################   
+            RoomID_Input, RoomType_Input, CustomerID_Input, StartDate_Input, EndDate_Input, employeeID_Input, RoomFee_Input, \
+            InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input = contract_info                 # Unpack contract info
+
+            if RoomType_Input == 'SmallType':
+                room_fee = '3,500'
+
+            elif RoomType_Input == 'BigType':
+                room_fee = '4,000'
+
+            else :
+                print('error Room out of scope')
+
+            room_floor    = selected_room[1]
+            room_building = selected_room[0]
+
+            fill_contract_info(RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, employeeID_Input, RoomFee_Input,
+                               InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input)
+
+            ###############################################################################
+            # Fill contract to contract file (Word) C:\Database\สัญญาเช่าอะพาร์ตเมนต์.docx")
+            ###############################################################################   
+            doc = DocxTemplate(template_contract_path)
+            context = { 'วันที่'            : StartDate_Input ,
+                        'คำนำหน้า'        : prefix,
+                        'ชื่อ'             : first_name,
+                        'นามสกุล'         : last_name,
+                        'บ้านเลขที่'        : address_number,
+                        'บ้านเลขที่ต่อ'      : address_cont,
+                        'ถนน'            : address_road,
+                        'ตำบล'           : address_sub_province,
+                        'อำเภอ'           : address_province,
+                        'จังหวัด'           : address_city,
+                        'เบอร์โทร'         :  phone,
+                        'ติดต่อฉุกเฉิน'      : emergency,
+                        'ห้องพักเลขที่'      : selected_room,
+                        'ชั้นที่'           : room_floor,
+                        'อาคาร'          : room_building,
+                        'ค่าเช่า'          : room_fee,
+                        'วันเริ่มสัญญา'     : register_date,
+                        'วันสิ้นสุดสัญญา'  : register_end_date,
+                        'ผู้กรอกข้อมูล'    : employee
+                    }
+            doc.render(context)
+            doc.save(output_contract_path)
+
+            self.clear_form()
+            self.on_close()
+
+        else: # If employee not selected
+            messagebox.showinfo("Warning", "กรุณาเลือกพนักงานก่อน")
+
     def on_close(self):
 
         if DEBUG == True :
