@@ -44,13 +44,12 @@ class CheckAvailableRoomPage(tk.Toplevel):
         try:
             # Select available rooms from the table where there is no active contract for the room
             cursor.execute( """
-                                SELECT    Apartment_Info_TBL.RoomNo
-                                FROM      Apartment_Info_TBL
-                                LEFT JOIN Contract_TBL
-                                ON        Apartment_Info_TBL.RoomID = Contract_TBL.RoomID
-                                WHERE     Contract_TBL.Status IS NULL     OR  
-                                          Contract_TBL.Status = 'Expired' OR
-                                          Contract_TBL.Status = 'Quit';
+                                SELECT Apartment_Info_TBL.RoomNo
+                                FROM Apartment_Info_TBL
+                                WHERE Apartment_Info_TBL.RoomID NOT IN (
+                                    SELECT Contract_TBL.RoomID
+                                    FROM Contract_TBL
+                                    WHERE Contract_TBL.Status = 'Active')
                             """)
             rows = cursor.fetchall()
 
