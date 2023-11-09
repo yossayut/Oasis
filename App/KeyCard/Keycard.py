@@ -99,8 +99,7 @@ class KeycardPage(tk.Toplevel):
             #   employee Withdraw                                                                    #
             ##########################################################################################
             if self.transaction_type.get() == "withdraw" and self.customer_employee.get() == "employee" :
-                if DEBUG == True :
-                    print("พนักงานเบิก access card")  
+                print("พนักงานเบิก access card")  
                 customer_employee_radio     = self.customer_employee.get()
                 employee_name               = self.selected_employee.get()
                 employee_name_parts         = employee_name.strip("()").replace("'", "").split(", ")
@@ -124,9 +123,8 @@ class KeycardPage(tk.Toplevel):
             ##########################################################################################
             #   customer Withdraw                                                                    #
             ##########################################################################################
-            elif self.transaction_type.get() == "withdraw" and self.customer_employee.get() == "customer" :
-                if DEBUG == True :
-                    print("ลูกค้าเบิก access card")  
+            elif self.transaction_type.get() == "withdraw" and self.customer_employee.get() == "customer" :  
+                print("ลูกค้าเบิก access card")  
                 customer_employee_radio     = self.customer_employee.get()
                 customer_name               = self.selected_customer.get()
                 customer_name_parts         = customer_name.strip("()").replace("'", "").split(", ")
@@ -150,8 +148,7 @@ class KeycardPage(tk.Toplevel):
             #   employee or customer deposite                                                        #
             ##########################################################################################
             elif self.transaction_type.get() == "deposite" :
-                if DEBUG == True :
-                    print("คืน access card")  
+                print("คืน access card")  
 
                 cursor.execute("""
                     UPDATE Access_Card_Manage_TBL

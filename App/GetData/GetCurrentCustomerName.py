@@ -8,7 +8,7 @@ from tkinter        import messagebox
 ####################################################
 def get_current_customer_name() :
     try:
-        conn = sqlite3.connect(Oasis_database_full_path)  
+        conn   = sqlite3.connect(Oasis_database_full_path)  
         cursor = conn.cursor()
 
         cursor.execute("""
