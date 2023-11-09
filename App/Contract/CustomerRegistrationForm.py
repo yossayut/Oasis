@@ -7,10 +7,11 @@ from docxtpl  import DocxTemplate
 
 from Config.Config       import *
 
-from Contract.CustomerExist       import CustomerExistPage
-
-from Contract.ContractFillPrepare import prepare_contract_info, fill_contract_info
-from GetData.GetEmployeeName      import get_employee_name
+from Contract.CustomerExist                import CustomerExistPage
+from Contract.FillCustomerDatabase         import fill_customer_database
+from Contract.ContractFillPrepare          import prepare_contract_info, fill_contract_info
+from Contract.GetCustomerInfoSubmitForm    import get_customer_info_submit_form
+from GetData.GetEmployeeName               import get_employee_name
 
 global new_customer_flag
 
@@ -163,16 +164,17 @@ class RegistrationForm(tk.Toplevel):
         self.register_end_date_entry.insert(0, default_date)
 
         ########################################################################################################
-        # Create button : Contract submit button
+        # Create button : Booking submit button
         ########################################################################################################
-        tk.Button(self, text="จองห้อง", command=self.booking_submit_form).grid(row=20, column=1, pady=10)
+        tk.Button(self, text="ทำสัญญาเช่า", command=self.contract_submit_form).grid(row=20, column=1, pady=10)
         ########################################################################################################
 
         ########################################################################################################
-        # Create button : Booking submit button
+        # Create button : Contract submit button
         ########################################################################################################
-        tk.Button(self, text="สร้างสัญญาเช่า", command=self.contract_submit_form).grid(row=20, column=2, pady=10)
+        tk.Button(self, text="จองห้อง", command=self.booking_submit_form).grid(row=20, column=2, pady=10)
         ########################################################################################################
+
     # 3 : Run
     def open_exist_customer(self):
         self.clear_form()
@@ -310,97 +312,25 @@ class RegistrationForm(tk.Toplevel):
 
     # 6
     def contract_submit_form(self):
+        data = get_customer_info_submit_form(self) 
+        print(data)
+        selected_room, prefix, first_name, last_name, nick_name, thai_national_id, birth_day, address_number, address_cont, address_road, address_sub_province, address_province, address_city, phone, line_id, job, emergency, register_date, register_end_date, employee, room_fee, internet, maintenance, parking, remark = data
 
-        #print("submit_form")
-        ####################################################
-        # Get information from text box
-        ####################################################
-        selected_room         = self.room
-        prefix                = self.prefix_entry.get()
-        first_name            = self.first_name_entry.get()
-        last_name             = self.last_name_entry.get()
-        nick_name             = self.nick_name_entry.get()
-        thai_national_id      = self.national_ID_entry.get()
-        birth_day             = self.birthday_entry.get()
-        address_number        = self.address_entry.get()
-        address_cont          = self.address_cont_entry.get()
-        address_road          = self.address_road_entry.get()
-        address_sub_province  = self.address_sub_province_entry.get()
-        address_province      = self.address_province_entry.get()
-        address_city          = self.address_city_entry.get()
-        phone                 = self.phone_entry.get()
-        line_id               = self.lineID_entry.get()
-        job                   = self.job_entry.get()
-        emergency             = self.emergency_entry.get()
-        register_date         = self.register_date_entry.get()
-        register_end_date     = self.register_end_date_entry.get()
-
-        ####################################################
-        # Get information from text box : Column2
-        ####################################################       
-        employee              = self.selected_employee.get()
-        room_fee              = self.room_fee_entry.get()  
-        internet              = self.internet_fee_entry.get()
-        maintenance           = self.maintenance_fee_entry.get()
-        parking               = self.parking_fee_entry.get()
-        remark                = self.remark_entry.get()
-
-        if DEBUG == True :
-            print("employee : " + employee)
-            name_parts = employee.strip("()").split(", ")
-            # Extract the individual names
-            first_name_employee = name_parts[0]
-            last_name_employee = name_parts[1]
-            print("first name : " + first_name_employee)
-            print("last name : " + last_name_employee)
-
-        # Store the data in the database
-        # conn = sqlite3.connect(Oasis_database_full_path)
-        # cursor = conn.cursor()
-        if DEBUG == True :
-            print("submit_form (new customer ?) : ", self.new_customer_flag)
-        
-        #########################################################
-        # If employee not selected
-        #########################################################       
-        if employee != "กรุณาเลือกพนักงาน" :
-
-            #########################################################
-            # new customer, add customer information to database
-            #########################################################
+        if employee != "กรุณาเลือกพนักงาน":
             if self.new_customer_flag:
-                #print("New customer add to Database")
-                try:
-                    # Insert data into the table
-                    conn   = sqlite3.connect(Oasis_database_full_path)
-                    cursor = conn.cursor()
-
-                    sql = """
-                        INSERT INTO Customer_TBL 
-                        (Prefix, FirstName, LastName, NickName, ThaiNationalID, BirthDay, AddressNumber, AddressCont,
-                        AddressRoad, AddressSubProvince, AddressProvince, AddressCity, Phone, LineID, Job, ReferencePerson, RegisterDate)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    """
-                    
-                    # Parameters for the query
-                    params = (prefix, first_name, last_name, nick_name, thai_national_id, 
-                        birth_day, address_number, address_cont, address_road, 
-                        address_sub_province, address_province, address_city, 
-                        phone, line_id, job, emergency, register_date)
-
-                    cursor.execute(sql, params)
-                    conn.commit()
+                ##################################################################################################################
+                # Get contract information : ContractInformation.py
+                # Prepare all information before fill contract database 
+                # ex. 
+                #     room information      from Apartment_Info_TBL
+                #     customer information  from Customer_TBL
+                #     employee name         from Employee_TBL
+                ##################################################################################################################  
+                inserted = fill_customer_database(prefix, first_name, last_name, nick_name, thai_national_id, birth_day, address_number, address_cont, address_road, address_sub_province, address_province, address_city, phone, line_id, job, emergency, register_date)
+               
+                if inserted:
                     self.clear_form()
-
-                except sqlite3.Error as e:
-                    messagebox.showerror("Error", f"An error occurred: {e}")
-
-                finally:
-                    # Close the database connection
-                    if conn:
-                        conn.close()
-
-            else:  # Old customer
+            else:
                 messagebox.showinfo("ลูกค้าเก่า", "ลูกค้าเก่า")
 
             ##################################################################################################################
@@ -435,6 +365,14 @@ class RegistrationForm(tk.Toplevel):
             room_floor    = selected_room[1]
             room_building = selected_room[0]
 
+            ##################################################################################################################
+            # Get contract information : ContractInformation.py
+            # Prepare all information before fill contract database 
+            # ex. 
+            #     room information      from Apartment_Info_TBL
+            #     customer information  from Customer_TBL
+            #     employee name         from Employee_TBL
+            ################################################################################################################## 
             fill_contract_info(RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, employeeID_Input, RoomFee_Input,
                                InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input)
 
@@ -472,59 +410,13 @@ class RegistrationForm(tk.Toplevel):
             messagebox.showinfo("Warning", "กรุณาเลือกพนักงานก่อน")
 
     def booking_submit_form(self):
-
-        #print("submit_form")
-        ####################################################
-        # Get information from text box
-        ####################################################
-        selected_room         = self.room
-        prefix                = self.prefix_entry.get()
-        first_name            = self.first_name_entry.get()
-        last_name             = self.last_name_entry.get()
-        nick_name             = self.nick_name_entry.get()
-        thai_national_id      = self.national_ID_entry.get()
-        birth_day             = self.birthday_entry.get()
-        address_number        = self.address_entry.get()
-        address_cont          = self.address_cont_entry.get()
-        address_road          = self.address_road_entry.get()
-        address_sub_province  = self.address_sub_province_entry.get()
-        address_province      = self.address_province_entry.get()
-        address_city          = self.address_city_entry.get()
-        phone                 = self.phone_entry.get()
-        line_id               = self.lineID_entry.get()
-        job                   = self.job_entry.get()
-        emergency             = self.emergency_entry.get()
-        register_date         = self.register_date_entry.get()
-        register_end_date     = self.register_end_date_entry.get()
-
-        ####################################################
-        # Get information from text box : Column2
-        ####################################################       
-        employee              = self.selected_employee.get()
-        room_fee              = self.room_fee_entry.get()  
-        internet              = self.internet_fee_entry.get()
-        maintenance           = self.maintenance_fee_entry.get()
-        parking               = self.parking_fee_entry.get()
-        remark                = self.remark_entry.get()
+        data = get_customer_info_submit_form(self) 
 
         if DEBUG == True :
-            print("employee : " + employee)
-            name_parts = employee.strip("()").split(", ")
-            # Extract the individual names
-            first_name_employee = name_parts[0]
-            last_name_employee = name_parts[1]
-            print("first name : " + first_name_employee)
-            print("last name : " + last_name_employee)
+            print(data)
+            
+        selected_room, prefix, first_name, last_name, nick_name, thai_national_id, birth_day, address_number, address_cont, address_road, address_sub_province, address_province, address_city, phone, line_id, job, emergency, register_date, register_end_date, employee, room_fee, internet, maintenance, parking, remark = data
 
-        # Store the data in the database
-        # conn = sqlite3.connect(Oasis_database_full_path)
-        # cursor = conn.cursor()
-        if DEBUG == True :
-            print("submit_form (new customer ?) : ", self.new_customer_flag)
-        
-        #########################################################
-        # If employee not selected
-        #########################################################       
         if employee != "กรุณาเลือกพนักงาน" :
 
             #########################################################
