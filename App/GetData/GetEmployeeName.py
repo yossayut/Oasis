@@ -15,7 +15,12 @@ def get_employee_name() :
         if DEBUG == True :
              for item in employee_names:
                  print(item)
-        
+
+        if not employee_names:
+            return "ยังไม่มีพนักงาน"
+        else:
+            return employee_names
+
         return employee_names
 
     except sqlite3.Error as e:

@@ -21,6 +21,11 @@ def get_current_customer_name() :
 
         current_customer_names = cursor.fetchall()
 
+        if not current_customer_names:
+            return ["ยังไม่มีลูกค้า กรุณาทำสัญญาก่อนเบิกบัตร"]
+        else:
+            return current_customer_names
+
        # if DEBUG == True :
         #    for item in current_customer_names:
          #       print(item)
