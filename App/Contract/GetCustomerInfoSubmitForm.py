@@ -39,15 +39,6 @@ def get_customer_info_submit_form(self) :
     maintenance           = self.maintenance_fee_entry.get()
     parking               = self.parking_fee_entry.get()
     remark                = self.remark_entry.get()
-   
-    if DEBUG == True :
-        print("employee : " + employee)
-        name_parts = employee.strip("()").split(", ")
-        # Extract the individual names
-        first_name_employee = name_parts[0]
-        last_name_employee = name_parts[1]
-        print("first name : " + first_name_employee)
-        print("last name : " + last_name_employee)
 
     return selected_room,     \
            prefix,            \

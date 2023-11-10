@@ -315,7 +315,9 @@ class RegistrationForm(tk.Toplevel):
         data = get_customer_info_submit_form(self) 
         print(data)
 
-        selected_room, prefix, first_name, last_name, nick_name, thai_national_id, birth_day, address_number, address_cont, address_road, address_sub_province, address_province, address_city, phone, line_id, job, emergency, register_date, register_end_date, employee, room_fee, internet, maintenance, parking, remark = data
+        selected_room, prefix, first_name, last_name, nick_name, thai_national_id, birth_day, address_number, address_cont, \
+        address_road, address_sub_province, address_province, address_city, phone, line_id, job, emergency, register_date,  \
+        register_end_date, employee, room_fee, internet, maintenance, parking, remark = data
 
         if employee != "กรุณาเลือกพนักงาน":
             if self.new_customer_flag:
@@ -327,7 +329,9 @@ class RegistrationForm(tk.Toplevel):
                 #     customer information  from Customer_TBL
                 #     employee name         from Employee_TBL
                 ##################################################################################################################  
-                inserted = fill_customer_database(prefix, first_name, last_name, nick_name, thai_national_id, birth_day, address_number, address_cont, address_road, address_sub_province, address_province, address_city, phone, line_id, job, emergency, register_date)
+                inserted = fill_customer_database(prefix, first_name, last_name, nick_name, thai_national_id, birth_day, 
+                    address_number, address_cont, address_road, address_sub_province, address_province, address_city, phone, 
+                    line_id, job, emergency, register_date)
                
                 if inserted:
                     self.clear_form()
@@ -344,7 +348,15 @@ class RegistrationForm(tk.Toplevel):
             ##################################################################################################################         
             contract_info = prepare_contract_info(selected_room, first_name, last_name, register_date, register_end_date, employee,
                                                   remark)
+
+            names = employee.strip("()").split(", ")
+
+            first_name = names[0].strip("'")  # Extract the first name
+            last_name = names[1].strip("'")   # Extract the second name
+            employee_name = first_name + ' ' + last_name
+
             if DEBUG == True :
+                print(employee_name)
                 print(contract_info)
 
             #########################################################
@@ -390,7 +402,8 @@ class RegistrationForm(tk.Toplevel):
                         'ค่าเช่า'          : room_fee,
                         'วันเริ่มสัญญา'     : register_date,
                         'วันสิ้นสุดสัญญา'  : register_end_date,
-                        'ผู้กรอกข้อมูล'    : employee
+                        'ผู้กรอกข้อมูล'    : employee_name,
+                        'ไลน์id'        : line_id
                     }
             doc.render(context)
             doc.save(output_contract_path)
