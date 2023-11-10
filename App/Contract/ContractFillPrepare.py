@@ -7,7 +7,7 @@ from GetData.GetEmployeeID import get_employee_id
 ####################################################
 # Get information from Database
 ####################################################
-def prepare_contract_info(selected_room, first_name, last_name, register_date, register_end_date, employee, room_fee, internet, maintenance, parking, remark):
+def prepare_contract_info(selected_room, first_name, last_name, register_date, register_end_date, employee, remark):
     try:
         conn   = sqlite3.connect(Oasis_database_full_path)
         cursor = conn.cursor()
@@ -32,10 +32,20 @@ def prepare_contract_info(selected_room, first_name, last_name, register_date, r
 
         EmployeeID_Input     = get_employee_id(name_parts[0],name_parts[1])
 
-        RoomFee_Input        = room_fee  
-        InternetFee_Input    = internet    
-        MaintenanceFee_Input = maintenance
-        ParkingFee_Input     = parking
+        if RoomType_Input == 'SmallType':
+            room_fee = 3500
+
+        elif RoomType_Input == 'BigType':
+            room_fee = 4000
+
+        else :
+            print('error Room out of scope')
+
+
+        RoomFee_Input        = room_fee
+        InternetFee_Input    = 0    
+        MaintenanceFee_Input = 0
+        ParkingFee_Input     = 0
         Remark_Input         = remark
         Status_Input         = "Active"
 

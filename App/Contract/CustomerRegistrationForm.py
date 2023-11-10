@@ -164,15 +164,15 @@ class RegistrationForm(tk.Toplevel):
         self.register_end_date_entry.insert(0, default_date)
 
         ########################################################################################################
-        # Create button : Booking submit button
+        # Create button : Contract submit button
         ########################################################################################################
         tk.Button(self, text="ทำสัญญาเช่า", command=self.contract_submit_form).grid(row=20, column=1, pady=10)
         ########################################################################################################
 
         ########################################################################################################
-        # Create button : Contract submit button
+        # Create button : Booking submit button
         ########################################################################################################
-        tk.Button(self, text="จองห้อง", command=self.booking_submit_form).grid(row=20, column=2, pady=10)
+        #tk.Button(self, text="จองห้อง", command=self.booking_submit_form).grid(row=20, column=2, pady=10)
         ########################################################################################################
 
     # 3 : Run
@@ -314,6 +314,7 @@ class RegistrationForm(tk.Toplevel):
     def contract_submit_form(self):
         data = get_customer_info_submit_form(self) 
         print(data)
+
         selected_room, prefix, first_name, last_name, nick_name, thai_national_id, birth_day, address_number, address_cont, address_road, address_sub_province, address_province, address_city, phone, line_id, job, emergency, register_date, register_end_date, employee, room_fee, internet, maintenance, parking, remark = data
 
         if employee != "กรุณาเลือกพนักงาน":
@@ -342,7 +343,7 @@ class RegistrationForm(tk.Toplevel):
             #     employee name         from Employee_TBL
             ##################################################################################################################         
             contract_info = prepare_contract_info(selected_room, first_name, last_name, register_date, register_end_date, employee,
-                                                  room_fee, internet, maintenance, parking, remark)
+                                                  remark)
             if DEBUG == True :
                 print(contract_info)
 
@@ -352,15 +353,6 @@ class RegistrationForm(tk.Toplevel):
             #########################################################   
             RoomID_Input, RoomType_Input, CustomerID_Input, StartDate_Input, EndDate_Input, employeeID_Input, RoomFee_Input, \
             InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input = contract_info                 # Unpack contract info
-
-            if RoomType_Input == 'SmallType':
-                room_fee = '3,500'
-
-            elif RoomType_Input == 'BigType':
-                room_fee = '4,000'
-
-            else :
-                print('error Room out of scope')
 
             room_floor    = selected_room[1]
             room_building = selected_room[0]
