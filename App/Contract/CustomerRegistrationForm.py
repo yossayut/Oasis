@@ -379,7 +379,14 @@ class RegistrationForm(tk.Toplevel):
             ################################################################################################################## 
             fill_contract_info(RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, employeeID_Input, RoomFee_Input,
                                InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input)
+            
+            if DEBUG == True :
+                print("RoomFee_Input", RoomFee_Input)
 
+            room_fee_add_fur = RoomFee_Input+500
+
+            if DEBUG == True :
+                print("room_fee_add_fur", room_fee_add_fur)
             ###############################################################################
             # Fill contract to contract file (Word) C:\Database\สัญญาเช่าอะพาร์ตเมนต์.docx")
             ###############################################################################   
@@ -399,7 +406,8 @@ class RegistrationForm(tk.Toplevel):
                         'ห้องพักเลขที่'      : selected_room,
                         'ชั้นที่'           : room_floor,
                         'อาคาร'          : room_building,
-                        'ค่าเช่า'          : room_fee,
+                        'ค่าเช่า'          : RoomFee_Input,
+                        'ค่าเช่ารวมเฟอร์'    : room_fee_add_fur,
                         'วันเริ่มสัญญา'     : register_date,
                         'วันสิ้นสุดสัญญา'  : register_end_date,
                         'ผู้กรอกข้อมูล'    : employee_name,
