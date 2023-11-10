@@ -78,7 +78,7 @@ class Show_keycard_Page(tk.Toplevel):
             if self.filter_var.get() == "Free keycard":
                 cursor.execute("""
                     SELECT 
-                        Access_Card_Manage_TBL.ID, 
+                        COALESCE(Access_Card_Manage_TBL.CardNo, '-') AS CardNumber,
                         COALESCE(Access_Card_Manage_TBL.KeycardID, '-') AS KeycardID,
                         COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName, '-') AS CustomerName,
                         COALESCE(Apartment_Info_TBL.RoomNo, '-') AS RoomNo,
@@ -94,13 +94,13 @@ class Show_keycard_Page(tk.Toplevel):
                     LEFT JOIN Apartment_Info_TBL ON Contract_TBL.RoomID = Apartment_Info_TBL.RoomID
                     LEFT JOIN Employee_TBL ON Access_Card_Manage_TBL.StaffID = Employee_TBL.EmployeeID
                     WHERE Access_Card_Manage_TBL.Status = 'Idle'
-                    ORDER BY Access_Card_Manage_TBL.ID;
+                    ORDER BY Access_Card_Manage_TBL.CardNo;
                 """)
 
             elif self.filter_var.get() == "Used keycard":
                 cursor.execute("""
                     SELECT 
-                        Access_Card_Manage_TBL.ID, 
+                        COALESCE(Access_Card_Manage_TBL.CardNo, '-') AS CardNumber,
                         COALESCE(Access_Card_Manage_TBL.KeycardID, '-') AS KeycardID,
                         COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName, '-') AS CustomerName,
                         COALESCE(Apartment_Info_TBL.RoomNo, '-') AS RoomNo,
@@ -116,13 +116,13 @@ class Show_keycard_Page(tk.Toplevel):
                     LEFT JOIN Apartment_Info_TBL ON Contract_TBL.RoomID = Apartment_Info_TBL.RoomID
                     LEFT JOIN Employee_TBL ON Access_Card_Manage_TBL.StaffID = Employee_TBL.EmployeeID
                     WHERE Access_Card_Manage_TBL.Status = 'Used'
-                    ORDER BY Access_Card_Manage_TBL.ID;
+                    ORDER BY Access_Card_Manage_TBL.CardNo;
                 """)
 
             elif self.filter_var.get() == "Used keycard order by RoomNo":
                 cursor.execute("""
                     SELECT 
-                        Access_Card_Manage_TBL.ID, 
+                        COALESCE(Access_Card_Manage_TBL.CardNo, '-') AS CardNumber,
                         COALESCE(Access_Card_Manage_TBL.KeycardID, '-') AS KeycardID,
                         COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName, '-') AS CustomerName,
                         COALESCE(Apartment_Info_TBL.RoomNo, '-') AS RoomNo,
@@ -145,7 +145,7 @@ class Show_keycard_Page(tk.Toplevel):
                 # Show all KeyCard
                 cursor.execute("""
                     SELECT 
-                        Access_Card_Manage_TBL.ID, 
+                        COALESCE(Access_Card_Manage_TBL.CardNo, '-') AS CardNumber,
                         COALESCE(Access_Card_Manage_TBL.KeycardID, '-') AS KeycardID,
                         COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName, '-') AS CustomerName,
                         COALESCE(Apartment_Info_TBL.RoomNo, '-') AS RoomNo,
@@ -160,7 +160,7 @@ class Show_keycard_Page(tk.Toplevel):
                     LEFT JOIN Contract_TBL ON Customer_TBL.CustomerID = Contract_TBL.CustomerID
                     LEFT JOIN Apartment_Info_TBL ON Contract_TBL.RoomID = Apartment_Info_TBL.RoomID
                     LEFT JOIN Employee_TBL ON Access_Card_Manage_TBL.StaffID = Employee_TBL.EmployeeID
-                    ORDER BY Access_Card_Manage_TBL.ID;
+                    ORDER BY Access_Card_Manage_TBL.CardNo;
                 """)
 
             rows = cursor.fetchall()
