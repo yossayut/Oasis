@@ -152,15 +152,22 @@ class RegistrationForm(tk.Toplevel):
         tk.Label(self, text="เริ่มต้นสัญญาวันที่   :  ").grid(row=18, column=0)
         self.register_date_entry = tk.Entry(self)
         self.register_date_entry.grid(row=18, column=1)
-        today = datetime.today().strftime('%Y-%m-%d')   # Set default value for register date to today 
-        self.register_date_entry.insert(0, today)
+       # today = datetime.today().strftime('%Y-%m-%d')   # Set default value for register date to today 
+       # self.register_date_entry.insert(0, today)
+        today = datetime.today()
+        buddha_year = today.year + 543
+
+        # Format the date as a string with Buddhist year
+        formatted_date = today.strftime('%d/%m') + f'/{buddha_year}'
+        self.register_date_entry.insert(0, formatted_date)
+
 
         tk.Label(self, text=" สิ้นสุดสัญญาวันที่   :  ").grid(row=19, column=0)
         self.register_end_date_entry = tk.Entry(self)
         self.register_end_date_entry.grid(row=19, column=1)
-        today = datetime.today()
+        
         six_months_from_now = today + timedelta(days=6*30)
-        default_date  = six_months_from_now.strftime('%Y-%m-%d')   # Set default value for register date to today 
+        default_date  = six_months_from_now.strftime('%d/%m') + f'/{buddha_year}'  # Set default value for register date to today 
         self.register_end_date_entry.insert(0, default_date)
 
         ########################################################################################################
