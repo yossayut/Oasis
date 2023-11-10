@@ -145,7 +145,7 @@ class RegistrationForm(tk.Toplevel):
         self.job_entry = tk.Entry(self)
         self.job_entry.grid(row=16, column=1)
 
-        tk.Label(self, text="ติดต่อฉุกเฉิน   :  ").grid(row=17, column=0)                           # 
+        tk.Label(self, text="ติดต่อฉุกเฉิน (ชื่อ เบอร์โทร ความสัมพันธ์) :  ").grid(row=17, column=0)                           # 
         self.emergency_entry = tk.Entry(self)
         self.emergency_entry.grid(row=17, column=1)
 
