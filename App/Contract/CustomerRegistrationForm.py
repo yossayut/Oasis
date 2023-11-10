@@ -4,6 +4,7 @@ import sqlite3
 from tkinter  import messagebox, simpledialog
 from datetime import datetime, timedelta
 from docxtpl  import DocxTemplate
+from docx     import Document
 
 from Config.Config       import *
 
@@ -215,7 +216,6 @@ class RegistrationForm(tk.Toplevel):
         self.job_entry.config(state=tk.NORMAL)
         self.emergency_entry.config(state=tk.NORMAL)
         self.register_date_entry.config(state=tk.NORMAL)
-        self.register_date_entry.insert(0, datetime.today().strftime('%Y-%m-%d'))
 
         # Clear other fields as needed
         self.prefix_entry.delete(0, tk.END)
@@ -235,15 +235,17 @@ class RegistrationForm(tk.Toplevel):
         self.job_entry.delete(0, tk.END)
         self.emergency_entry.delete(0, tk.END)
         self.register_date_entry.delete(0, tk.END)
-        self.register_date_entry.insert(0, datetime.today().strftime('%Y-%m-%d'))
+        self.register_end_date_entry.delete(0, tk.END)
 
         today = datetime.today()
-        six_months_from_now = today + timedelta(days=6*30)
-        default_date = six_months_from_now.strftime('%Y-%m-%d')
-        self.register_end_date_entry.delete(0, tk.END)
-        self.register_end_date_entry.insert(0, default_date)
+        buddha_year = today.year + 543
 
-        # 8           
+        formatted_date = today.strftime('%d/%m') + f'/{buddha_year}'
+        self.register_date_entry.insert(0, formatted_date)
+
+        six_months_from_now = today + timedelta(days=6*30)
+        default_date  = six_months_from_now.strftime('%d/%m') + f'/{buddha_year}'  # Set default value for register date to today 
+        self.register_end_date_entry.insert(0, default_date)
 
     # 5
     def fill_customer_exist_info(self, customer_info):
@@ -422,6 +424,8 @@ class RegistrationForm(tk.Toplevel):
                     }
             doc.render(context)
             doc.save(output_contract_path)
+
+            Document(output_contract_path)
 
             self.clear_form()
             self.on_close()
