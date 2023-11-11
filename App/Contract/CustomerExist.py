@@ -120,7 +120,8 @@ class CustomerExistPage(tk.Toplevel):
             #    print(customer_info)
 
             if customer_info:
-                print("select_Exist_customer : CustomerExist.py")
+                if DEBUG == True :
+                    print("select_Exist_customer : CustomerExist.py")
                 self.master.fill_customer_exist_info(customer_info)  # Fill the entry fields in the registration form
                 self.destroy()
             else:
