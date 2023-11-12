@@ -333,7 +333,24 @@ class RegistrationForm(tk.Toplevel):
         register_end_date, employee, room_fee, internet, maintenance, parking, remark = data
   
         if employee != "กรุณาเลือกพนักงาน":
-            if self.new_customer_flag:
+            if first_name != "" or last_name != "" or thai_national_id != "" :
+                if self.new_customer_flag:
+                    ##################################################################################################################
+                    # Get contract information : ContractInformation.py
+                    # Prepare all information before fill contract database 
+                    # ex. 
+                    #     room information      from Apartment_Info_TBL
+                    #     customer information  from Customer_TBL
+                    #     employee name         from Employee_TBL
+                    ##################################################################################################################  
+                    inserted = fill_customer_database(prefix, first_name, last_name, nick_name, thai_national_id, birth_day, 
+                        address_number, address_cont, address_road, address_sub_province, address_province, address_city, phone, 
+                        line_id, job, emergency, register_date)
+                   
+                    if inserted:
+                        self.clear_form()
+                else:
+                    messagebox.showinfo("ลูกค้าเก่า", "ลูกค้าเก่า")
                 ##################################################################################################################
                 # Get contract information : ContractInformation.py
                 # Prepare all information before fill contract database 
@@ -341,101 +358,87 @@ class RegistrationForm(tk.Toplevel):
                 #     room information      from Apartment_Info_TBL
                 #     customer information  from Customer_TBL
                 #     employee name         from Employee_TBL
-                ##################################################################################################################  
-                inserted = fill_customer_database(prefix, first_name, last_name, nick_name, thai_national_id, birth_day, 
-                    address_number, address_cont, address_road, address_sub_province, address_province, address_city, phone, 
-                    line_id, job, emergency, register_date)
-               
-                if inserted:
-                    self.clear_form()
-            else:
-                messagebox.showinfo("ลูกค้าเก่า", "ลูกค้าเก่า")
-            ##################################################################################################################
-            # Get contract information : ContractInformation.py
-            # Prepare all information before fill contract database 
-            # ex. 
-            #     room information      from Apartment_Info_TBL
-            #     customer information  from Customer_TBL
-            #     employee name         from Employee_TBL
-            ##################################################################################################################         
-            contract_info = prepare_contract_info(selected_room, first_name, last_name, register_date, register_end_date, employee,
-                                                  remark)
+                ##################################################################################################################         
+                contract_info = prepare_contract_info(selected_room, first_name, last_name, register_date, register_end_date, employee,
+                                                      remark)
 
-            employee_names = employee.strip("()").split(", ")
+                employee_names = employee.strip("()").split(", ")
 
-            employee_first_name = employee_names[0].strip("'")  # Extract the first name
-            employee_last_name = employee_names[1].strip("'")   # Extract the second name
-            employee_name = employee_first_name + ' ' + employee_last_name
+                employee_first_name = employee_names[0].strip("'")  # Extract the first name
+                employee_last_name = employee_names[1].strip("'")   # Extract the second name
+                employee_name = employee_first_name + ' ' + employee_last_name
 
-            if DEBUG == True :
-                print(employee_name)
-                print(contract_info)
+                if DEBUG == True :
+                    print(employee_name)
+                    print(contract_info)
 
-            #########################################################
-            # Fill contract to Database : ContractInformation.py
-            # Fill Contract information to Contract_TBL
-            #########################################################   
-            RoomID_Input, RoomType_Input, CustomerID_Input, StartDate_Input, EndDate_Input, employeeID_Input, RoomFee_Input, \
-            InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input = contract_info                 # Unpack contract info
+                #########################################################
+                # Fill contract to Database : ContractInformation.py
+                # Fill Contract information to Contract_TBL
+                #########################################################   
+                RoomID_Input, RoomType_Input, CustomerID_Input, StartDate_Input, EndDate_Input, employeeID_Input, RoomFee_Input, \
+                InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input = contract_info                 # Unpack contract info
 
-            room_floor    = selected_room[1]
-            room_building = selected_room[0]
+                room_floor    = selected_room[1]
+                room_building = selected_room[0]
 
-            ##################################################################################################################
-            # Get contract information : ContractInformation.py
-            # Prepare all information before fill contract database 
-            # ex. 
-            #     room information      from Apartment_Info_TBL
-            #     customer information  from Customer_TBL
-            #     employee name         from Employee_TBL
-            ################################################################################################################## 
-            fill_contract_info(RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, employeeID_Input, RoomFee_Input,
-                               InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input)
-            
-            if DEBUG == True :
-                print("RoomFee_Input", RoomFee_Input)
+                ##################################################################################################################
+                # Get contract information : ContractInformation.py
+                # Prepare all information before fill contract database 
+                # ex. 
+                #     room information      from Apartment_Info_TBL
+                #     customer information  from Customer_TBL
+                #     employee name         from Employee_TBL
+                ################################################################################################################## 
+                fill_contract_info(RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, employeeID_Input, RoomFee_Input,
+                                   InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input)
+                
+                if DEBUG == True :
+                    print("RoomFee_Input", RoomFee_Input)
 
-            room_fee_add_fur = RoomFee_Input+500
+                room_fee_add_fur = RoomFee_Input+500
 
-            if DEBUG == True :
-                print("room_fee_add_fur", room_fee_add_fur)
-            ###############################################################################
-            # Fill contract to contract file (Word) C:\Database\สัญญาเช่าอะพาร์ตเมนต์.docx")
-            ###############################################################################   
-            doc = DocxTemplate(template_contract_path)
-            context = { 'วันที่'            : StartDate_Input ,
-                        'คำนำหน้า'        : prefix,
-                        'ชื่อ'             : first_name,
-                        'นามสกุล'         : last_name,
-                        'บ้านเลขที่'        : address_number,
-                        'บ้านเลขที่ต่อ'      : address_cont,
-                        'ถนน'            : address_road,
-                        'ตำบล'           : address_sub_province,
-                        'อำเภอ'           : address_province,
-                        'จังหวัด'           : address_city,
-                        'เบอร์โทร'         :  phone,
-                        'ติดต่อฉุกเฉิน'      : emergency,
-                        'ห้องพักเลขที่'      : selected_room,
-                        'ชั้นที่'           : room_floor,
-                        'อาคาร'          : room_building,
-                        'ค่าเช่า'          : RoomFee_Input,
-                        'ค่าเช่ารวมเฟอร์'    : room_fee_add_fur,
-                        'วันเริ่มสัญญา'     : register_date,
-                        'วันสิ้นสุดสัญญา'  : register_end_date,
-                        'ผู้กรอกข้อมูล'    : employee_name,
-                        'ไลน์id'        : line_id
-                    }
-            doc.render(context)
-            doc.save(output_contract_path)
+                if DEBUG == True :
+                    print("room_fee_add_fur", room_fee_add_fur)
+                ###############################################################################
+                # Fill contract to contract file (Word) C:\Database\สัญญาเช่าอะพาร์ตเมนต์.docx")
+                ###############################################################################   
+                doc = DocxTemplate(template_contract_path)
+                context = { 'วันที่'            : StartDate_Input ,
+                            'คำนำหน้า'        : prefix,
+                            'ชื่อ'             : first_name,
+                            'นามสกุล'         : last_name,
+                            'บ้านเลขที่'        : address_number,
+                            'บ้านเลขที่ต่อ'      : address_cont,
+                            'ถนน'            : address_road,
+                            'ตำบล'           : address_sub_province,
+                            'อำเภอ'           : address_province,
+                            'จังหวัด'           : address_city,
+                            'เบอร์โทร'         :  phone,
+                            'ติดต่อฉุกเฉิน'      : emergency,
+                            'ห้องพักเลขที่'      : selected_room,
+                            'ชั้นที่'           : room_floor,
+                            'อาคาร'          : room_building,
+                            'ค่าเช่า'          : RoomFee_Input,
+                            'ค่าเช่ารวมเฟอร์'    : room_fee_add_fur,
+                            'วันเริ่มสัญญา'     : register_date,
+                            'วันสิ้นสุดสัญญา'  : register_end_date,
+                            'ผู้กรอกข้อมูล'    : employee_name,
+                            'ไลน์id'        : line_id
+                        }
+                doc.render(context)
+                doc.save(output_contract_path)
 
-            Document(output_contract_path)
-            os.startfile(output_contract_path)
+                Document(output_contract_path)
+                os.startfile(output_contract_path)
 
-            self.clear_form()
-            self.on_close()
+                self.clear_form()
+                self.on_close()
 
+            else: # If employee not selected
+                messagebox.showinfo("Warning", "กรุณากรอกข้อมูลก่อนทำสัญญา")
         else: # If employee not selected
-            messagebox.showinfo("Warning", "กรุณาเลือกพนักงานก่อน")
+            messagebox.showinfo("Warning", "กรุณาเลือกพนักงานที่ทำสัญญา")
 
     # def booking_submit_form(self):
     #     data = get_customer_info_submit_form(self) 
