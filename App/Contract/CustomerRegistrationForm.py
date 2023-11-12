@@ -170,7 +170,7 @@ class RegistrationForm(tk.Toplevel):
         
         six_months_from_now = today + timedelta(days=6*30)
         end_of_month = (six_months_from_now.replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)
-        default_date = end_of_month.strftime('%d/%m/%Y')  # Assuming you want the year in the format YYYY
+        default_date = end_of_month.strftime('%d/%m') + f'/{buddha_year}'  # Assuming you want the year in the format YYYY
         self.register_end_date_entry.insert(0, default_date)
 
         ########################################################################################################
@@ -247,7 +247,7 @@ class RegistrationForm(tk.Toplevel):
 
         six_months_from_now = today + timedelta(days=6*30)
         end_of_month = (six_months_from_now.replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)
-        default_date = end_of_month.strftime('%d/%m/%Y')  # Assuming you want the year in the format YYYY
+        default_date = end_of_month.strftime('%d/%m') + f'/{buddha_year}'  # Assuming you want the year in the format YYYY
         self.register_end_date_entry.insert(0, default_date)
 
     # 5
