@@ -1,168 +1,153 @@
 import tkinter as tk
+from tkinter import ttk  # Add this line to import ttk
 import sqlite3
-
-from config import *
-
-from tkinter  import messagebox, simpledialog
-from datetime import datetime
-
-#############################################################################################################
-# Create ParkingPage, It will show the available parking from Database and if select,
-# it will go to the register form
-#############################################################################################################
-class ParkingPage(tk.Toplevel):
-    def __init__(self, master):
-        super().__init__(master)
-        self.title("จอดรถ")
-        self.geometry("300x200")
-        self.protocol("WM_DELETE_WINDOW", self.on_close)
-
-    def on_close(self):
-        self.master.deiconify()  # Show the main page
-        self.destroy()
-
-
-import tkinter as tk
-import sqlite3
-
 from tkinter import messagebox, simpledialog
 from datetime import datetime
 
+from Config.Config import *
+from Parking.ParkingRegistrationForm   import ParkingRegistrationForm
+from LookupAndEdit.ParkFunctions       import ParkFunctions 
+
 #############################################################################################################
 # Create ParkingPage, It will show the available parking from Database and if select,
 # it will go to the register form
+#  CheckRoomPage 
+#    -> create_widgets_check_room_contract
+#        -> open_registration_form
+#            -> RegistrationForm
+#                -> submit_form
+#                    -> clear_form
+#    -> display_available_rooms
 #############################################################################################################
 class ParkingPage(tk.Toplevel):
+    def change_filter(self, option):
+        self.filter_var.set(option)
+        self.apply_filter()
 
-    # 1 : Update your __init__ method to include self.edit_mode
     def __init__(self, master):
-        if DEBUG == True :
-            print("ข้อมูลลูกค้า")
         super().__init__(master)
-        self.title("จอดรถ")
-        self.geometry("300x200")
+        self.lift()
+        self.title("รถทั้งหมด")
+        self.geometry("800x500")
         self.protocol("WM_DELETE_WINDOW", self.on_close)
-        self.create_widgets_parking()
-        self.display_assist_parking()
-        #self.selected_customer_info = None # Initialize edit mode as False
+        self.create_widgets()
+        self.bind('<Escape>', self.on_escape)
 
-    # 2 : Run   
-    def create_widgets_parking(self):
-        if DEBUG == True :
-            print("create_widgets_customer : CustomerAssistPage.py")
-        self.customer_listbox = tk.Listbox(self)
-        self.customer_listbox.pack(padx=20, pady=10, fill=tk.BOTH, expand=True)
-        tk.Button(self, text="เลือก", command=self.select_assist_parking).pack(pady=10)
-    
-    # 4 : Run
-    def get_selected_parking_info(self):
-        if DEBUG == True :
-            print("get_selected_customer_info : CustomerAssistPage.py")
-        return self.selected_parking_info
+    def create_widgets(self):
+        self.lift()
+      
+        paned_window = ttk.Panedwindow(self, orient=tk.VERTICAL)
+        paned_window.pack(fill=tk.BOTH, expand=True)
 
-    ###########################################################################################################
-    # Assist customer window display
-    ###########################################################################################################
-    def display_assist_parking(self):
-        if DEBUG == True :
-            print("display_customer : CustomerAssistPage.py")
+        filter_frame = ttk.Frame(paned_window)
+        paned_window.add(filter_frame)
 
-        # Connect to the SQLite database
-        conn   = sqlite3.connect(Oasis_database_full_path)
-        cursor = conn.cursor()
+        self.filter_var = tk.StringVar(value="รถทั้งหมด")
 
-        parking_info_list = []
-        self.parking_ids  = [] 
+        tk.Label(filter_frame, text="รถทั้งหมด : ").grid(row=0, column=0)                          
 
-        try:
-            cursor.execute("""SELECT * 
-                              FROM Car_TBL
-                              ORDER BY FirstName""")
-            rows = cursor.fetchall()
+        ttk.Radiobutton(filter_frame, 
+            text="โชว์ห้องทั้งหมด", 
+            value="Show_all_car", 
+            variable=self.filter_var, 
+            command=lambda: self.change_filter("Show_all_room")).grid(row=0, column=1, padx=10)
 
-            # Display headers
-            header = "{:<7} | {:<10}  {:<15}  {:<15}  {:<15} | {:<15}".format("ID", "Customer", "Brand", "Model", "Color", "Phone")
-            self.customer_listbox.insert(tk.END, header)
+        ttk.Radiobutton(filter_frame, 
+            text="โชว์เฉพาะห้องที่จอด", 
+            value="Show_only_parked_room", 
+            variable=self.filter_var, 
+            command=lambda: self.change_filter("Show_only_parked_room")).grid(row=0, column=2, padx=10)
 
-            # Display customer information with separated columns
-            for row in rows:
-                customer_id = row[0]
-                prefix, first_name, last_name, nick_name, phone = row[1], row[2], row[3], row[4], row[13]
+        ttk.Radiobutton(filter_frame, 
+            text="โชว์เฉพาะมอเตอร์ไซค์", 
+            value="Show_only_room_have_bike", 
+            variable=self.filter_var, 
+            command=lambda: self.change_filter("Show_only_room_have_bike")).grid(row=0, column=3, padx=10)
 
-                # Append customer information to the list
-                customer_info_list.append(row)
+        ttk.Radiobutton(filter_frame, 
+            text="โชว์เฉพาะรถยนต์", 
+            value="Show_only_room_have_car", 
+            variable=self.filter_var, 
+            command=lambda: self.change_filter("Show_only_room_have_car")).grid(row=0, column=4, padx=10)
 
-                # Store the customer ID
-                self.customer_ids.append(customer_id)
+        ttk.Radiobutton(filter_frame, 
+            text="โชว์ห้องที่ยังไม่จอด", 
+            value="Show_free_room", 
+            variable=self.filter_var, 
+            command=lambda: self.change_filter("Show_free_room")).grid(row=0, column=5, padx=10)
 
-                # Determine the column width for customer_id based on its length
-                customer_id_width = 3 if len(str(customer_id)) <= 1 else 0
+        self.tree = ttk.Treeview(paned_window, 
+            columns=("RoomNo", "Building", "Floor","RoomType", "CustomerID", "Type", "Brand","Color","PlateNo"), 
+            show="headings")
 
-                # Format the customer information with separated columns
-                formatted_info = "{:<{}} | {:<10}  {:<15}  {:<15} | {:<15} | {:<15}".format(customer_id, customer_id_width, prefix, first_name, last_name, nick_name, phone)
-                self.customer_listbox.insert(tk.END, formatted_info)
+        self.tree.heading("#1", text="เบอร์ห้อง",         command=lambda: self.sort_treeview(1, True))
+        self.tree.heading("#2", text="ตึก",             command=lambda: self.sort_treeview(2, True))
+        self.tree.heading("#3", text="ชั้น",             command=lambda: self.sort_treeview(3, True))
+        self.tree.heading("#4", text="ขนาดห้อง",         command=lambda: self.sort_treeview(4, True))
+        self.tree.heading("#5", text="ชื่อนามสกุลลูกค้า",   command=lambda: self.sort_treeview(5, True))
+        self.tree.heading("#6", text="ประเภท",          command=lambda: self.sort_treeview(6, True))
+        self.tree.heading("#7", text="ยี่ห้อ/รุ่น",         command=lambda: self.sort_treeview(7, True))
+        self.tree.heading("#8", text="สี",              command=lambda: self.sort_treeview(8, True))
+        self.tree.heading("#9", text="ทะเบียน",          command=lambda: self.sort_treeview(9, True))
 
+        self.tree.column("#1",  width=10,   anchor="center")
+        self.tree.column("#2",  width=10,   anchor="center")
+        self.tree.column("#3",  width=10,   anchor="center")
+        self.tree.column("#4",  width=40,   anchor="center")
+        self.tree.column("#5",  width=40,   anchor="center")
+        self.tree.column("#6",  width=40,   anchor="center")
+        self.tree.column("#7",  width=40,   anchor="center")
+        self.tree.column("#8",  width=40,   anchor="center")
+        self.tree.column("#9",  width=40,   anchor="center")
 
-        except sqlite3.Error as e:
-            messagebox.showerror("Database Error", f"An error occurred: {e}")
+        self.parking_button = tk.Button(self, text="เพิ่มจอดรถ/มอไซต์", command=self.open_parking_registration_form)
+        self.parking_button.pack(pady=10)
 
-        finally:
-            # Close the database connection
-            if conn:
-                conn.close()
+        paned_window.add(self.tree)
+       
+        ParkFunctions.display_show_all_parking(self.tree, self.filter_var)
 
-        # Store the customer information list
-        self.customer_info_list = customer_info_list
+    def display_show_all_parking(self):
+        # Call the display_show_all_room method from ParkFunctions class
+        ParkFunctions.display_show_all_parking(self.tree, self.filter_var)
 
-    ###########################################################################################################
-    # Assist customer select from Display
-    ###########################################################################################################
-    def select_assist_customer(self):
-        selected_item = self.customer_listbox.curselection()
+    def apply_filter(self):
+        self.tree.delete(*self.tree.get_children())
+        ParkFunctions.display_show_all_parking(self.tree, self.filter_var)
+
+    def sort_treeview(self, col, reverse):
+        data = [(self.tree.set(child, col), child) for child in self.tree.get_children('')]
+        data.sort(reverse=reverse)
+        for index, item in enumerate(data):
+            self.tree.move(item[1], '', index)
+        self.tree.heading(col, command=lambda: self.sort_treeview(col, not reverse))
+
+    def open_parking_registration_form(self):
+        selected_item = self.tree.selection()
         if DEBUG == True :
             print(selected_item)
 
         if not selected_item:
-            messagebox.showinfo("No Selection", "Please select a customer.")
+            messagebox.showwarning("Room Selection", "Please select a room.")
             return
+        self.withdraw()  # Hide the room selection
 
-        # Selected item : Show the row following the selection (Not show the id so it can't use directly)
-        # Ex I select : ID : 21 ทินกร แต่มันแสดงผลใน row 15, so 15 number is used as ID 15 : ทวีกร 
-        index = int(selected_item[0])
-
-        conn = sqlite3.connect(Oasis_database_full_path)
-        cursor = conn.cursor()
-
-        try:
-            # Select customers from the table
-            cursor.execute("""SELECT * 
-                              FROM Customer_TBL
-                              ORDER BY FirstName""")
+        selected_room = self.tree.item(selected_item)['values']
+        if DEBUG == True :
+            print(selected_room)
             
-            customer_info_array = cursor.fetchall()
-            if DEBUG == True :
-                for item in customer_info_array:
-                    print(item)
+        selected_room = selected_room[0]
+        ######################################################
+        # Call RegistrationForm : CustomerRegistrationForm.py
+        ######################################################
+        if DEBUG == True :
+            print(selected_room)
 
-            customer_info       = customer_info_array[index-1]
-            if DEBUG == True :
-                print(customer_info)
+        ParkingRegistrationForm(self, selected_room)
 
-            if customer_info:
-                self.master.fill_customer_assist_info(customer_info)  # Fill the entry fields in the registration form
-                self.destroy()
-
-            else:
-                messagebox.showinfo("Customer Not Found", "Customer information not found.")
-
-        except sqlite3.Error as e:
-            messagebox.showerror("Database Error", f"An error occurred: {e}")
-
-        finally:
-            if conn:
-                conn.close()
-
-    # 7 : 
     def on_close(self):
         self.master.deiconify()  # Show the main page
         self.destroy()
+
+    def on_escape(self, event):
+        self.on_close()          # Close the current window
