@@ -2,7 +2,7 @@ import tkinter as tk
 import sqlite3
 import os
 
-from tkinter  import messagebox, simpledialog
+from tkinter  import ttk,messagebox, simpledialog
 from datetime import datetime, timedelta
 
 from Config.Config       import *
@@ -21,7 +21,7 @@ class ParkingRegistrationForm(tk.Toplevel):
     # 1 
     def __init__(self, master, room):
         super().__init__(master)
-        self.title("ลงทะเบียนลูกค้าใหม่")
+        self.title("ลงทะเบียนจอดรถ")
         self.geometry("600x500")
         self.room = room
         self.create_widgets()
@@ -63,11 +63,24 @@ class ParkingRegistrationForm(tk.Toplevel):
         self.entry_color.focus()
         self.entry_color.grid(row=1, column=1, pady=10)       
 
-        label_plate_no = tk.Label(detail_frame, text="สี")
+        label_plate_no = tk.Label(detail_frame, text="ทะเบียน")
         label_plate_no.grid(row=2, column=0, pady=10)
         self.entry_plate_no   = tk.Entry(detail_frame)
         self.entry_plate_no.focus()
         self.entry_plate_no.grid(row=2, column=1, pady=10)   
+
+        today = datetime.today()
+        buddha_year = today.year + 543
+
+        # Format the date as a string with Buddhist year
+        formatted_date = today.strftime('%d/%m') + f'/{buddha_year}'
+
+        label_date = tk.Label(detail_frame, text="วันที่ลงทะเบียน")
+        label_date.grid(row=3, column=0, pady=10)
+        self.entry_date   = tk.Entry(detail_frame)
+        self.entry_date.focus()
+        self.entry_date.grid(row=3, column=1, pady=10)  
+        self.entry_date.insert(0, formatted_date) 
 
         ##########################################################################################
         ok_button = tk.Button(self, text="OK", command=self.record_data)

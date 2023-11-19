@@ -451,8 +451,7 @@ class ParkFunctions:
                                 LEFT JOIN Car_TBL      ON Customer_Contract.CustomerID = Car_TBL.CustomerID
                             
                             WHERE
-                                (Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active') OR
-                                (Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active')
+                                Car_TBL.Brand_Model IS NULL
 
                             UNION
 
@@ -497,8 +496,7 @@ class ParkFunctions:
                                 LEFT JOIN Customer_TBL    AS Customer_Booking ON Customer_Booking.CustomerID = Booking_TBL.CustomerID
                                 LEFT JOIN Motocycle_TBL   ON Customer_Contract.CustomerID = Motocycle_TBL.CustomerID 
                             WHERE
-                                (Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active') OR
-                                (Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active')
+                                Motocycle_TBL.Brand_Model IS NULL
 
                             ORDER BY
                                 RoomNo, VehicleType;
