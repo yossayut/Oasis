@@ -124,6 +124,7 @@ class ParkingPage(tk.Toplevel):
 
     def open_parking_registration_form(self):
         selected_item = self.tree.selection()
+
         if DEBUG == True :
             print(selected_item)
 
@@ -136,14 +137,15 @@ class ParkingPage(tk.Toplevel):
         if DEBUG == True :
             print(selected_room)
             
-        selected_room = selected_room[0]
+        selected_customer = selected_room[4]
+        print(selected_customer)
         ######################################################
         # Call RegistrationForm : CustomerRegistrationForm.py
         ######################################################
         if DEBUG == True :
-            print(selected_room)
-
-        ParkingRegistrationForm(self, selected_room)
+            print(selected_customer)
+       
+        ParkingRegistrationForm(self, selected_customer)
 
     def on_close(self):
         self.master.deiconify()  # Show the main page
