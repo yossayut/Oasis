@@ -86,6 +86,7 @@ class Show_keycard_Page(tk.Toplevel):
                         CASE 
                             WHEN Access_Card_Manage_TBL.Status = 'Idle' THEN 'ว่าง'
                             WHEN Access_Card_Manage_TBL.Status = 'Used' THEN 'ใช้งานอยู่'
+                            WHEN Access_Card_Manage_TBL.Status = 'Lost' THEN 'หาย'
                             ELSE '-'
                         END AS Status  
                     FROM Access_Card_Manage_TBL
@@ -108,6 +109,7 @@ class Show_keycard_Page(tk.Toplevel):
                         CASE 
                             WHEN Access_Card_Manage_TBL.Status = 'Idle' THEN 'ว่าง'
                             WHEN Access_Card_Manage_TBL.Status = 'Used' THEN 'ใช้งานอยู่'
+                            WHEN Access_Card_Manage_TBL.Status = 'Lost' THEN 'หาย'
                             ELSE '-'
                         END AS Status  
                     FROM Access_Card_Manage_TBL
@@ -130,6 +132,7 @@ class Show_keycard_Page(tk.Toplevel):
                         CASE 
                             WHEN Access_Card_Manage_TBL.Status = 'Idle' THEN 'ว่าง'
                             WHEN Access_Card_Manage_TBL.Status = 'Used' THEN 'ใช้งานอยู่'
+                            WHEN Access_Card_Manage_TBL.Status = 'Lost' THEN 'หาย'
                             ELSE '-'
                         END AS Status  
                     FROM Access_Card_Manage_TBL
@@ -153,6 +156,7 @@ class Show_keycard_Page(tk.Toplevel):
                         CASE 
                             WHEN Access_Card_Manage_TBL.Status = 'Idle' THEN 'ว่าง'
                             WHEN Access_Card_Manage_TBL.Status = 'Used' THEN 'ใช้งานอยู่'
+                            WHEN Access_Card_Manage_TBL.Status = 'Lost' THEN 'หาย'
                             ELSE '-'
                         END AS Status  
                     FROM Access_Card_Manage_TBL

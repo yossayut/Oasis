@@ -41,6 +41,9 @@ class KeycardPage(tk.Toplevel):
         transaction_radio_deposite = ttk.Radiobutton(transaction_frame, text="คืน", variable=self.transaction_type, value="deposite")
         transaction_radio_deposite.grid(row=0, column=1)
 
+        transaction_radio_deposite = ttk.Radiobutton(transaction_frame, text="หาย", variable=self.transaction_type, value="lost")
+        transaction_radio_deposite.grid(row=0, column=2)
+
         ##########################################################################################
         #   Customer / Employee                                                                  #
         ##########################################################################################
@@ -160,6 +163,23 @@ class KeycardPage(tk.Toplevel):
                 conn.close()
            
                 self.after_transaction(card_number, "N/A", "คืนบัตร")
+
+            ##########################################################################################
+            #   employee or customer lost                                                        #
+            ##########################################################################################
+            elif self.transaction_type.get() == "lost" :
+                print("access card หาย")  
+
+                cursor.execute("""
+                    UPDATE Access_Card_Manage_TBL
+                    SET Status = "Lost"
+                    WHERE KeycardID = ?
+                """, (card_number,))
+
+                conn.commit()
+                conn.close()
+           
+                self.after_transaction(card_number, "N/A", "หาย")
 
             else :
                 print("no")
