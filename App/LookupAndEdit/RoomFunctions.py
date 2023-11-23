@@ -19,7 +19,7 @@ class RoomFunctions:
 
                                 CASE
                                     WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
-                                    WHEN Apartment_Info_TBL.RoomType = 'BigType' THEN 'Garden view Room'
+                                    WHEN Apartment_Info_TBL.RoomType = 'BigType' THEN 'GardenView Room'
                                     ELSE '-'
                                 END AS RoomType,
 
@@ -65,7 +65,7 @@ class RoomFunctions:
                                     Apartment_Info_TBL.RoomNo, Apartment_Info_TBL.Building, Apartment_Info_TBL.Floor,
                                     CASE
                                         WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
-                                        WHEN Apartment_Info_TBL.RoomType = 'BigType' THEN 'Garden view Room'
+                                        WHEN Apartment_Info_TBL.RoomType = 'BigType' THEN 'GardenView Room'
                                         ELSE '-'
                                     END AS RoomType,
 
@@ -107,7 +107,7 @@ class RoomFunctions:
                                     Apartment_Info_TBL.RoomNo, Apartment_Info_TBL.Building, Apartment_Info_TBL.Floor,
                                     CASE
                                         WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
-                                        WHEN Apartment_Info_TBL.RoomType = 'BigType' THEN 'Garden view Room'
+                                        WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
                                         ELSE '-'
                                     END AS RoomType,
 
@@ -143,7 +143,7 @@ class RoomFunctions:
                                     Apartment_Info_TBL.RoomNo, Apartment_Info_TBL.Building, Apartment_Info_TBL.Floor,
                                     CASE
                                         WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
-                                        WHEN Apartment_Info_TBL.RoomType = 'BigType' THEN 'Garden view Room'
+                                        WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
                                         ELSE '-'
                                     END AS RoomType,
 
@@ -194,7 +194,7 @@ class RoomFunctions:
 
                                 CASE
                                     WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
-                                    WHEN Apartment_Info_TBL.RoomType = 'BigType' THEN 'Garden view Room'
+                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
                                     ELSE '-'
                                 END AS RoomType,
 

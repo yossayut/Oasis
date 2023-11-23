@@ -21,8 +21,8 @@ class ParkFunctions:
                                 Apartment_Info_TBL.Floor,
 
                                 CASE
-                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Small'
-                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'Big'
+                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
+                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
                                     ELSE '-'
                                 END AS RoomType,
 
@@ -32,7 +32,7 @@ class ParkFunctions:
                                     ELSE '----------------'
                                 END AS CustomerName,
 
-                                'Car' AS VehicleType,
+                                'รถยนต์' AS VehicleType,
 
                                 CASE 
                                     WHEN Car_TBL.Brand_Model IS NOT NULL THEN Car_TBL.Brand_Model
@@ -68,8 +68,8 @@ class ParkFunctions:
                                 Apartment_Info_TBL.Floor,
 
                                 CASE
-                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Small'
-                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'Big'
+                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
+                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
                                     ELSE '-'
                                 END AS RoomType,
 
@@ -79,7 +79,7 @@ class ParkFunctions:
                                     ELSE '----------------'
                                 END AS CustomerName,
 
-                                'Motorcycle' AS VehicleType,
+                                'มอเตอร์ไซค์' AS VehicleType,
 
                                 CASE 
                                     WHEN Motocycle_TBL.Brand_Model IS NOT NULL THEN Motocycle_TBL.Brand_Model
@@ -119,8 +119,8 @@ class ParkFunctions:
                                 Apartment_Info_TBL.Floor,
 
                                 CASE
-                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Small'
-                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'Big'
+                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
+                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
                                     ELSE '-'
                                 END AS RoomType,
 
@@ -130,7 +130,7 @@ class ParkFunctions:
                                     ELSE '----------------'
                                 END AS CustomerName,
 
-                                'Car' AS VehicleType,
+                                'รถยนต์' AS VehicleType,
 
                                 CASE 
                                     WHEN Car_TBL.Brand_Model IS NOT NULL THEN Car_TBL.Brand_Model
@@ -165,8 +165,8 @@ class ParkFunctions:
                                 Apartment_Info_TBL.Floor,
 
                                 CASE
-                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Small'
-                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'Big'
+                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
+                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
                                     ELSE '-'
                                 END AS RoomType,
 
@@ -176,7 +176,7 @@ class ParkFunctions:
                                     ELSE '----------------'
                                 END AS CustomerName,
 
-                                'Motorcycle' AS VehicleType,
+                                'มอเตอร์ไซค์' AS VehicleType,
 
                                 CASE 
                                     WHEN Motocycle_TBL.Brand_Model IS NOT NULL THEN Motocycle_TBL.Brand_Model
@@ -217,8 +217,8 @@ class ParkFunctions:
                                 Apartment_Info_TBL.Floor,
 
                                 CASE
-                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Small'
-                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'Big'
+                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
+                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
                                     ELSE '-'
                                 END AS RoomType,
 
@@ -228,7 +228,7 @@ class ParkFunctions:
                                     ELSE '----------------'
                                 END AS CustomerName,
 
-                                'Motorcycle' AS VehicleType,
+                                'มอเตอร์ไซค์' AS VehicleType,
 
                                 CASE 
                                     WHEN Motocycle_TBL.Brand_Model IS NOT NULL THEN Motocycle_TBL.Brand_Model
@@ -267,8 +267,8 @@ class ParkFunctions:
                                 Apartment_Info_TBL.Floor,
 
                                 CASE
-                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Small'
-                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'Big'
+                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
+                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
                                     ELSE '-'
                                 END AS RoomType,
 
@@ -278,7 +278,7 @@ class ParkFunctions:
                                     ELSE '----------------'
                                 END AS CustomerName,
 
-                                'Car' AS VehicleType,
+                                'รถยนต์' AS VehicleType,
 
                                 CASE 
                                     WHEN Car_TBL.Brand_Model IS NOT NULL THEN Car_TBL.Brand_Model
@@ -317,12 +317,12 @@ class ParkFunctions:
                                     Apartment_Info_TBL.Floor,
 
                                     CASE
-                                        WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Small'
-                                        WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'Big'
+                                        WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
+                                        WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
                                         ELSE '-'
                                     END AS RoomType,
 
-                                    'Car' AS VehicleType,
+                                    'รถยนต์' AS VehicleType,
                                     COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName, '-') AS CustomerName,
                                     COALESCE(Car_TBL.Brand_Model, '----------------') AS Car_Brand,
                                     COALESCE(Car_TBL.Color, '----------------') AS Car_color,
@@ -350,12 +350,12 @@ class ParkFunctions:
                                     Apartment_Info_TBL.Floor,
 
                                     CASE
-                                        WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Small'
-                                        WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'Big'
+                                        WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
+                                        WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
                                         ELSE '-'
                                     END AS RoomType,
 
-                                    'Motorcycle' AS VehicleType,
+                                    'มอเตอร์ไซค์' AS VehicleType,
                                     COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName, '-') AS CustomerName,
                                     COALESCE(Motocycle_TBL.Brand_Model, '----------------') AS Motocycle_Brand,
                                     COALESCE(Motocycle_TBL.Color, '----------------') AS Motocycle_color,
@@ -387,8 +387,8 @@ class ParkFunctions:
                                 Apartment_Info_TBL.Floor,
 
                                 CASE
-                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Small'
-                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'Big'
+                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
+                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
                                     ELSE '-'
                                 END AS RoomType,
 
@@ -398,7 +398,7 @@ class ParkFunctions:
                                     ELSE '----------------'
                                 END AS CustomerName,
 
-                                'Car' AS VehicleType,
+                                'รถยนต์' AS VehicleType,
 
                                 CASE 
                                     WHEN Car_TBL.Brand_Model IS NOT NULL THEN Car_TBL.Brand_Model
@@ -430,8 +430,8 @@ class ParkFunctions:
                                 Apartment_Info_TBL.Floor,
 
                                 CASE
-                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Small'
-                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'Big'
+                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
+                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
                                     ELSE '-'
                                 END AS RoomType,
 
@@ -441,7 +441,7 @@ class ParkFunctions:
                                     ELSE '----------------'
                                 END AS CustomerName,
 
-                                'Motorcycle' AS VehicleType,
+                                'มอเตอร์ไซค์' AS VehicleType,
 
                                 CASE 
                                     WHEN Motocycle_TBL.Brand_Model IS NOT NULL THEN Motocycle_TBL.Brand_Model

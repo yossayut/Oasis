@@ -192,5 +192,16 @@ class Show_keycard_Page(tk.Toplevel):
         self.tree.heading(col, command=lambda: self.sort_treeview(col, not reverse))
 
     def on_close(self):
-        self.master.deiconify()  # Show the main page
+
+        if DEBUG == True :
+            print("onclose", self.new_customer_flag)
+
+        if DEBUG == True :
+            print("onclose after set", self.new_customer_flag)
+
+        self.master.deiconify()                        # Show the main page
         self.destroy()
+
+    
+    def on_escape(self, event):
+        self.on_close()                                # Close the current window

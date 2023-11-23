@@ -12,6 +12,8 @@ class KeycardPage(tk.Toplevel):
     def __init__(self, master):
         super().__init__(master)
         self.geometry("400x500")
+        self.protocol("WM_DELETE_WINDOW", self.on_close)
+        self.bind('<Escape>', self.on_escape)
         self.title("คีย์การ์ด")
 
         ##########################################################################################
@@ -197,3 +199,10 @@ class KeycardPage(tk.Toplevel):
         messagebox.showinfo("Transaction Info", message)
         self.destroy()  # Closes the current window
         self.master.deiconify()  # Show the main page
+
+    def on_close(self):
+        self.master.deiconify()  # Show the main page
+        self.destroy()
+
+    def on_escape(self, event):
+        self.on_close()                                # Close the current window

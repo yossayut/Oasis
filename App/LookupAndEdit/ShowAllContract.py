@@ -82,36 +82,34 @@ class Show_all_contract_Page(tk.Toplevel):
         # 	variable=self.filter_var, 
         # 	command=lambda: self.change_filter("Contract_Quit")).grid(row=0, column=3, padx=10)
 
-        self.tree = ttk.Treeview(paned_window, 
-        	columns=("ContractID", "RoomID", "CustomerID", "CarPlateNo", "StartDate", 
-                "EndDate", "StaffID", "RoomFee","MaintenanceFee","ParkingFee","Remark","Status"), 
+        self.tree = ttk.Treeview(paned_window,  
+             columns=("ContractID", "RoomID", "CustomerID", "StartDate", "EndDate", 
+                "StaffID", "RoomFee","MaintenanceFee","ParkingFee","Remark","Status"), 
         	show="headings")
 
         self.tree.heading("#1", text="ลำดับที่", command=lambda: self.sort_treeview(1, True))
         self.tree.heading("#2", text="เบอร์ห้อง", command=lambda: self.sort_treeview(2, True))
         self.tree.heading("#3", text="ลูกค้า", command=lambda: self.sort_treeview(3, True))
-        self.tree.heading("#4", text="ทะเบียนรถ", command=lambda: self.sort_treeview(4, True))
-        self.tree.heading("#5", text="เริ่มต้น", command=lambda: self.sort_treeview(5, True))
-        self.tree.heading("#6", text="สิ้นสุด", command=lambda: self.sort_treeview(6, True))
-        self.tree.heading("#7", text="พนักงาน", command=lambda: self.sort_treeview(7, True))
-        self.tree.heading("#8", text="ค่าเช่าห้อง", command=lambda: self.sort_treeview(8, True))
-        self.tree.heading("#9", text="ค่าส่วนกลาง", command=lambda: self.sort_treeview(9, True))
-        self.tree.heading("#10", text="ค่าจอดรถ", command=lambda: self.sort_treeview(10, True))
-        self.tree.heading("#11", text="อื่นๆ", command=lambda: self.sort_treeview(11, True))
-        self.tree.heading("#12", text="สถานะ", command=lambda: self.sort_treeview(12, True))
+        self.tree.heading("#4", text="เริ่มต้น", command=lambda: self.sort_treeview(4, True))
+        self.tree.heading("#5", text="สิ้นสุด", command=lambda: self.sort_treeview(5, True))
+        self.tree.heading("#6", text="พนักงาน", command=lambda: self.sort_treeview(6, True))
+        self.tree.heading("#7", text="ค่าเช่าห้อง", command=lambda: self.sort_treeview(7, True))
+        self.tree.heading("#8", text="ค่าส่วนกลาง", command=lambda: self.sort_treeview(8, True))
+        self.tree.heading("#9", text="ค่าจอดรถ", command=lambda: self.sort_treeview(9, True))
+        self.tree.heading("#10", text="อื่นๆ", command=lambda: self.sort_treeview(10, True))
+        self.tree.heading("#11", text="สถานะ", command=lambda: self.sort_treeview(11, True))
 
         self.tree.column("#1",  width=40,   anchor="center")
         self.tree.column("#2",  width=80,   anchor="center")
-        self.tree.column("#3",  width=150,  anchor="center")
+        self.tree.column("#3",  width=100,  anchor="center")
         self.tree.column("#4",  width=80,   anchor="center")
         self.tree.column("#5",  width=80,   anchor="center")
         self.tree.column("#6",  width=80,   anchor="center")
-        self.tree.column("#7",  width=150,  anchor="center")
+        self.tree.column("#7",  width=80,   anchor="center")
         self.tree.column("#8",  width=80,   anchor="center")
         self.tree.column("#9",  width=80,   anchor="center")
         self.tree.column("#10", width=80,   anchor="center")
         self.tree.column("#11", width=80,   anchor="center")
-        self.tree.column("#12", width=80,   anchor="center")
 
         paned_window.add(self.tree)
         self.display_show_all_contract()
@@ -129,7 +127,6 @@ class Show_all_contract_Page(tk.Toplevel):
                         Contract_TBL.ContractID, 
                         Apartment_Info_TBL.RoomNo, 
                         Customer_TBL.FirstName || ' ' || Customer_TBL.LastName AS CustomerName,  -- Add "AS CustomerName"
-                        Contract_TBL.CarPlateNo, 
                         Contract_TBL.StartDate,
                         Contract_TBL.EndDate,
                         Employee_TBL.FirstName || ' ' || Employee_TBL.LastName AS EmployeeName,  -- Add "AS EmployeeName"
@@ -152,7 +149,6 @@ class Show_all_contract_Page(tk.Toplevel):
                         Contract_TBL.ContractID, 
                         Apartment_Info_TBL.RoomNo, 
                         Customer_TBL.FirstName || ' ' || Customer_TBL.LastName AS CustomerName,  -- Add "AS CustomerName"
-                        Contract_TBL.CarPlateNo, 
                         Contract_TBL.StartDate,
                         Contract_TBL.EndDate,
                         Employee_TBL.FirstName || ' ' || Employee_TBL.LastName AS EmployeeName,  -- Add "AS EmployeeName"
@@ -175,7 +171,6 @@ class Show_all_contract_Page(tk.Toplevel):
                         Contract_TBL.ContractID, 
                         Apartment_Info_TBL.RoomNo, 
                         Customer_TBL.FirstName || ' ' || Customer_TBL.LastName AS CustomerName,  -- Add "AS CustomerName"
-                        Contract_TBL.CarPlateNo, 
                         Contract_TBL.StartDate,
                         Contract_TBL.EndDate,
                         Employee_TBL.FirstName || ' ' || Employee_TBL.LastName AS EmployeeName,  -- Add "AS EmployeeName"
@@ -198,7 +193,6 @@ class Show_all_contract_Page(tk.Toplevel):
                         Contract_TBL.ContractID, 
                         Apartment_Info_TBL.RoomNo, 
                         Customer_TBL.FirstName || ' ' || Customer_TBL.LastName AS CustomerName,  -- Add "AS CustomerName"
-                        Contract_TBL.CarPlateNo, 
                         Contract_TBL.StartDate,
                         Contract_TBL.EndDate,
                         Employee_TBL.FirstName || ' ' || Employee_TBL.LastName AS EmployeeName,  -- Add "AS EmployeeName"
@@ -221,7 +215,6 @@ class Show_all_contract_Page(tk.Toplevel):
                         Contract_TBL.ContractID, 
                         Apartment_Info_TBL.RoomNo, 
                         Customer_TBL.FirstName || ' ' || Customer_TBL.LastName AS CustomerName,  -- Add "AS CustomerName"
-                        Contract_TBL.CarPlateNo, 
                         Contract_TBL.StartDate,
                         Contract_TBL.EndDate,
                         Employee_TBL.FirstName || ' ' || Employee_TBL.LastName AS EmployeeName,  -- Add "AS EmployeeName"
@@ -243,8 +236,7 @@ class Show_all_contract_Page(tk.Toplevel):
                     SELECT 
                         Contract_TBL.ContractID, 
                         Apartment_Info_TBL.RoomNo, 
-                        Customer_TBL.FirstName || ' ' || Customer_TBL.LastName AS CustomerName,  -- Add "AS CustomerName"
-                        Contract_TBL.CarPlateNo, 
+                        Customer_TBL.FirstName || ' ' || Customer_TBL.LastName AS CustomerName,  -- Add "AS CustomerName" 
                         Contract_TBL.StartDate,
                         Contract_TBL.EndDate,
                         Employee_TBL.FirstName || ' ' || Employee_TBL.LastName AS EmployeeName,  -- Add "AS EmployeeName"
@@ -265,7 +257,6 @@ class Show_all_contract_Page(tk.Toplevel):
                         Contract_TBL.ContractID, 
                         Apartment_Info_TBL.RoomNo, 
                         Customer_TBL.FirstName || ' ' || Customer_TBL.LastName AS CustomerName,  -- Add "AS CustomerName"
-                        Contract_TBL.CarPlateNo, 
                         Contract_TBL.StartDate,
                         Contract_TBL.EndDate,
                         Employee_TBL.FirstName || ' ' || Employee_TBL.LastName AS EmployeeName,  -- Add "AS EmployeeName"
