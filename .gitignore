@@ -1,8 +1,6 @@
 *.pyc
-*.docx
-สัญญาเช่าอะพาร์ตเมนต์_A.docx
-สัญญาเช่าอะพาร์ตเมนต์_for_print.docx
+~.*.docx
 .DS_Store
 Thumbs.db
-Oasis_Apartment.db
 Oasis_Apartment.db-journal
+Oasis_Apartment_for_test.db-journal
