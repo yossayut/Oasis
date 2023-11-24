@@ -4,11 +4,12 @@ from Config.Config  import *
 from tkinter        import messagebox
 
 ####################################################
-# Get information from Database
+# Get information from submit box
 ####################################################
 def get_customer_info_submit_form(self) :
+    
     ####################################################
-    # Get information from text box
+    # Get information from text box : Column1
     ####################################################
     selected_room         = self.room
     prefix                = self.prefix_entry.get()
@@ -40,28 +41,28 @@ def get_customer_info_submit_form(self) :
     parking               = self.parking_fee_entry.get()
     remark                = self.remark_entry.get()
 
-    return selected_room,     \
-           prefix,            \
-           first_name,        \
-           last_name,         \
-           nick_name,         \
-           thai_national_id,  \
-           birth_day,         \
-           address_number,    \
-           address_cont,      \
-           address_road,      \
+    return selected_room,           \
+           prefix,                  \
+           first_name,              \
+           last_name,               \
+           nick_name,               \
+           thai_national_id,        \
+           birth_day,               \
+           address_number,          \
+           address_cont,            \
+           address_road,            \
            address_sub_province,    \
            address_province,        \
            address_city,            \
-           phone,             \
-           line_id,           \
-           job,               \
-           emergency,         \
-           register_date,     \
-           register_end_date, \
-           employee,          \
-           room_fee,          \
-           internet,          \
-           maintenance,       \
-           parking,           \
+           phone,                   \
+           line_id,                 \
+           job,                     \
+           emergency,               \
+           register_date,           \
+           register_end_date,       \
+           employee,                \
+           room_fee,                \
+           internet,                \
+           maintenance,             \
+           parking,                 \
            remark

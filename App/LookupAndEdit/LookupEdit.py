@@ -14,13 +14,13 @@ class LookUpAndEditPage(tk.Toplevel):
     def create_main_widgets(self):
         tk.Label(self, text="Lookup Page", font=("Arial", 18)).pack(pady=20)
 
-        show_all_room_txt     = "ห้องพักทั้งหมด"
-        show_all_contract_txt = "สัญญาเช่าทั้งหมด"
-        show_keycard_txt      = "คีย์การ์ดทั้งหมด"
+        txt_show_all_room     = "ห้องพักทั้งหมด"
+        txt_show_all_contract = "สัญญาเช่าทั้งหมด"
+        txt_show_keycard      = "คีย์การ์ดทั้งหมด"
 
-        tk.Button(self, text=show_all_room_txt, command=self.show_all_room).pack(pady=10)        
-        tk.Button(self, text=show_all_contract_txt, command=self.show_all_contract).pack(pady=10)
-        tk.Button(self, text=show_keycard_txt, command=self.show_keycard).pack(pady=10)
+        tk.Button(self, text=txt_show_all_room     , command=self.show_all_room).pack(pady=10)        
+        tk.Button(self, text=txt_show_all_contract , command=self.show_all_contract).pack(pady=10)
+        tk.Button(self, text=txt_show_keycard      , command=self.show_keycard).pack(pady=10)
         
     def show_all_room(self):
         self.withdraw()

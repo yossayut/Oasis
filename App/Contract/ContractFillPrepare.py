@@ -1,10 +1,11 @@
 import sqlite3
 
-from Config.Config import *
-from tkinter import messagebox
-from GetData.GetEmployeeID import get_employee_id
-from docxtpl  import DocxTemplate
-from docx     import Document
+from Config.Config         import *
+from tkinter               import messagebox
+from GetData.GetEmployeeID import get_employee_id_from_first_last_name
+from docxtpl               import DocxTemplate
+from docx                  import Document
+
 ####################################################
 # Get information from Database
 ####################################################
@@ -28,10 +29,10 @@ def prepare_contract_info(selected_room, first_name, last_name, register_date, r
         name_parts       = employee.strip("()").replace("'", "").split(", ")
 
         if DEBUG == True :
-            print(name_parts[0])
-            print(name_parts[1])
+            print("prepare_contract_info => name_parts[0] : " + name_parts[0])
+            print("prepare_contract_info => name_parts[1] : " + name_parts[1])
 
-        EmployeeID_Input     = get_employee_id(name_parts[0],name_parts[1])
+        EmployeeID_Input     = get_employee_id_from_first_last_name(name_parts[0],name_parts[1])
 
         if RoomType_Input == 'SmallType':
             room_fee = 3500
@@ -74,54 +75,127 @@ def prepare_contract_info(selected_room, first_name, last_name, register_date, r
 #########################################################
 # Fill contract to Database
 #########################################################  
-def fill_contract_info(RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, EmployeeID_Input, RoomFee_Input, InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input):
-    try:
-        #print("Insert contract information to Database")
+def fill_contract_info(form_type, RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, EmployeeID_Input, RoomFee_Input, InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input):
+    if DEBUG == True :
+       print("fill_contract_info => form_type : " + form_type) 
 
-        conn   = sqlite3.connect(Oasis_database_full_path)
-        cursor = conn.cursor()
+    if form_type == "contract" :
+        if DEBUG == True :
+           print("form_type == contract")
 
-        cursor.execute(""" SELECT *
-                           FROM Contract_TBL
-                           WHERE Contract_TBL.RoomID = (?) AND Contract_TBL.Status = 'Active'
-                       """ ,(RoomID_Input,))
+        try:
+            conn   = sqlite3.connect(Oasis_database_full_path)
+            cursor = conn.cursor()
 
-        result = cursor.fetchall()
+            cursor.execute(""" 
+                               SELECT *
+                               FROM  Contract_TBL
+                               WHERE Contract_TBL.RoomID = (?) AND Contract_TBL.Status = 'Active'
+                               UNION
+                               SELECT *
+                               FROM  Booking_TBL
+                               WHERE Booking_TBL.RoomID = (?) AND Booking_TBL.Status = 'Active'
 
-        if result:
-            check_booking_contract_active = True
-        else:
-            check_booking_contract_active = False          
+                           """ ,(RoomID_Input,RoomID_Input,))
 
-        if not check_booking_contract_active :
-            cursor.execute(""" INSERT INTO Contract_TBL (RoomID, 
-                                                         CustomerID,
-                                                         StartDate,
-                                                         EndDate,
-                                                         StaffID,
-                                                         RoomFee,
-                                                         InternetFee,
-                                                         MaintenanceFee,
-                                                         ParkingFee,
-                                                         Remark,
-                                                         Status) 
-                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                           """, (RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, EmployeeID_Input, RoomFee_Input,
-                                 InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input))
+            result = cursor.fetchall()
 
-            conn.commit()
-            messagebox.showinfo("Success", "สัญญาเสร็จสมบูรณ์ กรุณาปริ้นท์เอกสารสัญญาลงนาม")
-            flag_fill_contract_info_success = True
-            return flag_fill_contract_info_success
+            if result:
+                check_booking_contract_active = True
+            else:
+                check_booking_contract_active = False          
 
-        else :
-            messagebox.showinfo("Warning", "ห้องที่ต้องการติดจองหรือติดสัญญาอยู่ กรุณาเลือกห้องอื่น")
-            flag_fill_contract_info_success = False
-            return flag_fill_contract_info_success
+            if not check_booking_contract_active :
+                cursor.execute(""" INSERT INTO Contract_TBL (RoomID, 
+                                                             CustomerID,
+                                                             StartDate,
+                                                             EndDate,
+                                                             StaffID,
+                                                             RoomFee,
+                                                             InternetFee,
+                                                             MaintenanceFee,
+                                                             ParkingFee,
+                                                             Remark,
+                                                             Status) 
+                                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                               """, (RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, EmployeeID_Input, RoomFee_Input,
+                                     InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input))
 
-    except sqlite3.Error as e:
-        messagebox.showerror("Error", f"An error occurred: {e}")
+                conn.commit()
+                messagebox.showinfo("Success", "สัญญาเสร็จสมบูรณ์ กรุณาปริ้นท์เอกสารสัญญาลงนาม")
+                flag_fill_info_success = True
+                return flag_fill_info_success
 
-    finally:
-        if conn:
-            conn.close()
+            else :
+                messagebox.showinfo("Warning", "ห้องที่ต้องการติดจองหรือติดสัญญาอยู่ กรุณาเลือกห้องอื่น")
+                flag_fill_info_success = False
+                return flag_fill_info_success
+
+        except sqlite3.Error as e:
+            messagebox.showerror("Error", f"An error occurred: {e}")
+
+        finally:
+            if conn:
+                conn.close()
+
+    # booking
+    elif form_type == "booking" :
+        if DEBUG == True :
+           print("form_type == booking")
+
+        try:
+            conn   = sqlite3.connect(Oasis_database_full_path)
+            cursor = conn.cursor()
+
+            cursor.execute(""" 
+                               SELECT *
+                               FROM  Contract_TBL
+                               WHERE Contract_TBL.RoomID = (?) AND Contract_TBL.Status = 'Active'
+                               UNION
+                               SELECT *
+                               FROM  Booking_TBL
+                               WHERE Booking_TBL.RoomID = (?) AND Booking_TBL.Status = 'Active'
+
+                           """ ,(RoomID_Input,RoomID_Input,))
+
+            result = cursor.fetchall()
+
+            if result:
+                check_booking_contract_active = True
+            else:
+                check_booking_contract_active = False          
+
+            if not check_booking_contract_active :
+                cursor.execute(""" INSERT INTO Booking_TBL (RoomID, 
+                                                             CustomerID,
+                                                             StartDate,
+                                                             EndDate,
+                                                             StaffID,
+                                                             RoomFee,
+                                                             InternetFee,
+                                                             MaintenanceFee,
+                                                             ParkingFee,
+                                                             Remark,
+                                                             Status) 
+                                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                               """, (RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, EmployeeID_Input, RoomFee_Input,
+                                     InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input))
+
+                conn.commit()
+                messagebox.showinfo("Success", "การจองเสร็จสมบูรณ์ กรุณาปริ้นท์เอกสารจองลงนาม")
+                flag_fill_info_success = True
+                return flag_fill_info_success
+
+            else :
+                messagebox.showinfo("Warning", "ห้องที่ต้องการติดจองหรือติดสัญญาอยู่ กรุณาเลือกห้องอื่น")
+                flag_fill_info_success = False
+                return flag_fill_info_success
+
+        except sqlite3.Error as e:
+            messagebox.showerror("Error", f"An error occurred: {e}")
+
+        finally:
+            if conn:
+                conn.close()
+    else :
+        print("error")

@@ -1,10 +1,11 @@
 import tkinter as tk
-from tkinter import ttk  # Add this line to import ttk
 import sqlite3
-from tkinter import messagebox, simpledialog
+
+from tkinter  import ttk 
+from tkinter  import messagebox, simpledialog
 from datetime import datetime
 
-from Config.Config import *
+from Config.Config                     import *
 from Contract.CustomerRegistrationForm import RegistrationForm
 from LookupAndEdit.RoomFunctions       import RoomFunctions 
 
@@ -74,14 +75,23 @@ class CheckAvailableRoomPage(tk.Toplevel):
             columns=("RoomNo", "Building", "Floor","RoomType", "Status", "CustomerID", "StartDate", "EndDate"), 
             show="headings")
 
-        self.tree.heading("#1", text="เบอร์ห้อง", command=lambda: self.sort_treeview(1, True))
-        self.tree.heading("#2", text="ตึก",     command=lambda: self.sort_treeview(2, True))
-        self.tree.heading("#3", text="ชั้น",     command=lambda: self.sort_treeview(3, True))
-        self.tree.heading("#4", text="ขนาดห้อง", command=lambda: self.sort_treeview(4, True))
-        self.tree.heading("#5", text="สถานะ", command=lambda: self.sort_treeview(5, True))
-        self.tree.heading("#6", text="ลูกค้า", command=lambda: self.sort_treeview(6, True))
-        self.tree.heading("#7", text="เริ่มต้น", command=lambda: self.sort_treeview(7, True))
-        self.tree.heading("#8", text="สิ้นสุด", command=lambda: self.sort_treeview(8, True))
+        txt_room_no   = "เบอร์ห้อง"
+        txt_building  = "ตึก"
+        txt_floor     = "ชั้น"
+        txt_room_size = "ขนาดห้อง"
+        txt_status    = "สถานะ"
+        txt_customer  = "ลูกค้า"
+        txt_start     = "เริ่มต้น"
+        txt_end       = "สิ้นสุด"
+
+        self.tree.heading("#1", text=txt_room_no   , command=lambda: self.sort_treeview(1, True))
+        self.tree.heading("#2", text=txt_building  , command=lambda: self.sort_treeview(2, True))
+        self.tree.heading("#3", text=txt_floor     , command=lambda: self.sort_treeview(3, True))
+        self.tree.heading("#4", text=txt_room_size , command=lambda: self.sort_treeview(4, True))
+        self.tree.heading("#5", text=txt_status    , command=lambda: self.sort_treeview(5, True))
+        self.tree.heading("#6", text=txt_customer  , command=lambda: self.sort_treeview(6, True))
+        self.tree.heading("#7", text=txt_start     , command=lambda: self.sort_treeview(7, True))
+        self.tree.heading("#8", text=txt_end       , command=lambda: self.sort_treeview(8, True))
 
         self.tree.column("#1",  width=10,   anchor="center")
         self.tree.column("#2",  width=10,   anchor="center")
@@ -96,11 +106,10 @@ class CheckAvailableRoomPage(tk.Toplevel):
         self.contract_button.pack(pady=10)
 
         paned_window.add(self.tree)
-       
         RoomFunctions.display_show_all_room(self.tree, self.filter_var)
 
+    # Call the display_show_all_room method from RoomFunctions class
     def display_show_all_room(self):
-        # Call the display_show_all_room method from RoomFunctions class
         RoomFunctions.display_show_all_room(self.tree, self.filter_var)
 
     def apply_filter(self):
@@ -116,30 +125,25 @@ class CheckAvailableRoomPage(tk.Toplevel):
 
     def open_registration_form(self):
         selected_item = self.tree.selection()
-        if DEBUG == True :
-            print(selected_item)
 
         if not selected_item:
             messagebox.showwarning("Room Selection", "Please select a room.")
             return
-        self.withdraw()  # Hide the room selection
-
-        selected_room = self.tree.item(selected_item)['values']
-        if DEBUG == True :
-            print(selected_room)
             
+        self.withdraw()  # Hide the room selection
+        selected_room = self.tree.item(selected_item)['values']
         selected_room = selected_room[0]
+
         ######################################################
         # Call RegistrationForm : CustomerRegistrationForm.py
         ######################################################
-        if DEBUG == True :
-            print(selected_room)
-
         RegistrationForm(self, selected_room)
 
+    # Show the main page
     def on_close(self):
-        self.master.deiconify()  # Show the main page
+        self.master.deiconify()  
         self.destroy()
 
+    # Close the current window
     def on_escape(self, event):
-        self.on_close()          # Close the current window
+        self.on_close()          

@@ -8,7 +8,6 @@ from tkinter        import messagebox
 ####################################################
 def fill_customer_database(prefix, first_name, last_name, nick_name, thai_national_id, birth_day, address_number, address_cont, address_road, address_sub_province, address_province, address_city, phone, line_id, job, emergency, register_date):
     try:
-        # Insert data into the table
         conn   = sqlite3.connect(Oasis_database_full_path)
         cursor = conn.cursor()
 
@@ -32,6 +31,5 @@ def fill_customer_database(prefix, first_name, last_name, nick_name, thai_nation
         return False  # Return False if there's an error
 
     finally:
-        # Close the database connection
         if conn:
             conn.close()

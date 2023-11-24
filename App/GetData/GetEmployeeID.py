@@ -1,12 +1,12 @@
 import sqlite3
 
 from Config.Config  import *
-from tkinter import messagebox
+from tkinter        import messagebox
 
 ####################################################
 # Get information from Database
 ####################################################
-def get_employee_id(first_name,last_name) :
+def get_employee_id_from_first_last_name(first_name,last_name) :
     try:
         conn   = sqlite3.connect(Oasis_database_full_path)
         cursor = conn.cursor()
@@ -18,7 +18,7 @@ def get_employee_id(first_name,last_name) :
 
         if DEBUG == True :
             if EmployeeID_Input:
-                print("EmployeeID:", EmployeeID_Input)
+                print("get_employee_id => EmployeeID_Input : ", EmployeeID_Input)
             else:
                 print("Employee not found")
 

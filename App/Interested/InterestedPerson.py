@@ -25,13 +25,10 @@ class InterestedPersonPage(tk.Toplevel):
 
         # Button to add a new interested person
         tk.Button(self, text="เพิ่ม", command=self.add_interested_person).pack(pady=10)
-
-        # Button to delete the selected interested person
         tk.Button(self, text="ลบ", command=self.delete_selected).pack(pady=10)
 
     def display_interested_person(self):
-        # Connect to the SQLite database
-        conn = sqlite3.connect(Oasis_database_full_path)
+        conn   = sqlite3.connect(Oasis_database_full_path)
         cursor = conn.cursor()
 
         try:
@@ -58,8 +55,7 @@ class InterestedPersonPage(tk.Toplevel):
         selected_item = self.interested_listbox.get(tk.ACTIVE)
 
         if selected_item:
-            # Connect to the SQLite database
-            conn = sqlite3.connect(Oasis_database_full_path)
+            conn   = sqlite3.connect(Oasis_database_full_path)
             cursor = conn.cursor()
 
             try:

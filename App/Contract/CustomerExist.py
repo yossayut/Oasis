@@ -2,8 +2,8 @@ import tkinter as tk
 import sqlite3
 
 from Config.Config   import *
-from tkinter  import messagebox, simpledialog
-from datetime import datetime
+from tkinter         import messagebox, simpledialog
+from datetime        import datetime
 
 #############################################################################################################
 # Create ParkingPage, It will show the available parking from Database and if select,
@@ -11,7 +11,6 @@ from datetime import datetime
 #############################################################################################################
 class CustomerExistPage(tk.Toplevel):
 
-    # 1 : Update your __init__ method to include self.edit_mode
     def __init__(self, master):
         if DEBUG == True :
             print("ข้อมูลลูกค้า")
@@ -23,7 +22,6 @@ class CustomerExistPage(tk.Toplevel):
         self.display_exist_customer()
         self.selected_customer_info = None # Initialize edit mode as False
 
-    # 2 : Run   
     def create_widgets(self):
         if DEBUG == True :
             print("create_widgets_customer : CustomerExistPage.py")
@@ -32,7 +30,6 @@ class CustomerExistPage(tk.Toplevel):
         self.customer_listbox.pack(padx=20, pady=10, fill=tk.BOTH, expand=True)
         tk.Button(self, text="เลือก", command=self.select_exist_customer).pack(pady=10)
     
-    # 4 : Run
     def get_selected_customer_info(self):
         if DEBUG == True :
             print("get_selected_customer_info : CustomerExistPage.py")
@@ -46,8 +43,7 @@ class CustomerExistPage(tk.Toplevel):
         if DEBUG == True :
             print("display_customer : CustomerExistPage.py")
 
-        # Connect to the SQLite database
-        conn = sqlite3.connect(Oasis_database_full_path)
+        conn   = sqlite3.connect(Oasis_database_full_path)
         cursor = conn.cursor()
 
         customer_info_list = []
@@ -70,14 +66,13 @@ class CustomerExistPage(tk.Toplevel):
                 customer_info_list.append(row)                              # Append customer information to the list
                 self.customer_ids.append(customer_id)                       # Store the customer ID
                 customer_id_width = 3 if len(str(customer_id)) <= 1 else 0  # Determine the column width for customer_id based on its length
-                formatted_info = "{:<{}} | {:<10}  {:<15}  {:<15} | {:<15} | {:<15}".format(customer_id, customer_id_width, prefix, first_name, last_name, nick_name, phone)
+                formatted_info    = "{:<{}} | {:<10}  {:<15}  {:<15} | {:<15} | {:<15}".format(customer_id, customer_id_width, prefix, first_name, last_name, nick_name, phone)
                 self.customer_listbox.insert(tk.END, formatted_info)        # Format the customer information with separated columns
 
         except sqlite3.Error as e:
             messagebox.showerror("Database Error", f"An error occurred: {e}")
 
         finally:
-            # Close the database connection
             if conn:
                 conn.close()
 
@@ -91,7 +86,7 @@ class CustomerExistPage(tk.Toplevel):
         selected_item = self.customer_listbox.curselection()
 
         if DEBUG == True :
-            print(selected_item)
+            print("select_exist_customer => selected_item : ", selected_item)
 
         if not selected_item:
             messagebox.showinfo("No Selection", "Please select a customer.")
@@ -99,13 +94,12 @@ class CustomerExistPage(tk.Toplevel):
 
         # Selected item : Show the row following the selection (Not show the id so it can't use directly)
         # Ex I select : ID : 21 ทินกร แต่มันแสดงผลใน row 15, so 15 number is used as ID 15 : ทวีกร 
-        index = int(selected_item[0])
+        index  = int(selected_item[0])
 
-        conn = sqlite3.connect(Oasis_database_full_path)
+        conn   = sqlite3.connect(Oasis_database_full_path)
         cursor = conn.cursor()
 
         try:
-            # Select customers from the table
             cursor.execute("""SELECT * 
                               FROM Customer_TBL
                               ORDER BY FirstName""")
@@ -116,16 +110,19 @@ class CustomerExistPage(tk.Toplevel):
                     print(item)
 
             customer_info       = customer_info_array[index-1]
-            #if DEBUG == True :
-            #    print(customer_info)
+
+            if DEBUG == True :
+                print(customer_info)
 
             if customer_info:
                 if DEBUG == True :
                     print("select_Exist_customer : CustomerExist.py")
+
                 self.master.fill_customer_exist_info(customer_info)  # Fill the entry fields in the registration form
                 self.destroy()
+
             else:
-                messagebox.showinfo("Customer Not Found", "Customer information not found.")
+                messagebox.showinfo("ไม่พบลูกค้า", "Customer information not found.")
 
         except sqlite3.Error as e:
             messagebox.showerror("Database Error", f"An error occurred: {e}")
@@ -134,8 +131,6 @@ class CustomerExistPage(tk.Toplevel):
             if conn:
                 conn.close()
 
-    # 7 : 
     def on_close(self):
-        #print("on close")
         self.master.deiconify()  # Show the main page
         self.destroy()

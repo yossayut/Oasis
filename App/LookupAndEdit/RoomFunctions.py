@@ -1,18 +1,19 @@
 import sqlite3
-from tkinter import ttk, messagebox
+from tkinter       import ttk, messagebox
 from Config.Config import *
 
 class RoomFunctions:
     @staticmethod
 
     def display_show_all_room(tree, filter_var):
-        if DEBUG == True :
-            print("come to display show all room")
         conn   = sqlite3.connect(Oasis_database_full_path)
         cursor = conn.cursor()
 
         try:
             if filter_var.get() == "Show_all_room" :
+                if DEBUG == True :
+                    print("Show_all_room")
+
                 cursor.execute("""
                                 SELECT
                                     Apartment_Info_TBL.RoomNo, Apartment_Info_TBL.Building, Apartment_Info_TBL.Floor,
@@ -37,13 +38,13 @@ class RoomFunctions:
 
                                 CASE
                                     WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Contract_TBL.StartDate
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.CheckInDate
+                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.StartDate
                                     ELSE '----------------'
                                 END AS StartDate,
 
                                 CASE
                                     WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Contract_TBL.EndDate
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.CheckOutDate
+                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.EndDate
                                     ELSE '----------------'
                                 END AS EndDate  
 
@@ -60,6 +61,9 @@ class RoomFunctions:
                 """)
 
             elif filter_var.get() == "Show_only_occupied_room" :
+                if DEBUG == True :
+                    print("Show_only_occupied_room")
+
                 cursor.execute("""
                                 SELECT
                                     Apartment_Info_TBL.RoomNo, Apartment_Info_TBL.Building, Apartment_Info_TBL.Floor,
@@ -102,6 +106,9 @@ class RoomFunctions:
                 """)
 
             elif filter_var.get() == "Show_only_booked_room" :
+                if DEBUG == True :
+                    print("Show_only_booked_room")
+
                 cursor.execute("""
                                 SELECT
                                     Apartment_Info_TBL.RoomNo, Apartment_Info_TBL.Building, Apartment_Info_TBL.Floor,
@@ -138,6 +145,9 @@ class RoomFunctions:
                 """)
 
             elif filter_var.get() == "Show_free_room" :
+                if DEBUG == True :
+                    print("Show_free_room")
+
                 cursor.execute("""
                                 SELECT
                                     Apartment_Info_TBL.RoomNo, Apartment_Info_TBL.Building, Apartment_Info_TBL.Floor,
@@ -161,13 +171,13 @@ class RoomFunctions:
 
                                     CASE
                                         WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Contract_TBL.StartDate
-                                        WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.CheckInDate
+                                        WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.StartDate
                                         ELSE '----------------'
                                     END AS StartDate,
 
                                     CASE
                                         WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Contract_TBL.EndDate
-                                        WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.CheckOutDate
+                                        WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.EndDate
                                         ELSE '----------------'
                                     END AS EndDate  
 
@@ -188,6 +198,9 @@ class RoomFunctions:
                 """)
 
             else :
+                if DEBUG == True :
+                    print("Show_all_room")
+
                 cursor.execute("""
                                 SELECT
                                     Apartment_Info_TBL.RoomNo, Apartment_Info_TBL.Building, Apartment_Info_TBL.Floor,
@@ -212,13 +225,13 @@ class RoomFunctions:
 
                                 CASE
                                     WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Contract_TBL.StartDate
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.CheckInDate
+                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.StartDate
                                     ELSE '----------------'
                                 END AS StartDate,
 
                                 CASE
                                     WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Contract_TBL.EndDate
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.CheckOutDate
+                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.EndDate
                                     ELSE '----------------'
                                 END AS EndDate  
 

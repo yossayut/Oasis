@@ -1,20 +1,21 @@
 import sqlite3
 
 from Config.Config  import *
-from tkinter import messagebox
+from tkinter        import messagebox
 
 ####################################################
 # Get information from Database
 ####################################################
-def get_employee_name() :
+def get_employee_name_from_DB() :
     try:
-        conn = sqlite3.connect(Oasis_database_full_path)  
+        conn   = sqlite3.connect(Oasis_database_full_path)  
         cursor = conn.cursor()
         cursor.execute("SELECT FirstName, LastName FROM Employee_TBL")
         employee_names = cursor.fetchall()
+
         if DEBUG == True :
              for item in employee_names:
-                 print(item)
+                 print("get_employee_name => item : ",item)
 
         if not employee_names:
             return "ยังไม่มีพนักงาน"

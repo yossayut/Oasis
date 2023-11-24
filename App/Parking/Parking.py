@@ -1,10 +1,10 @@
 import tkinter as tk
-from tkinter import ttk  # Add this line to import ttk
 import sqlite3
-from tkinter import messagebox, simpledialog
+
+from tkinter  import ttk, messagebox, simpledialog # Add this line to import ttk
 from datetime import datetime
 
-from Config.Config import *
+from Config.Config                     import *
 from Parking.ParkingRegistrationForm   import ParkingRegistrationForm
 from LookupAndEdit.ParkFunctions       import ParkFunctions 
 
@@ -80,15 +80,26 @@ class ParkingPage(tk.Toplevel):
             columns=("RoomNo", "Building", "Floor","RoomType", "CustomerID", "Type", "Brand","Color","PlateNo"), 
             show="headings")
 
-        self.tree.heading("#1", text="เบอร์ห้อง",         command=lambda: self.sort_treeview(1, True))
-        self.tree.heading("#2", text="ตึก",             command=lambda: self.sort_treeview(2, True))
-        self.tree.heading("#3", text="ชั้น",             command=lambda: self.sort_treeview(3, True))
-        self.tree.heading("#4", text="ขนาดห้อง",         command=lambda: self.sort_treeview(4, True))
-        self.tree.heading("#5", text="ชื่อนามสกุลลูกค้า",   command=lambda: self.sort_treeview(5, True))
-        self.tree.heading("#6", text="ประเภท",          command=lambda: self.sort_treeview(6, True))
-        self.tree.heading("#7", text="ยี่ห้อ/รุ่น",         command=lambda: self.sort_treeview(7, True))
-        self.tree.heading("#8", text="สี",              command=lambda: self.sort_treeview(8, True))
-        self.tree.heading("#9", text="ทะเบียน",          command=lambda: self.sort_treeview(9, True))
+        txt_room_no       = "เบอร์ห้อง"
+        txt_building      = "ตึก"
+        txt_floor         = "ชั้น"
+        txt_room_size     = "ขนาดห้อง"
+        txt_customer_name = "ชื่อนามสกุลลูกค้า"
+        txt_venhicle_type = "ประเภท"
+        txt_brand         = "ยี่ห้อ/รุ่น"
+        txt_color         = "สี"
+        txt_plate_no      = "ทะเบียน"
+        txt_add           = "เพิ่มจอดรถ/มอไซต์"  
+
+        self.tree.heading("#1", text=txt_room_no        ,   command=lambda: self.sort_treeview(1, True))
+        self.tree.heading("#2", text=txt_building       ,   command=lambda: self.sort_treeview(2, True))
+        self.tree.heading("#3", text=txt_floor          ,   command=lambda: self.sort_treeview(3, True))
+        self.tree.heading("#4", text=txt_room_size      ,   command=lambda: self.sort_treeview(4, True))
+        self.tree.heading("#5", text=txt_customer_name  ,   command=lambda: self.sort_treeview(5, True))
+        self.tree.heading("#6", text=txt_venhicle_type  ,   command=lambda: self.sort_treeview(6, True))
+        self.tree.heading("#7", text=txt_brand          ,   command=lambda: self.sort_treeview(7, True))
+        self.tree.heading("#8", text=txt_color          ,   command=lambda: self.sort_treeview(8, True))
+        self.tree.heading("#9", text=txt_plate_no       ,   command=lambda: self.sort_treeview(9, True))
 
         self.tree.column("#1",  width=10,   anchor="center")
         self.tree.column("#2",  width=10,   anchor="center")
@@ -100,15 +111,15 @@ class ParkingPage(tk.Toplevel):
         self.tree.column("#8",  width=40,   anchor="center")
         self.tree.column("#9",  width=40,   anchor="center")
 
-        self.parking_button = tk.Button(self, text="เพิ่มจอดรถ/มอไซต์", command=self.open_parking_registration_form)
+        self.parking_button = tk.Button(self, text=txt_add , command=self.open_parking_registration_form)
         self.parking_button.pack(pady=10)
 
         paned_window.add(self.tree)
        
         ParkFunctions.display_show_all_parking(self.tree, self.filter_var)
 
+    # Call the display_show_all_room method from ParkFunctions class
     def display_show_all_parking(self):
-        # Call the display_show_all_room method from ParkFunctions class
         ParkFunctions.display_show_all_parking(self.tree, self.filter_var)
 
     def apply_filter(self):
@@ -123,29 +134,22 @@ class ParkingPage(tk.Toplevel):
         self.tree.heading(col, command=lambda: self.sort_treeview(col, not reverse))
 
     def open_parking_registration_form(self):
-        selected_item = self.tree.selection()
-
-        if DEBUG == True :
-            print(selected_item)
+        selected_item     = self.tree.selection()
 
         if not selected_item:
             messagebox.showwarning("Room Selection", "Please select a room.")
             return
-        self.withdraw()  # Hide the room selection
 
-        selected_room = self.tree.item(selected_item)['values']
-        if DEBUG == True :
-            print(selected_room)
-            
+        self.withdraw()  
+        selected_room     = self.tree.item(selected_item)['values']
         selected_customer = selected_room[4]
-        print(selected_customer)
-        ######################################################
-        # Call RegistrationForm : CustomerRegistrationForm.py
-        ######################################################
-        if DEBUG == True :
-            print(selected_customer)
-       
+
         ParkingRegistrationForm(self, selected_customer)
+
+        if DEBUG == True :
+            print("open_parking_registration_form => selected_room     : " + selected_room)
+            print("open_parking_registration_form => selected_item     : " + selected_item)
+            print("open_parking_registration_form => selected_customer : " + selected_customer)
 
     def on_close(self):
         self.master.deiconify()  # Show the main page

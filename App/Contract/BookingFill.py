@@ -1,8 +1,8 @@
 import sqlite3
 
-from Config.Config import *
-from tkinter import messagebox
-from GetData.GetEmployeeID import get_employee_id
+from Config.Config         import *
+from tkinter               import messagebox
+from GetData.GetEmployeeID import get_employee_id_from_first_last_name
 
 ####################################################
 # Get information from Database
@@ -27,10 +27,10 @@ def prepare_contract_info(selected_room, first_name, last_name, register_date, r
         name_parts       = employee.strip("()").replace("'", "").split(", ")
 
         if DEBUG == True :
-            print(name_parts[0])
-            print(name_parts[1])
+            print("prepare_contract_info => name_parts[0] : " + name_parts[0])
+            print("prepare_contract_info => name_parts[1] : " + name_parts[1])
 
-        EmployeeID_Input     = get_employee_id(name_parts[0],name_parts[1])
+        EmployeeID_Input     = get_employee_id_from_first_last_name(name_parts[0],name_parts[1])
 
         RoomFee_Input        = room_fee  
         InternetFee_Input    = internet    
@@ -65,8 +65,6 @@ def prepare_contract_info(selected_room, first_name, last_name, register_date, r
 #########################################################  
 def fill_contract_info(RoomID_Input, CustomerID_Input, StartDate_Input, EndDate_Input, EmployeeID_Input, RoomFee_Input, InternetFee_Input, MaintenanceFee_Input, ParkingFee_Input, Remark_Input, Status_Input):
     try:
-        #print("Insert contract information to Database")
-
         conn   = sqlite3.connect(Oasis_database_full_path)
         cursor = conn.cursor()
 

@@ -7,13 +7,16 @@ class ParkFunctions:
 
     def display_show_all_parking(tree, filter_var):
         if DEBUG == True :
-            print("come to display show all car")
+            print("Display show all car")
         
         conn   = sqlite3.connect(Oasis_database_full_path)
         cursor = conn.cursor()
 
         try:
             if filter_var.get() == "Show_all_car" :
+                if DEBUG == True :
+                    print("Show_all_car")
+
                 cursor.execute("""
                            SELECT
                                 Apartment_Info_TBL.RoomNo,
@@ -112,6 +115,9 @@ class ParkFunctions:
                 """)
 
             elif filter_var.get() == "Show_only_parked_room" :
+                if DEBUG == True :
+                    print("Show_only_parked_room")
+
                 cursor.execute("""
                            SELECT
                                 Apartment_Info_TBL.RoomNo,
@@ -209,6 +215,9 @@ class ParkFunctions:
                 """)
 
             elif filter_var.get() == "Show_only_room_have_bike" :
+                if DEBUG == True :
+                    print("Show_only_room_have_bike")
+
                 cursor.execute("""
 
                             SELECT
@@ -260,6 +269,9 @@ class ParkFunctions:
                 """)
 
             elif filter_var.get() == "Show_only_room_have_car" :
+                if DEBUG == True :
+                    print("Show_only_room_have_car")
+
                 cursor.execute("""
                            SELECT
                                 Apartment_Info_TBL.RoomNo,
@@ -310,6 +322,9 @@ class ParkFunctions:
                 """)
 
             elif filter_var.get() == "Show_free_room" :
+                if DEBUG == True :
+                    print("Show_free_room")
+
                 cursor.execute("""
                                 SELECT
                                     Apartment_Info_TBL.RoomNo,
@@ -380,6 +395,9 @@ class ParkFunctions:
                         """)
 
             else :
+                if DEBUG == True :
+                    print("Show_all_room")
+
                 cursor.execute("""
                            SELECT
                                 Apartment_Info_TBL.RoomNo,

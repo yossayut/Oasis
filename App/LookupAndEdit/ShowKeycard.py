@@ -1,7 +1,8 @@
 import tkinter as tk
-from tkinter import ttk
 import sqlite3
-from Config.Config                import *
+
+from tkinter         import ttk
+from Config.Config   import *
 
 class Show_keycard_Page(tk.Toplevel):
     def change_filter(self, option):
@@ -14,7 +15,8 @@ class Show_keycard_Page(tk.Toplevel):
         self.geometry("800x600")
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.create_widgets()
-
+        self.bind('<Escape>', self.on_escape)
+        
     def create_widgets(self):
         paned_window = ttk.Panedwindow(self, orient=tk.VERTICAL)
         paned_window.pack(fill=tk.BOTH, expand=True)
@@ -52,12 +54,19 @@ class Show_keycard_Page(tk.Toplevel):
         	columns=("Keycard No.", "Keycard ID", "Customer First Name Last Name", "Customer Room", "Staff First Name Last Name", "Status"), 
         	show="headings")
 
-        self.tree.heading("#1", text="เลขที่บัตร", command=lambda: self.sort_treeview(1, True))
-        self.tree.heading("#2", text="ID บัตร", command=lambda: self.sort_treeview(2, True))
-        self.tree.heading("#3", text="ชื่อนามสกุลลูกค้า", command=lambda: self.sort_treeview(3, True))
-        self.tree.heading("#4", text="ห้อง", command=lambda: self.sort_treeview(4, True))
-        self.tree.heading("#5", text="ชื่อนามสกุลพนักงาน", command=lambda: self.sort_treeview(5, True))
-        self.tree.heading("#6", text="สถานะบัตร", command=lambda: self.sort_treeview(6, True))
+        txt_card_no       = "เลขที่บัตร"
+        txt_card_id       = "ID บัตร"
+        txt_customer_name = "ชื่อนามสกุลลูกค้า"
+        txt_room_no       = "ห้อง"
+        txt_staff_name    = "ชื่อนามสกุลพนักงาน"
+        txt_card_status   = "สถานะบัตร"
+
+        self.tree.heading("#1", text=txt_card_no       ,  command=lambda: self.sort_treeview(1, True))
+        self.tree.heading("#2", text=txt_card_id       ,  command=lambda: self.sort_treeview(2, True))
+        self.tree.heading("#3", text=txt_customer_name ,  command=lambda: self.sort_treeview(3, True))
+        self.tree.heading("#4", text=txt_room_no       ,  command=lambda: self.sort_treeview(4, True))
+        self.tree.heading("#5", text=txt_staff_name    ,  command=lambda: self.sort_treeview(5, True))
+        self.tree.heading("#6", text=txt_card_status   ,  command=lambda: self.sort_treeview(6, True))
 
         self.tree.column("#1", width=40,  anchor="center")
         self.tree.column("#2", width=80,  anchor="center")
@@ -70,15 +79,17 @@ class Show_keycard_Page(tk.Toplevel):
         self.display_show_all_keycard()
 
     def display_show_all_keycard(self):
-        # Connect to the SQLite database
-        conn = sqlite3.connect(Oasis_database_full_path)
+        conn   = sqlite3.connect(Oasis_database_full_path)
         cursor = conn.cursor()
 
         try:
             if self.filter_var.get() == "Free keycard":
+                if DEBUG == True :
+                    print("1.บัตรคีย์การ์ดที่ว่าง")
+
                 cursor.execute("""
                     SELECT 
-                        COALESCE(Access_Card_Manage_TBL.CardNo, '-') AS CardNumber,
+                        COALESCE(Access_Card_Manage_TBL.CardNo, '-')    AS CardNumber,
                         COALESCE(Access_Card_Manage_TBL.KeycardID, '-') AS KeycardID,
                         COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName, '-') AS CustomerName,
                         COALESCE(Apartment_Info_TBL.RoomNo, '-') AS RoomNo,
@@ -90,18 +101,21 @@ class Show_keycard_Page(tk.Toplevel):
                             ELSE '-'
                         END AS Status  
                     FROM Access_Card_Manage_TBL
-                    LEFT JOIN Customer_TBL ON Access_Card_Manage_TBL.CustomerID = Customer_TBL.CustomerID
-                    LEFT JOIN Contract_TBL ON Customer_TBL.CustomerID = Contract_TBL.CustomerID
-                    LEFT JOIN Apartment_Info_TBL ON Contract_TBL.RoomID = Apartment_Info_TBL.RoomID
-                    LEFT JOIN Employee_TBL ON Access_Card_Manage_TBL.StaffID = Employee_TBL.EmployeeID
+                    LEFT JOIN Customer_TBL       ON Access_Card_Manage_TBL.CustomerID = Customer_TBL.CustomerID
+                    LEFT JOIN Contract_TBL       ON Customer_TBL.CustomerID           = Contract_TBL.CustomerID
+                    LEFT JOIN Apartment_Info_TBL ON Contract_TBL.RoomID               = Apartment_Info_TBL.RoomID
+                    LEFT JOIN Employee_TBL       ON Access_Card_Manage_TBL.StaffID    = Employee_TBL.EmployeeID
                     WHERE Access_Card_Manage_TBL.Status = 'Idle'
                     ORDER BY Access_Card_Manage_TBL.CardNo;
                 """)
 
             elif self.filter_var.get() == "Used keycard":
+                if DEBUG == True :
+                    print("2.เฉพาะบัตรคีย์การ์ดที่ถูกใช้")
+
                 cursor.execute("""
                     SELECT 
-                        COALESCE(Access_Card_Manage_TBL.CardNo, '-') AS CardNumber,
+                        COALESCE(Access_Card_Manage_TBL.CardNo, '-')    AS CardNumber,
                         COALESCE(Access_Card_Manage_TBL.KeycardID, '-') AS KeycardID,
                         COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName, '-') AS CustomerName,
                         COALESCE(Apartment_Info_TBL.RoomNo, '-') AS RoomNo,
@@ -113,18 +127,21 @@ class Show_keycard_Page(tk.Toplevel):
                             ELSE '-'
                         END AS Status  
                     FROM Access_Card_Manage_TBL
-                    LEFT JOIN Customer_TBL ON Access_Card_Manage_TBL.CustomerID = Customer_TBL.CustomerID
-                    LEFT JOIN Contract_TBL ON Customer_TBL.CustomerID = Contract_TBL.CustomerID
-                    LEFT JOIN Apartment_Info_TBL ON Contract_TBL.RoomID = Apartment_Info_TBL.RoomID
-                    LEFT JOIN Employee_TBL ON Access_Card_Manage_TBL.StaffID = Employee_TBL.EmployeeID
+                    LEFT JOIN Customer_TBL       ON Access_Card_Manage_TBL.CustomerID = Customer_TBL.CustomerID
+                    LEFT JOIN Contract_TBL       ON Customer_TBL.CustomerID           = Contract_TBL.CustomerID
+                    LEFT JOIN Apartment_Info_TBL ON Contract_TBL.RoomID               = Apartment_Info_TBL.RoomID
+                    LEFT JOIN Employee_TBL       ON Access_Card_Manage_TBL.StaffID    = Employee_TBL.EmployeeID
                     WHERE Access_Card_Manage_TBL.Status = 'Used'
                     ORDER BY Access_Card_Manage_TBL.CardNo;
                 """)
 
             elif self.filter_var.get() == "Used keycard order by RoomNo":
+                if DEBUG == True :
+                    print("3.ทั้งหมดเรียงตามผู้เช่า")
+
                 cursor.execute("""
                     SELECT 
-                        COALESCE(Access_Card_Manage_TBL.CardNo, '-') AS CardNumber,
+                        COALESCE(Access_Card_Manage_TBL.CardNo, '-')    AS CardNumber,
                         COALESCE(Access_Card_Manage_TBL.KeycardID, '-') AS KeycardID,
                         COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName, '-') AS CustomerName,
                         COALESCE(Apartment_Info_TBL.RoomNo, '-') AS RoomNo,
@@ -136,19 +153,22 @@ class Show_keycard_Page(tk.Toplevel):
                             ELSE '-'
                         END AS Status  
                     FROM Access_Card_Manage_TBL
-                    LEFT JOIN Customer_TBL ON Access_Card_Manage_TBL.CustomerID = Customer_TBL.CustomerID
-                    LEFT JOIN Contract_TBL ON Customer_TBL.CustomerID = Contract_TBL.CustomerID
-                    LEFT JOIN Apartment_Info_TBL ON Contract_TBL.RoomID = Apartment_Info_TBL.RoomID
-                    LEFT JOIN Employee_TBL ON Access_Card_Manage_TBL.StaffID = Employee_TBL.EmployeeID
+                    LEFT JOIN Customer_TBL       ON Access_Card_Manage_TBL.CustomerID = Customer_TBL.CustomerID
+                    LEFT JOIN Contract_TBL       ON Customer_TBL.CustomerID           = Contract_TBL.CustomerID
+                    LEFT JOIN Apartment_Info_TBL ON Contract_TBL.RoomID               = Apartment_Info_TBL.RoomID
+                    LEFT JOIN Employee_TBL       ON Access_Card_Manage_TBL.StaffID    = Employee_TBL.EmployeeID
                     WHERE Access_Card_Manage_TBL.Status = 'Used' AND Customer_TBL.FirstName IS NOT NULL AND Customer_TBL.LastName IS NOT NULL
                     ORDER BY Apartment_Info_TBL.RoomNo;
                 """)
 
             else:
+                if DEBUG == True :
+                    print("4.บัตรคีย์การ์ดทั้งหมด")      
+
                 # Show all KeyCard
                 cursor.execute("""
                     SELECT 
-                        COALESCE(Access_Card_Manage_TBL.CardNo, '-') AS CardNumber,
+                        COALESCE(Access_Card_Manage_TBL.CardNo, '-')    AS CardNumber,
                         COALESCE(Access_Card_Manage_TBL.KeycardID, '-') AS KeycardID,
                         COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName, '-') AS CustomerName,
                         COALESCE(Apartment_Info_TBL.RoomNo, '-') AS RoomNo,
@@ -160,10 +180,10 @@ class Show_keycard_Page(tk.Toplevel):
                             ELSE '-'
                         END AS Status  
                     FROM Access_Card_Manage_TBL
-                    LEFT JOIN Customer_TBL ON Access_Card_Manage_TBL.CustomerID = Customer_TBL.CustomerID
-                    LEFT JOIN Contract_TBL ON Customer_TBL.CustomerID = Contract_TBL.CustomerID
-                    LEFT JOIN Apartment_Info_TBL ON Contract_TBL.RoomID = Apartment_Info_TBL.RoomID
-                    LEFT JOIN Employee_TBL ON Access_Card_Manage_TBL.StaffID = Employee_TBL.EmployeeID
+                    LEFT JOIN Customer_TBL       ON Access_Card_Manage_TBL.CustomerID = Customer_TBL.CustomerID
+                    LEFT JOIN Contract_TBL       ON Customer_TBL.CustomerID           = Contract_TBL.CustomerID
+                    LEFT JOIN Apartment_Info_TBL ON Contract_TBL.RoomID               = Apartment_Info_TBL.RoomID
+                    LEFT JOIN Employee_TBL       ON Access_Card_Manage_TBL.StaffID    = Employee_TBL.EmployeeID
                     ORDER BY Access_Card_Manage_TBL.CardNo;
                 """)
 
@@ -192,16 +212,8 @@ class Show_keycard_Page(tk.Toplevel):
         self.tree.heading(col, command=lambda: self.sort_treeview(col, not reverse))
 
     def on_close(self):
-
-        if DEBUG == True :
-            print("onclose", self.new_customer_flag)
-
-        if DEBUG == True :
-            print("onclose after set", self.new_customer_flag)
-
         self.master.deiconify()                        # Show the main page
         self.destroy()
 
-    
     def on_escape(self, event):
         self.on_close()                                # Close the current window
