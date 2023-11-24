@@ -195,14 +195,11 @@ class RegistrationForm(tk.Toplevel):
         # Create button : Contract submit button
         ########################################################################################################
         tk.Button(self, text=txt_button_contract, command=lambda: self.submit_form("contract")).grid(row=20, column=1, pady=10)
-   
-        ########################################################################################################
 
         ########################################################################################################
         # Create button : Booking submit button
         ########################################################################################################
         tk.Button(self, text=txt_button_booking, command=lambda: self.submit_form("booking")).grid(row=20, column=2, pady=10)
-        ########################################################################################################
 
     def open_exist_customer(self):
         self.clear_form()
@@ -368,8 +365,8 @@ class RegistrationForm(tk.Toplevel):
                                                       remark)
 
                 employee_names      = employee.strip("()").split(", ")
-                employee_first_name = employee_names[0].strip("'")  # Extract the first name
-                employee_last_name  = employee_names[1].strip("'")   # Extract the second name
+                employee_first_name = employee_names[0].strip("'")       # Extract the first name
+                employee_last_name  = employee_names[1].strip("'")       # Extract the second name
                 employee_name       = employee_first_name + ' ' + employee_last_name
 
                 if DEBUG == True :
@@ -430,9 +427,9 @@ class RegistrationForm(tk.Toplevel):
                                     'ค่าเช่า'          : RoomFee_Input,
                                     'ค่าเช่ารวมเฟอร์'    : room_fee_add_fur,
                                     'วันเริ่มสัญญา'     : register_date,
-                                    'วันสิ้นสุดสัญญา'  : register_end_date,
-                                    'ผู้กรอกข้อมูล'    : employee_name,
-                                    'ไลน์id'        : line_id
+                                    'วันสิ้นสุดสัญญา'   : register_end_date,
+                                    'ผู้กรอกข้อมูล'     : employee_name,
+                                    'ไลน์id'         : line_id
                                 }
                         doc.render(context)
                         doc.save(output_contract_path)
@@ -446,9 +443,11 @@ class RegistrationForm(tk.Toplevel):
                 self.clear_form()
                 self.on_close()
 
-            else: # If employee not selected
+            else: 
+                # If employee not selected
                 messagebox.showinfo("Warning", "กรุณาเลือกพนักงานที่ทำสัญญา")
-        else: # If employee not selected
+        else: 
+            # If employee not selected
             messagebox.showinfo("Warning", "กรุณากรอกข้อมูลก่อนทำสัญญา") 
 
     def on_close(self):

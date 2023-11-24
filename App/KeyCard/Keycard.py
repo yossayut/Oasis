@@ -7,6 +7,7 @@ from GetData.GetEmployeeID          import get_employee_id_from_first_last_name
 from GetData.GetCustomerID          import get_customer_id_from_first_last_name
 from GetData.GetCurrentCustomerName import get_current_customer_name_from_DB
 from Config.Config                  import *
+from KeyCard.KeycardCheck           import keycard_check
 
 global txt_staff_fill 
 
@@ -110,7 +111,7 @@ class KeycardPage(tk.Toplevel):
 
         try:
             card_number             = self.entry_text.get()  # Get the input text
-            card_number_exist_flag  = False
+            card_number_exist_flag  = keycard_check(card_number)
             transaction_radio       = self.transaction_type.get()
             employee_filler         = self.selected_filler.get()
 
