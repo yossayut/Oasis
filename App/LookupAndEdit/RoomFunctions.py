@@ -6,6 +6,9 @@ class RoomFunctions:
     @staticmethod
 
     def display_show_all_room(tree, filter_var):
+        if DEBUG == True :
+            print("display_show_all_room => Oasis_database_full_path", Oasis_database_full_path)
+            
         conn   = sqlite3.connect(Oasis_database_full_path)
         cursor = conn.cursor()
 
