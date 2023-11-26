@@ -33,25 +33,25 @@ class Show_all_room_Page(tk.Toplevel):
         tk.Label(filter_frame, text="ห้องทั้งหมด : ").grid(row=0, column=0)                          
 
         ttk.Radiobutton(filter_frame, 
-            text="โชว์ทั้งหมด", 
+            text="แสดงทั้งหมด", 
             value="Show_all_room", 
             variable=self.filter_var, 
             command=lambda: self.change_filter("Show_all_room")).grid(row=0, column=1, padx=10)
 
         ttk.Radiobutton(filter_frame, 
-            text="โชว์ห้องคนอยู่แล้ว", 
+            text="แสดงห้องคนอยู่แล้ว", 
             value="Show_only_occupied_room", 
             variable=self.filter_var, 
             command=lambda: self.change_filter("Show_only_occupied_room")).grid(row=0, column=2, padx=10)
 
         ttk.Radiobutton(filter_frame, 
-            text="โชว์ห้องติดจอง", 
+            text="แสดงห้องติดจอง", 
             value="Show_only_booked_room", 
             variable=self.filter_var, 
             command=lambda: self.change_filter("Show_only_booked_room")).grid(row=0, column=3, padx=10)
 
         ttk.Radiobutton(filter_frame, 
-            text="โชว์ห้องว่าง", 
+            text="แสดงห้องว่าง", 
             value="Show_free_room", 
             variable=self.filter_var, 
             command=lambda: self.change_filter("Show_free_room")).grid(row=0, column=4, padx=10)
