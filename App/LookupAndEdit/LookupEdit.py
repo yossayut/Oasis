@@ -2,6 +2,7 @@ import tkinter as tk
 from LookupAndEdit.ShowAllRoom     import Show_all_room_Page
 from LookupAndEdit.ShowAllContract import Show_all_contract_Page
 from LookupAndEdit.ShowKeycard     import Show_keycard_Page
+from LookupAndEdit.ShowCustomer    import Show_customer_Page
 
 class LookUpAndEditPage(tk.Toplevel):
     def __init__(self, master):
@@ -17,11 +18,13 @@ class LookUpAndEditPage(tk.Toplevel):
         txt_show_all_room     = "ห้องพักทั้งหมด"
         txt_show_all_contract = "สัญญาเช่าทั้งหมด"
         txt_show_keycard      = "คีย์การ์ดทั้งหมด"
+        txt_show_customer     = "ลูกค้าทั้งหมด"
 
         tk.Button(self, text=txt_show_all_room     , command=self.show_all_room).pack(pady=10)        
         tk.Button(self, text=txt_show_all_contract , command=self.show_all_contract).pack(pady=10)
         tk.Button(self, text=txt_show_keycard      , command=self.show_keycard).pack(pady=10)
-        
+        tk.Button(self, text=txt_show_customer     , command=self.show_customer).pack(pady=10)
+
     def show_all_room(self):
         self.withdraw()
         Show_all_room_Page(self)
@@ -33,6 +36,10 @@ class LookUpAndEditPage(tk.Toplevel):
     def show_keycard(self):
         self.withdraw()
         Show_keycard_Page(self)
+
+    def show_customer(self):
+        self.withdraw()
+        Show_customer_Page(self)
 
     def on_close(self):
         self.master.deiconify()  # Show the main page

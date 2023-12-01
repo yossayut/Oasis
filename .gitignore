@@ -1,5 +1,6 @@
 *.pyc
 ~.*.docx
+*.docx
 .DS_Store
 Thumbs.db
 Oasis_Apartment.db-journal

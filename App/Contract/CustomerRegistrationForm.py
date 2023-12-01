@@ -434,10 +434,14 @@ class RegistrationForm(tk.Toplevel):
                                     'ไลน์id'         : line_id
                                 }
                         doc.render(context)
-                        doc.save(output_contract_path)
+                        output_contract_full = output_contract_path + "สัญญาเช่าอะพาร์ตเมนต์_" + first_name + " " + last_name + ".docx"
+                        
+                        if DEBUG == True :
+                            print(output_contract_full)
 
-                        Document(output_contract_path)
-                        os.startfile(output_contract_path)
+                        doc.save(output_contract_full )
+                        Document(output_contract_full)
+                        os.startfile(output_contract_full)
                     
                     else :
                         messagebox.showinfo("พริ้นท์ใบจอง", "พริ้นท์ใบจอง")

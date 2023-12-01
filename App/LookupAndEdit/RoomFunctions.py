@@ -18,237 +18,228 @@ class RoomFunctions:
                     print("Show_all_room")
 
                 cursor.execute("""
-                                SELECT
-                                    Apartment_Info_TBL.RoomNo, Apartment_Info_TBL.Building, Apartment_Info_TBL.Floor,
+                                    WITH RoomStatusCTE AS (
+                                        SELECT
+                                            Apartment_Info_TBL.RoomNo,
+                                            Apartment_Info_TBL.Building,
+                                            Apartment_Info_TBL.Floor,
+                                            CASE
+                                                WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
+                                                WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
+                                                ELSE '-'
+                                            END AS RoomType,
+                                            CASE
+                                                WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN 'เช่า'
+                                                WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN 'จอง'
+                                                ELSE 'ว่าง'
+                                            END AS RoomStatus,
+                                            COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName, Customer_Booking.FirstName || ' ' || Customer_Booking.LastName, '----------------') AS CustomerName,
+                                            COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate, '----------------') AS StartDate,
+                                            COALESCE(Contract_TBL.EndDate, Booking_TBL.EndDate, '----------------') AS EndDate,
+                                            ROW_NUMBER() OVER (PARTITION BY Apartment_Info_TBL.RoomID ORDER BY COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate) DESC) AS RowNum
+                                        FROM
+                                            Apartment_Info_TBL
+                                            LEFT JOIN Contract_TBL ON Apartment_Info_TBL.RoomID = Contract_TBL.RoomID AND Contract_TBL.Status = 'Active'
+                                            LEFT JOIN Customer_TBL AS Customer_Contract ON Customer_Contract.CustomerID = Contract_TBL.CustomerID
+                                            LEFT JOIN Booking_TBL ON Apartment_Info_TBL.RoomID = Booking_TBL.RoomID AND Booking_TBL.Status = 'Active'
+                                            LEFT JOIN Customer_TBL AS Customer_Booking ON Customer_Booking.CustomerID = Booking_TBL.CustomerID
+                                    )
+                                    SELECT
+                                        RoomNo,
+                                        Building,
+                                        Floor,
+                                        RoomType,
+                                        RoomStatus,
+                                        CustomerName,
+                                        StartDate,
+                                        EndDate
+                                    FROM RoomStatusCTE
+                                    WHERE RowNum = 1
+                                    ORDER BY RoomNo;
+                               """)
 
-                                CASE
-                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
-                                    WHEN Apartment_Info_TBL.RoomType = 'BigType' THEN 'GardenView Room'
-                                    ELSE '-'
-                                END AS RoomType,
-
-                                CASE
-                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN 'เช่า'
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN 'จอง'
-                                    ELSE '-------- ว่าง --------'
-                                END AS RoomStatus,
-
-                                CASE
-                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName || ' ' || Customer_Booking.LastName
-                                    ELSE '----------------'
-                                END AS CustomerName,
-
-                                CASE
-                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Contract_TBL.StartDate
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.StartDate
-                                    ELSE '----------------'
-                                END AS StartDate,
-
-                                CASE
-                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Contract_TBL.EndDate
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.EndDate
-                                    ELSE '----------------'
-                                END AS EndDate  
-
-                                FROM
-                                    Apartment_Info_TBL
-                                    LEFT JOIN Contract_TBL ON Apartment_Info_TBL.RoomID = Contract_TBL.RoomID
-                                    LEFT JOIN Customer_TBL AS Customer_Contract ON Customer_Contract.CustomerID   = Contract_TBL.CustomerID
-
-                                    LEFT JOIN Booking_TBL  ON Apartment_Info_TBL.RoomID = Booking_TBL.RoomID
-                                    LEFT JOIN Customer_TBL AS Customer_Booking ON Customer_Booking.CustomerID   = Booking_TBL.CustomerID
-
-                                ORDER BY
-                                    Apartment_Info_TBL.RoomNo;
-                """)
 
             elif filter_var.get() == "Show_only_occupied_room" :
                 if DEBUG == True :
                     print("Show_only_occupied_room")
 
                 cursor.execute("""
-                                SELECT
-                                    Apartment_Info_TBL.RoomNo, Apartment_Info_TBL.Building, Apartment_Info_TBL.Floor,
-                                    CASE
-                                        WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
-                                        WHEN Apartment_Info_TBL.RoomType = 'BigType' THEN 'GardenView Room'
-                                        ELSE '-'
-                                    END AS RoomType,
-
-                                    CASE
-                                        WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN 'เช่า'
-                                        ELSE '-------- ว่าง --------'
-                                    END AS RoomStatus,
-
-                                    CASE
-                                        WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName
-                                        ELSE '----------------'
-                                    END AS CustomerName,
-
-                                    CASE
-                                        WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Contract_TBL.StartDate
-                                        ELSE '----------------'
-                                    END AS StartDate,
-
-                                    CASE
-                                        WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Contract_TBL.EndDate
-                                        ELSE '----------------'
-                                    END AS EndDate
-
-                                FROM
-                                    Apartment_Info_TBL
-                                    LEFT JOIN Contract_TBL ON Apartment_Info_TBL.RoomID = Contract_TBL.RoomID AND Contract_TBL.Status = 'Active'
-                                    LEFT JOIN Customer_TBL AS Customer_Contract ON Customer_Contract.CustomerID = Contract_TBL.CustomerID
-
-                                WHERE
-                                    Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active'  -- Show only rooms with an active contract
-
-                                ORDER BY
-                                    Apartment_Info_TBL.RoomNo;
-                """)
+                                    WITH RoomStatusCTE AS (
+                                        SELECT
+                                            Apartment_Info_TBL.RoomNo,
+                                            Apartment_Info_TBL.Building,
+                                            Apartment_Info_TBL.Floor,
+                                            CASE
+                                                WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
+                                                WHEN Apartment_Info_TBL.RoomType = 'BigType' THEN 'GardenView Room'
+                                                ELSE '-'
+                                            END AS RoomType,
+                                            CASE
+                                                WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN 'เช่า'
+                                                WHEN Booking_TBL.RoomID IS NOT NULL AND Booking_TBL.Status = 'Active' THEN 'จอง'
+                                                ELSE 'ว่าง'
+                                            END AS RoomStatus,
+                                            COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName, Customer_Booking.FirstName || ' ' || Customer_Booking.LastName, '----------------') AS CustomerName,
+                                            COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate, '----------------') AS StartDate,
+                                            COALESCE(Contract_TBL.EndDate, Booking_TBL.EndDate, '----------------') AS EndDate,
+                                            ROW_NUMBER() OVER (PARTITION BY Apartment_Info_TBL.RoomID ORDER BY COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate) DESC) AS RowNum
+                                        FROM
+                                            Apartment_Info_TBL
+                                            LEFT JOIN Contract_TBL ON Apartment_Info_TBL.RoomID = Contract_TBL.RoomID AND Contract_TBL.Status = 'Active'
+                                            LEFT JOIN Customer_TBL AS Customer_Contract ON Customer_Contract.CustomerID = Contract_TBL.CustomerID
+                                            LEFT JOIN Booking_TBL ON Apartment_Info_TBL.RoomID = Booking_TBL.RoomID AND Booking_TBL.Status = 'Active'
+                                            LEFT JOIN Customer_TBL AS Customer_Booking ON Customer_Booking.CustomerID = Booking_TBL.CustomerID
+                                    )
+                                    SELECT
+                                        RoomNo,
+                                        Building,
+                                        Floor,
+                                        RoomType,
+                                        RoomStatus,
+                                        CustomerName,
+                                        StartDate,
+                                        EndDate
+                                    FROM RoomStatusCTE
+                                    WHERE RoomStatus IN ('เช่า')
+                                    ORDER BY RoomNo;
+                                """)
 
             elif filter_var.get() == "Show_only_booked_room" :
                 if DEBUG == True :
                     print("Show_only_booked_room")
 
                 cursor.execute("""
-                                SELECT
-                                    Apartment_Info_TBL.RoomNo, Apartment_Info_TBL.Building, Apartment_Info_TBL.Floor,
-                                    CASE
-                                        WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
-                                        WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
-                                        ELSE '-'
-                                    END AS RoomType,
+                                    WITH RoomStatusCTE AS (
+                                        SELECT
+                                            Apartment_Info_TBL.RoomNo,
+                                            Apartment_Info_TBL.Building,
+                                            Apartment_Info_TBL.Floor,
+                                            CASE
+                                                WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
+                                                WHEN Apartment_Info_TBL.RoomType = 'BigType' THEN 'GardenView Room'
+                                                ELSE '-'
+                                            END AS RoomType,
+                                            CASE
+                                                WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN 'เช่า'
+                                                WHEN Booking_TBL.RoomID IS NOT NULL AND Booking_TBL.Status = 'Active' THEN 'จอง'
+                                                ELSE 'ว่าง'
+                                            END AS RoomStatus,
+                                            COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName, Customer_Booking.FirstName || ' ' || Customer_Booking.LastName, '----------------') AS CustomerName,
+                                            COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate, '----------------') AS StartDate,
+                                            COALESCE(Contract_TBL.EndDate, Booking_TBL.EndDate, '----------------') AS EndDate,
+                                            ROW_NUMBER() OVER (PARTITION BY Apartment_Info_TBL.RoomID ORDER BY COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate) DESC) AS RowNum
+                                        FROM
+                                            Apartment_Info_TBL
+                                            LEFT JOIN Contract_TBL ON Apartment_Info_TBL.RoomID = Contract_TBL.RoomID AND Contract_TBL.Status = 'Active'
+                                            LEFT JOIN Customer_TBL AS Customer_Contract ON Customer_Contract.CustomerID = Contract_TBL.CustomerID
+                                            LEFT JOIN Booking_TBL ON Apartment_Info_TBL.RoomID = Booking_TBL.RoomID AND Booking_TBL.Status = 'Active'
+                                            LEFT JOIN Customer_TBL AS Customer_Booking ON Customer_Booking.CustomerID = Booking_TBL.CustomerID
+                                    )
+                                    SELECT
+                                        RoomNo,
+                                        Building,
+                                        Floor,
+                                        RoomType,
+                                        RoomStatus,
+                                        CustomerName,
+                                        StartDate,
+                                        EndDate
+                                    FROM RoomStatusCTE
+                                    WHERE RoomStatus IN ('จอง')
+                                    ORDER BY RoomNo;
 
-                                    CASE
-                                        WHEN Booking_TBL.RoomID IS NOT NULL AND Booking_TBL.Status = 'Active' THEN 'จอง'
-                                        ELSE '-------- ว่าง --------'
-                                    END AS RoomStatus,
-
-                                    CASE
-                                        WHEN Booking_TBL.RoomID IS NOT NULL AND Booking_TBL.Status = 'Active' THEN Customer_Booking.FirstName || ' ' || Customer_Booking.LastName
-                                        ELSE '----------------'
-                                    END AS CustomerName,
-
-                                    '----------------' AS StartDate,  -- Placeholder for StartDate
-                                    '----------------' AS EndDate     -- Placeholder for EndDate
-
-                                FROM
-                                    Apartment_Info_TBL
-                                    LEFT JOIN Booking_TBL ON Apartment_Info_TBL.RoomID = Booking_TBL.RoomID AND Booking_TBL.Status = 'Active'
-                                    LEFT JOIN Customer_TBL AS Customer_Booking ON Customer_Booking.CustomerID = Booking_TBL.CustomerID
-
-                                WHERE
-                                    Booking_TBL.RoomID IS NOT NULL AND Booking_TBL.Status = 'Active'  -- Show only rooms with an active booking
-
-                                ORDER BY
-                                    Apartment_Info_TBL.RoomNo;
-
-                """)
+                                """)
 
             elif filter_var.get() == "Show_free_room" :
                 if DEBUG == True :
                     print("Show_free_room")
 
                 cursor.execute("""
-                                SELECT
-                                    Apartment_Info_TBL.RoomNo, Apartment_Info_TBL.Building, Apartment_Info_TBL.Floor,
-                                    CASE
-                                        WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
-                                        WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
-                                        ELSE '-'
-                                    END AS RoomType,
-
-                                    CASE
-                                        WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN 'เช่า'
-                                        WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN 'จอง'
-                                        ELSE '-------- ว่าง --------'
-                                    END AS RoomStatus,
-
-                                    CASE
-                                        WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName
-                                        WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName || ' ' || Customer_Booking.LastName
-                                        ELSE '----------------'
-                                    END AS CustomerName,
-
-                                    CASE
-                                        WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Contract_TBL.StartDate
-                                        WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.StartDate
-                                        ELSE '----------------'
-                                    END AS StartDate,
-
-                                    CASE
-                                        WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Contract_TBL.EndDate
-                                        WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.EndDate
-                                        ELSE '----------------'
-                                    END AS EndDate  
-
-                                FROM
-                                    Apartment_Info_TBL
-                                    LEFT JOIN Contract_TBL ON Apartment_Info_TBL.RoomID = Contract_TBL.RoomID AND Contract_TBL.Status = 'Active'
-                                    LEFT JOIN Customer_TBL AS Customer_Contract ON Customer_Contract.CustomerID = Contract_TBL.CustomerID
-                                    LEFT JOIN Booking_TBL ON Apartment_Info_TBL.RoomID = Booking_TBL.RoomID AND Booking_TBL.Status = 'Active'
-                                    LEFT JOIN Customer_TBL AS Customer_Booking ON Customer_Booking.CustomerID = Booking_TBL.CustomerID
-
-                                WHERE
-                                    (Contract_TBL.RoomID IS NULL OR Contract_TBL.Status != 'Active') AND
-                                    (Booking_TBL.RoomID IS NULL OR Booking_TBL.Status != 'Active')  -- Show only rooms without an active contract or booking
-
-                                ORDER BY
-                                    Apartment_Info_TBL.RoomNo;
-
-                """)
+     
+                                    WITH RoomStatusCTE AS (
+                                        SELECT
+                                            Apartment_Info_TBL.RoomNo,
+                                            Apartment_Info_TBL.Building,
+                                            Apartment_Info_TBL.Floor,
+                                            CASE
+                                                WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
+                                                WHEN Apartment_Info_TBL.RoomType = 'BigType' THEN 'GardenView Room'
+                                                ELSE '-'
+                                            END AS RoomType,
+                                            CASE
+                                                WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN 'เช่า'
+                                                WHEN Booking_TBL.RoomID IS NOT NULL AND Booking_TBL.Status = 'Active' THEN 'จอง'
+                                                ELSE 'ว่าง'
+                                            END AS RoomStatus,
+                                            COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName, Customer_Booking.FirstName || ' ' || Customer_Booking.LastName, '----------------') AS CustomerName,
+                                            COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate, '----------------') AS StartDate,
+                                            COALESCE(Contract_TBL.EndDate, Booking_TBL.EndDate, '----------------') AS EndDate,
+                                            ROW_NUMBER() OVER (PARTITION BY Apartment_Info_TBL.RoomID ORDER BY COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate) DESC) AS RowNum
+                                        FROM
+                                            Apartment_Info_TBL
+                                            LEFT JOIN Contract_TBL ON Apartment_Info_TBL.RoomID = Contract_TBL.RoomID AND Contract_TBL.Status = 'Active'
+                                            LEFT JOIN Customer_TBL AS Customer_Contract ON Customer_Contract.CustomerID = Contract_TBL.CustomerID
+                                            LEFT JOIN Booking_TBL ON Apartment_Info_TBL.RoomID = Booking_TBL.RoomID AND Booking_TBL.Status = 'Active'
+                                            LEFT JOIN Customer_TBL AS Customer_Booking ON Customer_Booking.CustomerID = Booking_TBL.CustomerID
+                                    )
+                                    SELECT
+                                        RoomNo,
+                                        Building,
+                                        Floor,
+                                        RoomType,
+                                        RoomStatus,
+                                        CustomerName,
+                                        StartDate,
+                                        EndDate
+                                    FROM RoomStatusCTE
+                                    WHERE RoomStatus = 'ว่าง'
+                                    ORDER BY RoomNo;
+                                """)
 
             else :
                 if DEBUG == True :
                     print("Show_all_room")
 
                 cursor.execute("""
-                                SELECT
-                                    Apartment_Info_TBL.RoomNo, Apartment_Info_TBL.Building, Apartment_Info_TBL.Floor,
-
-                                CASE
-                                    WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
-                                    WHEN Apartment_Info_TBL.RoomType = 'BigType'   THEN 'GardenView Room'
-                                    ELSE '-'
-                                END AS RoomType,
-
-                                CASE
-                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN 'เช่า'
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN 'จอง'
-                                    ELSE '-------- ว่าง --------'
-                                END AS RoomStatus,
-
-                                CASE
-                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName || ' ' || Customer_Booking.LastName
-                                    ELSE '----------------'
-                                END AS CustomerName,
-
-                                CASE
-                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Contract_TBL.StartDate
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.StartDate
-                                    ELSE '----------------'
-                                END AS StartDate,
-
-                                CASE
-                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Contract_TBL.EndDate
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Booking_TBL.EndDate
-                                    ELSE '----------------'
-                                END AS EndDate  
-
-                                FROM
-                                    Apartment_Info_TBL
-                                    LEFT JOIN Contract_TBL ON Apartment_Info_TBL.RoomID = Contract_TBL.RoomID
-                                    LEFT JOIN Customer_TBL AS Customer_Contract ON Customer_Contract.CustomerID   = Contract_TBL.CustomerID
-
-                                    LEFT JOIN Booking_TBL  ON Apartment_Info_TBL.RoomID = Booking_TBL.RoomID
-                                    LEFT JOIN Customer_TBL AS Customer_Booking ON Customer_Booking.CustomerID   = Booking_TBL.CustomerID
-
-                                ORDER BY
-                                    Apartment_Info_TBL.RoomNo;
-                """)
+                                    WITH RoomStatusCTE AS (
+                                        SELECT
+                                            Apartment_Info_TBL.RoomNo,
+                                            Apartment_Info_TBL.Building,
+                                            Apartment_Info_TBL.Floor,
+                                            CASE
+                                                WHEN Apartment_Info_TBL.RoomType = 'SmallType' THEN 'Standard Room'
+                                                WHEN Apartment_Info_TBL.RoomType = 'BigType' THEN 'GardenView Room'
+                                                ELSE '-'
+                                            END AS RoomType,
+                                            CASE
+                                                WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN 'เช่า'
+                                                WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN 'จอง'
+                                                ELSE 'ว่าง'
+                                            END AS RoomStatus,
+                                            COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName, Customer_Booking.FirstName || ' ' || Customer_Booking.LastName, '----------------') AS CustomerName,
+                                            COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate, '----------------') AS StartDate,
+                                            COALESCE(Contract_TBL.EndDate, Booking_TBL.EndDate, '----------------') AS EndDate,
+                                            ROW_NUMBER() OVER (PARTITION BY Apartment_Info_TBL.RoomID ORDER BY COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate) DESC) AS RowNum
+                                        FROM
+                                            Apartment_Info_TBL
+                                            LEFT JOIN Contract_TBL ON Apartment_Info_TBL.RoomID = Contract_TBL.RoomID AND Contract_TBL.Status = 'Active'
+                                            LEFT JOIN Customer_TBL AS Customer_Contract ON Customer_Contract.CustomerID = Contract_TBL.CustomerID
+                                            LEFT JOIN Booking_TBL ON Apartment_Info_TBL.RoomID = Booking_TBL.RoomID AND Booking_TBL.Status = 'Active'
+                                            LEFT JOIN Customer_TBL AS Customer_Booking ON Customer_Booking.CustomerID = Booking_TBL.CustomerID
+                                    )
+                                    SELECT
+                                        RoomNo,
+                                        Building,
+                                        Floor,
+                                        RoomType,
+                                        RoomStatus,
+                                        CustomerName,
+                                        StartDate,
+                                        EndDate
+                                    FROM RoomStatusCTE
+                                    WHERE RowNum = 1
+                                    ORDER BY RoomNo;
+                                """)
 
             rows = cursor.fetchall()
             for i, row in enumerate(rows):
