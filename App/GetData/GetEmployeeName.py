@@ -10,7 +10,7 @@ def get_employee_name_from_DB() :
     try:
         conn   = sqlite3.connect(Oasis_database_full_path)  
         cursor = conn.cursor()
-        cursor.execute("SELECT FirstName, LastName FROM Employee_TBL")
+        cursor.execute("SELECT DISTINCT FirstName, LastName FROM Employee_TBL")
         employee_names = cursor.fetchall()
 
         if DEBUG == True :

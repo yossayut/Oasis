@@ -71,7 +71,7 @@ class KeycardPage(tk.Toplevel):
         customer_radio         = ttk.Radiobutton(user_frame, text=txt_transaction_customer, variable=self.customer_employee, value="customer")
         customer_radio.grid(row=0, column=0)
         ###################################################################################
-        self.customer_names    = get_current_customer_name_from_DB()  # Customer names
+        self.customer_names    = get_current_customer_name_from_DB(True)  # Customer names
         ###################################################################################
         self.selected_customer = tk.StringVar()
         self.selected_customer.set("*เลือก" + txt_transaction_customer) 
@@ -158,7 +158,7 @@ class KeycardPage(tk.Toplevel):
                         customer_employee_radio     = self.customer_employee.get()
                         customer_name               = self.selected_customer.get()
                         customer_name_parts         = customer_name.strip("()").replace("'", "").split(", ")
-                        customer_id                 = get_customer_id_from_first_last_name(customer_name_parts[0],customer_name_parts[1])
+                        customer_id                 = get_customer_id_from_first_last_name(customer_name_parts[1],customer_name_parts[2])
 
                         employee_filler_name_parts  = employee_filler.strip("()").replace("'", "").split(", ")
                         employee_filler_id          = get_employee_id_from_first_last_name(employee_filler_name_parts[0],employee_filler_name_parts[1])
