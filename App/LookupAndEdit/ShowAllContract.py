@@ -140,7 +140,7 @@ class Show_all_contract_Page(tk.Toplevel):
                     SELECT 
                         Contract_TBL.ContractID, 
                         Apartment_Info_TBL.RoomNo, 
-                        Customer_TBL.FirstName || ' ' || Customer_TBL.LastName AS CustomerName,  -- Add "AS CustomerName"
+                        Customer_TBL.FirstName || ' ' || Customer_TBL.LastName || "(" || Customer_TBL.NickName || ")" AS CustomerName,  -- Add "AS CustomerName"
                         Contract_TBL.StartDate,
                         Contract_TBL.EndDate,
                         Employee_TBL.FirstName || ' ' || Employee_TBL.LastName AS EmployeeName,  -- Add "AS EmployeeName"
@@ -165,7 +165,7 @@ class Show_all_contract_Page(tk.Toplevel):
                     SELECT 
                         Contract_TBL.ContractID, 
                         Apartment_Info_TBL.RoomNo, 
-                        Customer_TBL.FirstName || ' ' || Customer_TBL.LastName AS CustomerName,  -- Add "AS CustomerName"
+                        Customer_TBL.FirstName || ' ' || Customer_TBL.LastName || "(" || Customer_TBL.NickName || ")" AS CustomerName,  -- Add "AS CustomerName"
                         Contract_TBL.StartDate,
                         Contract_TBL.EndDate,
                         Employee_TBL.FirstName || ' ' || Employee_TBL.LastName AS EmployeeName,  -- Add "AS EmployeeName"
@@ -189,7 +189,7 @@ class Show_all_contract_Page(tk.Toplevel):
                     SELECT 
                         Contract_TBL.ContractID, 
                         Apartment_Info_TBL.RoomNo, 
-                        Customer_TBL.FirstName || ' ' || Customer_TBL.LastName AS CustomerName,  -- Add "AS CustomerName"
+                        Customer_TBL.FirstName || ' ' || Customer_TBL.LastName || "(" || Customer_TBL.NickName || ")" AS CustomerName,  -- Add "AS CustomerName"
                         Contract_TBL.StartDate,
                         Contract_TBL.EndDate,
                         Employee_TBL.FirstName || ' ' || Employee_TBL.LastName AS EmployeeName,  -- Add "AS EmployeeName"
@@ -213,7 +213,7 @@ class Show_all_contract_Page(tk.Toplevel):
                     SELECT 
                         Contract_TBL.ContractID, 
                         Apartment_Info_TBL.RoomNo, 
-                        Customer_TBL.FirstName || ' ' || Customer_TBL.LastName AS CustomerName,  -- Add "AS CustomerName"
+                        Customer_TBL.FirstName || ' ' || Customer_TBL.LastName || "(" || Customer_TBL.NickName || ")" AS CustomerName,  -- Add "AS CustomerName"
                         Contract_TBL.StartDate,
                         Contract_TBL.EndDate,
                         Employee_TBL.FirstName || ' ' || Employee_TBL.LastName AS EmployeeName,  -- Add "AS EmployeeName"
@@ -237,7 +237,7 @@ class Show_all_contract_Page(tk.Toplevel):
                     SELECT 
                         Contract_TBL.ContractID, 
                         Apartment_Info_TBL.RoomNo, 
-                        Customer_TBL.FirstName || ' ' || Customer_TBL.LastName AS CustomerName,  -- Add "AS CustomerName"
+                        Customer_TBL.FirstName || ' ' || Customer_TBL.LastName || "(" || Customer_TBL.NickName || ")" AS CustomerName,  -- Add "AS CustomerName"
                         Contract_TBL.StartDate,
                         Contract_TBL.EndDate,
                         Employee_TBL.FirstName || ' ' || Employee_TBL.LastName AS EmployeeName,  -- Add "AS EmployeeName"
@@ -261,7 +261,7 @@ class Show_all_contract_Page(tk.Toplevel):
                     SELECT 
                         Contract_TBL.ContractID, 
                         Apartment_Info_TBL.RoomNo, 
-                        Customer_TBL.FirstName || ' ' || Customer_TBL.LastName AS CustomerName,  -- Add "AS CustomerName" 
+                        Customer_TBL.FirstName || ' ' || Customer_TBL.LastName || "(" || Customer_TBL.NickName || ")" AS CustomerName,  -- Add "AS CustomerName" 
                         Contract_TBL.StartDate,
                         Contract_TBL.EndDate,
                         Employee_TBL.FirstName || ' ' || Employee_TBL.LastName AS EmployeeName,  -- Add "AS EmployeeName"
@@ -285,7 +285,7 @@ class Show_all_contract_Page(tk.Toplevel):
                     SELECT 
                         Contract_TBL.ContractID, 
                         Apartment_Info_TBL.RoomNo, 
-                        Customer_TBL.FirstName || ' ' || Customer_TBL.LastName AS CustomerName,  -- Add "AS CustomerName"
+                        Customer_TBL.FirstName || ' ' || Customer_TBL.LastName || "(" || Customer_TBL.NickName || ")" AS CustomerName,  -- Add "AS CustomerName"
                         Contract_TBL.StartDate,
                         Contract_TBL.EndDate,
                         Employee_TBL.FirstName || ' ' || Employee_TBL.LastName AS EmployeeName,  -- Add "AS EmployeeName"

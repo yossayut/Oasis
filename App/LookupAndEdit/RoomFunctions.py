@@ -33,7 +33,7 @@ class RoomFunctions:
                                                 WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN 'จอง'
                                                 ELSE 'ว่าง'
                                             END AS RoomStatus,
-                                            COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName, Customer_Booking.FirstName || ' ' || Customer_Booking.LastName, '----------------') AS CustomerName,
+                                            COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || "(" || Customer_Contract.NickName || ")" , Customer_Booking.FirstName || ' ' || Customer_Booking.LastName ||  "(" || Customer_Booking.NickName || ")", '----------------') AS CustomerName,
                                             COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate, '----------------') AS StartDate,
                                             COALESCE(Contract_TBL.EndDate, Booking_TBL.EndDate, '----------------') AS EndDate,
                                             ROW_NUMBER() OVER (PARTITION BY Apartment_Info_TBL.RoomID ORDER BY COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate) DESC) AS RowNum
@@ -79,8 +79,7 @@ class RoomFunctions:
                                                 WHEN Booking_TBL.RoomID IS NOT NULL AND Booking_TBL.Status = 'Active' THEN 'จอง'
                                                 ELSE 'ว่าง'
                                             END AS RoomStatus,
-                                            COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName, Customer_Booking.FirstName || ' ' || Customer_Booking.LastName, '----------------') AS CustomerName,
-                                            COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate, '----------------') AS StartDate,
+                                            COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || "(" || Customer_Contract.NickName || ")" , Customer_Booking.FirstName || ' ' || Customer_Booking.LastName ||  "(" || Customer_Booking.NickName || ")", '----------------') AS CustomerName,                                            COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate, '----------------') AS StartDate,
                                             COALESCE(Contract_TBL.EndDate, Booking_TBL.EndDate, '----------------') AS EndDate,
                                             ROW_NUMBER() OVER (PARTITION BY Apartment_Info_TBL.RoomID ORDER BY COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate) DESC) AS RowNum
                                         FROM
@@ -124,8 +123,7 @@ class RoomFunctions:
                                                 WHEN Booking_TBL.RoomID IS NOT NULL AND Booking_TBL.Status = 'Active' THEN 'จอง'
                                                 ELSE 'ว่าง'
                                             END AS RoomStatus,
-                                            COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName, Customer_Booking.FirstName || ' ' || Customer_Booking.LastName, '----------------') AS CustomerName,
-                                            COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate, '----------------') AS StartDate,
+                                            COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || "(" || Customer_Contract.NickName || ")" , Customer_Booking.FirstName || ' ' || Customer_Booking.LastName ||  "(" || Customer_Booking.NickName || ")", '----------------') AS CustomerName,                                            COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate, '----------------') AS StartDate,
                                             COALESCE(Contract_TBL.EndDate, Booking_TBL.EndDate, '----------------') AS EndDate,
                                             ROW_NUMBER() OVER (PARTITION BY Apartment_Info_TBL.RoomID ORDER BY COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate) DESC) AS RowNum
                                         FROM
@@ -171,8 +169,7 @@ class RoomFunctions:
                                                 WHEN Booking_TBL.RoomID IS NOT NULL AND Booking_TBL.Status = 'Active' THEN 'จอง'
                                                 ELSE 'ว่าง'
                                             END AS RoomStatus,
-                                            COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName, Customer_Booking.FirstName || ' ' || Customer_Booking.LastName, '----------------') AS CustomerName,
-                                            COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate, '----------------') AS StartDate,
+                                            COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || "(" || Customer_Contract.NickName || ")" , Customer_Booking.FirstName || ' ' || Customer_Booking.LastName ||  "(" || Customer_Booking.NickName || ")", '----------------') AS CustomerName,                                            COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate, '----------------') AS StartDate,
                                             COALESCE(Contract_TBL.EndDate, Booking_TBL.EndDate, '----------------') AS EndDate,
                                             ROW_NUMBER() OVER (PARTITION BY Apartment_Info_TBL.RoomID ORDER BY COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate) DESC) AS RowNum
                                         FROM
@@ -216,8 +213,7 @@ class RoomFunctions:
                                                 WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN 'จอง'
                                                 ELSE 'ว่าง'
                                             END AS RoomStatus,
-                                            COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName, Customer_Booking.FirstName || ' ' || Customer_Booking.LastName, '----------------') AS CustomerName,
-                                            COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate, '----------------') AS StartDate,
+                                            COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || "(" || Customer_Contract.NickName || ")" , Customer_Booking.FirstName || ' ' || Customer_Booking.LastName ||  "(" || Customer_Booking.NickName || ")", '----------------') AS CustomerName,                                            COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate, '----------------') AS StartDate,
                                             COALESCE(Contract_TBL.EndDate, Booking_TBL.EndDate, '----------------') AS EndDate,
                                             ROW_NUMBER() OVER (PARTITION BY Apartment_Info_TBL.RoomID ORDER BY COALESCE(Contract_TBL.StartDate, Booking_TBL.StartDate) DESC) AS RowNum
                                         FROM

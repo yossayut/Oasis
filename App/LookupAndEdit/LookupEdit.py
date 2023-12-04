@@ -11,6 +11,7 @@ class LookUpAndEditPage(tk.Toplevel):
         self.geometry("600x400")
         self.create_main_widgets()
         self.protocol("WM_DELETE_WINDOW", self.on_close)
+        self.bind('<Escape>', self.on_escape)
 
     def create_main_widgets(self):
         tk.Label(self, text="Lookup Page", font=("Arial", 18)).pack(pady=20)
@@ -44,3 +45,6 @@ class LookUpAndEditPage(tk.Toplevel):
     def on_close(self):
         self.master.deiconify()  # Show the main page
         self.destroy()
+
+    def on_escape(self, event):
+        self.on_close()          # Close the current window

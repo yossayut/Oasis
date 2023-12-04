@@ -91,7 +91,7 @@ class Show_keycard_Page(tk.Toplevel):
                     SELECT 
                         COALESCE(Access_Card_Manage_TBL.CardNo, '-')    AS CardNumber,
                         COALESCE(Access_Card_Manage_TBL.KeycardID, '-') AS KeycardID,
-                        COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName, '-') AS CustomerName,
+                        COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName || "(" || Customer_TBL.NickName || ")" , '-') AS CustomerName,
                         COALESCE(Apartment_Info_TBL.RoomNo, '-') AS RoomNo,
                         COALESCE(Employee_TBL.FirstName || ' ' || Employee_TBL.LastName, '-') AS EmployeeName,
                         CASE 
@@ -117,7 +117,7 @@ class Show_keycard_Page(tk.Toplevel):
                     SELECT 
                         COALESCE(Access_Card_Manage_TBL.CardNo, '-')    AS CardNumber,
                         COALESCE(Access_Card_Manage_TBL.KeycardID, '-') AS KeycardID,
-                        COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName, '-') AS CustomerName,
+                        COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName || "(" || Customer_TBL.NickName || ")" , '-') AS CustomerName,
                         COALESCE(Apartment_Info_TBL.RoomNo, '-') AS RoomNo,
                         COALESCE(Employee_TBL.FirstName || ' ' || Employee_TBL.LastName, '-') AS EmployeeName,
                         CASE 
@@ -143,7 +143,7 @@ class Show_keycard_Page(tk.Toplevel):
                     SELECT 
                         COALESCE(Access_Card_Manage_TBL.CardNo, '-')    AS CardNumber,
                         COALESCE(Access_Card_Manage_TBL.KeycardID, '-') AS KeycardID,
-                        COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName, '-') AS CustomerName,
+                        COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName || "(" || Customer_TBL.NickName || ")" , '-') AS CustomerName,
                         COALESCE(Apartment_Info_TBL.RoomNo, '-') AS RoomNo,
                         COALESCE(Employee_TBL.FirstName || ' ' || Employee_TBL.LastName, '-') AS EmployeeName,
                         CASE 
@@ -170,7 +170,7 @@ class Show_keycard_Page(tk.Toplevel):
                     SELECT 
                         COALESCE(Access_Card_Manage_TBL.CardNo, '-')    AS CardNumber,
                         COALESCE(Access_Card_Manage_TBL.KeycardID, '-') AS KeycardID,
-                        COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName, '-') AS CustomerName,
+                        COALESCE(Customer_TBL.FirstName || ' ' || Customer_TBL.LastName || "(" || Customer_TBL.NickName || ")" , '-') AS CustomerName,
                         COALESCE(Apartment_Info_TBL.RoomNo, '-') AS RoomNo,
                         COALESCE(Employee_TBL.FirstName || ' ' || Employee_TBL.LastName, '-') AS EmployeeName,
                         CASE 

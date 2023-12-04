@@ -13,7 +13,7 @@ def get_current_customer_name_from_DB(room_number_flag) :
             cursor = conn.cursor()
 
             cursor.execute("""
-                                SELECT DISTINCT Apartment_Info_TBL.RoomNo, Customer_TBL.FirstName, Customer_TBL.LastName
+                                SELECT DISTINCT Apartment_Info_TBL.RoomNo, Customer_TBL.FirstName, Customer_TBL.LastName, "(" || Customer_TBL.NickName || ")" as NickName
                                 FROM   Contract_TBL
                                 JOIN   Customer_TBL on Contract_TBL.CustomerID = Customer_TBL.CustomerID
                                 JOIN   Apartment_Info_TBL on Contract_TBL.RoomID = Apartment_Info_TBL.RoomID
@@ -43,7 +43,7 @@ def get_current_customer_name_from_DB(room_number_flag) :
             cursor = conn.cursor()
 
             cursor.execute("""
-                                SELECT DISTINCT Customer_TBL.FirstName, Customer_TBL.LastName
+                                SELECT DISTINCT Customer_TBL.FirstName, Customer_TBL.LastName, "(" || Customer_TBL.NickName || ")" as NickName
                                 FROM   Contract_TBL
                                 JOIN   Customer_TBL on Contract_TBL.CustomerID = Customer_TBL.CustomerID
                                 WHERE  Contract_TBL.Status = "Active"
