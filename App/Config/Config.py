@@ -2,6 +2,6 @@
 DEBUG = False
 
 #Oasis_database_full_path = r"C:\Oasis_Apartment\App\00_DataBase\Oasis_Apartment_for_test.db"
-Oasis_database_full_path = r"C:\Oasis_Apartment\App\00_DataBase\Oasis_Apartment.db"
+Oasis_database_full_path = r"C:\Users\user\OneDrive\00_Oasis_Apartment_DataBase\Oasis_Apartment.db"
 template_contract_path   = "C:\Oasis_Apartment\Contract_document\สัญญาเช่าอะพาร์ตเมนต์_Template_for_app.docx"
 output_contract_path     = "C:\\Oasis_Apartment\\Contract_document\\"

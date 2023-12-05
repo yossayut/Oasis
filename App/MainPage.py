@@ -29,7 +29,7 @@ class MainPage(tk.Tk):
         
         contract_txt    = "ทำสัญญาเช่า/จองห้องพัก"
         parking_txt     = "ที่จอดรถ"
-        internet_txt    = "อินเตอร์เน็ต"
+        # internet_txt    = "อินเตอร์เน็ต"
         keycard_txt     = "คีย์การ์ด"
         interest_txt    = "ลงทะเบียนผู้สนใจ"
         lookup_txt      = "ดูหรือแก้ไขข้อมูล"
@@ -37,7 +37,7 @@ class MainPage(tk.Tk):
         tk.Button(self, text=contract_txt    , command=self.open_create_contract).pack(pady=10)
         tk.Button(self, text=keycard_txt     , command=self.open_keycard).pack(pady=10)
         tk.Button(self, text=parking_txt     , command=self.open_parking).pack(pady=10)
-        tk.Button(self, text=internet_txt    , command=self.open_internet).pack(pady=10)
+        # tk.Button(self, text=internet_txt    , command=self.open_internet).pack(pady=10)
         tk.Button(self, text=interest_txt    , command=self.open_interested_person).pack(pady=10)
         tk.Button(self, text=lookup_txt      , command=self.open_lookup_edit).pack(pady=10)
     
@@ -54,9 +54,9 @@ class MainPage(tk.Tk):
         self.withdraw()
         ParkingPage(self)
   
-    def open_internet(self):
-        self.withdraw()
-    #     InternetPage(self)
+    # def open_internet(self):
+    #     self.withdraw()
+    # #     InternetPage(self)
  
     def open_interested_person(self):
         self.withdraw()
