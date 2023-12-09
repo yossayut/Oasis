@@ -117,14 +117,14 @@ class ParkingRegistrationForm(tk.Toplevel):
 
         if DEBUG == True :
             print("record_data => customer_name          : " + customer_name)        
-            print("record_data => customer_name_parts    : " + customer_name_parts)
-            print("record_data => customer_name_parts[0] : " + customer_name_parts[0])
-            print("record_data => customer_name_parts[1] : " + customer_name_parts[1])
+            print("record_data => customer_name_parts    : " , customer_name_parts)
+            print("record_data => customer_name_parts[0] : " , customer_name_parts[0])
+            print("record_data => customer_name_parts[1] : " , customer_name_parts[1])
         
         get_CustomerID  = get_customer_id_from_first_last_name(customer_name_parts[0],customer_name_parts[1])
 
         if DEBUG == True :        
-            print("record_data => get_CustomerID : " + get_CustomerID)
+            print("record_data => get_CustomerID : " , get_CustomerID)
         
         conn   = sqlite3.connect(Oasis_database_full_path)
         cursor = conn.cursor()

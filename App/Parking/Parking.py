@@ -147,9 +147,9 @@ class ParkingPage(tk.Toplevel):
         ParkingRegistrationForm(self, selected_customer)
 
         if DEBUG == True :
-            print("open_parking_registration_form => selected_room     : " + selected_room)
-            print("open_parking_registration_form => selected_item     : " + selected_item)
-            print("open_parking_registration_form => selected_customer : " + selected_customer)
+            print("open_parking_registration_form => selected_room     : " , selected_room)
+            print("open_parking_registration_form => selected_item     : " , selected_item)
+            print("open_parking_registration_form => selected_customer : " , selected_customer)
 
     def on_close(self):
         self.master.deiconify()  # Show the main page

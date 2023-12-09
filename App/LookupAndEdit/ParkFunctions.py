@@ -30,8 +30,8 @@ class ParkFunctions:
                                 END AS RoomType,
 
                                 CASE
-                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || "(" || Customer_Contract.NickName || ")"
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName  || ' ' || Customer_Booking.LastName || "(" || Customer_Booking.NickName || ")"
+                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || " (" || Customer_Contract.NickName || ")"
+                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName  || ' ' || Customer_Booking.LastName  || " (" || Customer_Booking.NickName  || ")"
                                     ELSE '----------------'
                                 END AS CustomerName,
 
@@ -77,8 +77,8 @@ class ParkFunctions:
                                 END AS RoomType,
 
                                 CASE
-                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || "(" || Customer_Contract.NickName || ")"
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName  || ' ' || Customer_Booking.LastName || "(" || Customer_Booking.NickName || ")"
+                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || " (" || Customer_Contract.NickName || ")"
+                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName  || ' ' || Customer_Booking.LastName  || " (" || Customer_Booking.NickName  || ")"
                                     ELSE '----------------'
                                 END AS CustomerName,
 
@@ -131,8 +131,8 @@ class ParkFunctions:
                                 END AS RoomType,
 
                                 CASE
-                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || "(" || Customer_Contract.NickName || ")"
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName  || ' ' || Customer_Booking.LastName || "(" || Customer_Booking.NickName || ")"
+                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || " (" || Customer_Contract.NickName || ")"
+                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName  || ' ' || Customer_Booking.LastName  || " (" || Customer_Booking.NickName  || ")"
                                     ELSE '----------------'
                                 END AS CustomerName,
 
@@ -177,8 +177,8 @@ class ParkFunctions:
                                 END AS RoomType,
 
                                 CASE
-                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || "(" || Customer_Contract.NickName || ")"
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName  || ' ' || Customer_Booking.LastName || "(" || Customer_Booking.NickName || ")"
+                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || " (" || Customer_Contract.NickName || ")"
+                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName  || ' ' || Customer_Booking.LastName  || " (" || Customer_Booking.NickName  || ")"
                                     ELSE '----------------'
                                 END AS CustomerName,
 
@@ -232,8 +232,8 @@ class ParkFunctions:
                                 END AS RoomType,
 
                                 CASE
-                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || "(" || Customer_Contract.NickName || ")"
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName  || ' ' || Customer_Booking.LastName || "(" || Customer_Booking.NickName || ")"
+                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || " (" || Customer_Contract.NickName || ")"
+                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName  || ' ' || Customer_Booking.LastName  || " (" || Customer_Booking.NickName  || ")"
                                     ELSE '----------------'
                                 END AS CustomerName,
 
@@ -285,8 +285,8 @@ class ParkFunctions:
                                 END AS RoomType,
 
                                 CASE
-                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || "(" || Customer_Contract.NickName || ")"
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName  || ' ' || Customer_Booking.LastName || "(" || Customer_Booking.NickName || ")"
+                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || " (" || Customer_Contract.NickName || ")"
+                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName  || ' ' || Customer_Booking.LastName  || " (" || Customer_Booking.NickName  || ")"
                                     ELSE '----------------'
                                 END AS CustomerName,
 
@@ -337,8 +337,9 @@ class ParkFunctions:
                                         ELSE '-'
                                     END AS RoomType,
 
-                                    'รถยนต์' AS VehicleType,
-                                    COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || "(" || Customer_Contract.NickName || ")", '-') AS CustomerName,
+
+                                    COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || " (" || Customer_Contract.NickName || ")", '-') AS CustomerName,
+                                    'รถยนต์' AS VehicleType,        
                                     COALESCE(Car_TBL.Brand_Model, '----------------') AS Car_Brand,
                                     COALESCE(Car_TBL.Color, '----------------') AS Car_color,
                                     COALESCE(Car_TBL.PlateNo, '----------------') AS Car_plateno
@@ -370,8 +371,9 @@ class ParkFunctions:
                                         ELSE '-'
                                     END AS RoomType,
 
+                                    
+                                    COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || " (" || Customer_Contract.NickName || ")", '-') AS CustomerName,
                                     'มอเตอร์ไซค์' AS VehicleType,
-                                    COALESCE(Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || "(" || Customer_Contract.NickName || ")", '-') AS CustomerName,
                                     COALESCE(Motocycle_TBL.Brand_Model, '----------------') AS Motocycle_Brand,
                                     COALESCE(Motocycle_TBL.Color, '----------------') AS Motocycle_color,
                                     COALESCE(Motocycle_TBL.PlateNo, '----------------') AS Motocycle_plateno
@@ -411,8 +413,8 @@ class ParkFunctions:
                                 END AS RoomType,
 
                                 CASE
-                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || "(" || Customer_Contract.NickName || ")"
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName  || ' ' || Customer_Booking.LastName || "(" || Customer_Booking.NickName || ")"
+                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || " (" || Customer_Contract.NickName || ")"
+                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName  || ' ' || Customer_Booking.LastName  || " (" || Customer_Booking.NickName || ")"
                                     ELSE '----------------'
                                 END AS CustomerName,
 
@@ -454,8 +456,8 @@ class ParkFunctions:
                                 END AS RoomType,
 
                                 CASE
-                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || "(" || Customer_Contract.NickName || ")"
-                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName  || ' ' || Customer_Booking.LastName || "(" || Customer_Booking.NickName || ")"
+                                    WHEN Contract_TBL.RoomID IS NOT NULL AND Contract_TBL.Status = 'Active' THEN Customer_Contract.FirstName || ' ' || Customer_Contract.LastName || " (" || Customer_Contract.NickName || ")"
+                                    WHEN Booking_TBL.RoomID  IS NOT NULL AND Booking_TBL.Status  = 'Active' THEN Customer_Booking.FirstName  || ' ' || Customer_Booking.LastName  || " (" || Customer_Booking.NickName || ")"
                                     ELSE '----------------'
                                 END AS CustomerName,
 
